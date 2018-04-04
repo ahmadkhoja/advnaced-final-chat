@@ -1,0 +1,14 @@
+body{
+    background-color: #FFC654;
+}
+.LoginForm{
+    width: 50%;
+    position: relative;
+    top: 100px;;
+    left: 30%;
+    background-color: #44B0C4;
+    padding: 20px;
+    height: 350px;
+    padding-top: 60px;
+    border-radius: 20px;
+}

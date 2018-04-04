@@ -1,0 +1,145 @@
+import SocketIo from 'socket.io'
+import translate from 'google-translate-api'
+
+export default function(server){
+    let userId = 0
+    const io = SocketIo(server);
+
+    const users = [
+        {username:'ahmad',language:'en',password:'batata'},
+        {username:'jad',language:'fr',password:'batata'},
+        {username:'omar',language:'tr',password:'batata'},
+    ]
+    const languages = [];
+    const signUpUsers = [];
+    /*
+    const languages = []
+    const groups = {}
+    users.forEach((user)=>{
+        const lg = user.language
+        if(typeof groups[lg] === 'undefined'){
+            languages.push(lg)
+            groups[lg] = []
+        }
+        groups[lg].push(user)
+    })
+    */
+    
+    io.on('connection', (socket) => {
+        // const currentUserId = userId++
+        const currentUserId = userId++
+        let lang = users[currentUserId].language;
+        let user = users[currentUserId].username
+
+        console.log('a user connected');
+        // let lang = users[currentUserId].language
+        // socket.emit('giving you the user a name',users[currentUserId].name,users[currentUserId].language)
+        
+        // socket.on('signup',(name,password,language) =>{
+        //     // console.log(users)
+        //     users.push({password,language,username:name})
+        //     io.emit('signup successful',name,password,language,currentUserId)
+        //     users.forEach((lg)=> {
+        //         lang = lg.language;
+        //         io.emit('giving you the user a name',lg.username,lg.language,currentUserId)
+        //     })
+        // });
+
+        socket.join(user)
+        
+                if(signUpUsers.indexOf(user)<0){
+                    signUpUsers.push(user)
+                }
+        
+                const signuproom = io.sockets.adapter.rooms[user];
+                console.log(user, signuproom.length)
+                
+                socket.on('signup', (name,password,language) => {
+                    signUpUsers.forEach(username => {
+                        if( username === name){
+                            io.to(username)
+                            .emit('signup successful',name,password,language,currentUserId,)
+                            // io.emit('giving you the user a name',name,password,language,currentUserId)  
+                            
+                        }else{
+                            io.to(username)
+                            .emit('signup successful',name,password,language,currentUserId)
+                        }
+                    })    
+                    // io.emit('server sends a message to everyone',currentUserId,text)
+                })
+        
+        // socket.emit('giving you the user a name',users[currentUserId].username,users[currentUserId].language,currentUserId)
+
+        // socket.on('authenticate',(username,password)=>{
+        //     console.log(username,password)
+            
+        //         if(users[currentUserId].username === username && users[currentUserId].password === password){
+        //             io.emit('login successful',username)
+        //             // socket.emit('giving you the user id',currentUserId)
+        //         }
+            
+        // })
+
+        
+        // if(typeof lang === 'undefined' || lang === ''){
+        //     return 'No Users Create one';
+        // }
+        
+        
+        // socket.emit('giving you the user a name',users[currentUserId].username,users[currentUserId].lang,users[currentUserId].password);
+        
+        
+        // socket.on('signup',(name,password,language) =>{
+            //     users.push({name,language})
+            // })
+            
+            
+            
+            socket.join(lang)
+    
+            if(languages.indexOf(lang)<0){
+                languages.push(lang)
+            }
+    
+            const room = io.sockets.adapter.rooms[lang];
+            console.log(lang, room.length)
+            
+            
+            
+            socket.on('message from one user to the server', (text,user_lang) => {
+                languages.forEach(lg => {
+                    if(lg === user_lang){
+                        io.to(lg)
+                        .emit('server sends a message to everyone',currentUserId,text)  
+                        
+                    }else{
+                        translate(text, {from:user_lang,to:lg}).then(res => {
+                            // console.log('selected user: ',selected_user);
+                            const translated_message = res.text;
+                            //=> I speak English 
+                            io.to(lg)
+                            .emit('server sends a message to everyone',currentUserId,translated_message)
+                            console.log(res.from.language.iso);
+                            //=> nl 
+                        }).catch(err => {
+                            console.error(err);
+                        });
+                    }
+                })    
+                // io.emit('server sends a message to everyone',currentUserId,text)
+            })
+            
+            socket.on('disconnect', function(){
+            if( room.length <= 0 || signuproom.length <=0){
+                const index = languages.indexOf(lang);
+                languages.splice(index,1); 
+                const indexsignuproom = signUpUsers.indexOf(user);
+                signUpUsers.splice(indexsignuproom,1); 
+            }
+            console.log('user disconnected',languages);
+            console.log('sign out user disconnected',signUpUsers);
+        });
+            
+        });
+    }
