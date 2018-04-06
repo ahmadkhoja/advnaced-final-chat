@@ -32,14 +32,19 @@ body {
 }
 .mainChat{
 }
+*/
+
 .teams{
-} */
+  border: 1px solid white;
+  background-color: #44B0C4;
+}
 /* .chatServersWrapper{
   display: grid;
   grid-column: 1;
   height: 100%;
 } */
 .servers{
+  border: 1px solid white;
   position: relative;
   /* grid-column: 1; */
   display: inline-block;
@@ -49,6 +54,7 @@ body {
   overflow: auto;
 }
 .rooms{
+  border: 1px solid white;
   position: relative;
   grid-column: 2 / 3;
   display: inline-block;
@@ -288,29 +294,27 @@ button.btn.btn-primary.batata{
 }
 .teamMembers{
   position: relative;
-  background-color: green;
   height: 80%;
   overflow: auto;
 }
 .teamMember {
   /* margin-top: 5px; */
   position: relative;
-  background-color: green;
   height: 10%;
   width: 100%;
   /* left: 50px; */
 }
 .memberUsername {
-  width: 100%;
-  background-color: rgb(19, 102, 179);
-  /* float: left; */
+  width: 80%;
+  background-color: #FFD554;
   border-radius: 20px;
-  color: white;
+  color: green;
   font-size: 16px;
   text-align: center;
   padding-top: 10px;
   position: absolute;
   top: 10px;
+  left: 10%;
 }
 .memberImage {
   width: 25%;

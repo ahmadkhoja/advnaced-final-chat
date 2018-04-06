@@ -1,8 +1,8 @@
 import app from './server';
 import http from 'http';
 import socket from './Socket'
-import  mongodb  from 'mongodb';
-import bodyParser from 'body-parser'
+// import  mongodb  from 'mongodb';
+// import bodyParser from 'body-parser'
 
 // const MongoClient = mongodb.MongoClient;
 // const link = 'mongodb://ahmadyassin:ahmadyassin2524@ds021036.mlab.com:21036/users';

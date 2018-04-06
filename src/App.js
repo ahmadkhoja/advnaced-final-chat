@@ -14,6 +14,7 @@ class App extends React.Component {
   constructor(props){
     super(props)
     this.state = {
+      socket:null,
       servers: [
         {servername:'ai',image:'ai'},
         {servername:'codi',image:'codi'},
@@ -25,6 +26,7 @@ class App extends React.Component {
         {roomname:'Web Development'},
       ],
       user:{},
+      user_list:[],
       error:'',
       users :[],
       messages: [
@@ -37,7 +39,7 @@ class App extends React.Component {
 
   componentDidMount = () => {
     const socket = io();
-    this.socket = socket;
+    this.setState({socket})
     
     socket.on('message:broadcast',(id,text) => {
       const message = {id, text, me:false}
@@ -57,15 +59,18 @@ class App extends React.Component {
     })
 
     socket.on('authenticate:no',(user)=>{
-      this.setState({error:'could not authenticate'})
+      this.setState({error:'User is not found'})
     })
-
+    
+    socket.on('users',(users) => {
+      this.setState({user_list:users})
+    })
     socket.on('user:list', users => {
       this.setState({users})
     })
   }
   addMessage = (message) => {
-    this.socket.emit('message',message)
+    this.state.socket.emit('message',message)
   }
   addNewServer = (servername,image) => {
     const new_server = {servername,image};
@@ -100,8 +105,13 @@ class App extends React.Component {
   render(){
     return(
           <Switch>
-            <Route path="/signup" render={(match) => <Signup socket={this.socket} history={match.history} /*addUser={this.addUser}*/ />}/>
-            <Route path="/login" render={(match) => <Login socket={this.socket} history={match.history} /*addUser={this.addUser}*/ />}/>
+            <Route path="/signup" render={(match) => <Signup socket={this.state.socket} history={match.history} /*addUser={this.addUser}*/ />}/>
+            <Route path="/login" render={(match) => <Login 
+            user_list = {this.state.user_list}
+            // users = {this.state.users}
+            error={this.state.error} 
+            socket={this.state.socket} 
+            history={match.history} /*addUser={this.addUser}*/ />}/>
             <Route path="/" render={
               ()=>
             <Home 

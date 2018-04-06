@@ -3,20 +3,20 @@ import translate from 'google-translate-api'
 
 export default function(server){
     
-    const servers = [
-        { 
-            servername:'ai',
-            image:'ai',
-            connected:[],
-            rooms:[
-                { 
-                    name:'welcome', 
-                    users:[],
-                    messages:[]
-                }
-            ]
-        },
-    ]
+    // const servers = [
+    //     { 
+    //         servername:'ai',
+    //         image:'ai',
+    //         connected:[],
+    //         rooms:[
+    //             { 
+    //                 name:'welcome', 
+    //                 users:[],
+    //                 messages:[]
+    //             }
+    //         ]
+    //     },
+    // ]
 
     const io = SocketIo(server);
     let ids = 4
@@ -35,6 +35,7 @@ export default function(server){
         let user
         let room
         socket.emit('user:list',connected)
+        socket.emit('users',users)
 
         const addUser = (_user) => {
             user = _user
@@ -78,7 +79,7 @@ export default function(server){
             removeUserFromConnected(user)
             
              room = io.sockets.adapter.rooms[user.language];
-            if(room.length <= 0 ){
+            if(room && room.length <= 0 ){
                 const index = languages.indexOf(user.language);
                 if(index < 0 ){ return }
                 languages.splice(index,1); 
@@ -89,14 +90,13 @@ export default function(server){
         socket.on('message', (text) => {
             if(!user){ return; }
             languages.forEach( lg => {
-                const room = io.to(lg)
                 if( lg === user.language ){
-                    room.emit('message:broadcast',user.id,text)  
+                    io.to(lg).emit('message:broadcast',user.id,text)  
                         
                 }else{
                     translate(text, { from:user.language, to:lg })
                         .then( ({text}) => 
-                            room.emit('message:broadcast',user.id,text)
+                            io.to(lg).emit('message:broadcast',user.id,text)
                         )
                         .catch( err => console.error(err))
                 }
