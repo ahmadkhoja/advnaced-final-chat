@@ -26,6 +26,12 @@ export class SignUp extends React.Component {
         
         this.props.history.push ('/home')
     }
+    NoWhiteSpace = (event) => {
+        const key = event.keyCode
+        if(key === 32){
+            event.preventDefault()
+        }
+    }
 
   render(){
     return (
@@ -37,6 +43,7 @@ export class SignUp extends React.Component {
         label="User Name"
         placeholder="Enter Your UserName"
         required
+        onKeyDown = {this.NoWhiteSpace}
       />
       <FieldGroup
         name="user_password"
@@ -44,6 +51,7 @@ export class SignUp extends React.Component {
         label="Your Password: "
         placeholder="Enter The password.."
         required
+        onKeyDown = {this.NoWhiteSpace}
       />
       {/* Hello guys.. anyone knows how we can upload photos from a form to the public/images/ and display it or react has it's own npm photo uploader? */}
       

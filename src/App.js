@@ -41,8 +41,8 @@ class App extends React.Component {
     const socket = io();
     this.setState({socket})
     
-    socket.on('message:broadcast',(id,text) => {
-      const message = {id, text, me:false}
+    socket.on('message:broadcast',(id,text,image) => {
+      const message = {id, text,image, me:false}
       if(id === this.state.user.id){
         message.me = true
       }
@@ -69,8 +69,8 @@ class App extends React.Component {
       this.setState({users})
     })
   }
-  addMessage = (message) => {
-    this.state.socket.emit('message',message)
+  addMessage = (message,image) => {
+    this.state.socket.emit('message',message,'ahmad')
   }
   addNewServer = (servername,image) => {
     const new_server = {servername,image};

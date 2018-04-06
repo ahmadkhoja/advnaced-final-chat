@@ -161,7 +161,7 @@ body {
 .bodyText{
   float: left;
   width: 90%;
-  height: 50px;
+  height: auto;
   text-align: left;
   padding: 10px 10px;
   color: white;

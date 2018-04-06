@@ -106,7 +106,10 @@ class Home extends React.Component {
   onMessageSubmit = (evt) => {
     evt.preventDefault();
     const form = evt.target;
-    const message = form.message_text.value;;
+    const message = form.message_text.value;
+    if(message === ''){
+      return;
+    }
     this.props.addMessage(message)
     form.message_text.value = "";
   }
