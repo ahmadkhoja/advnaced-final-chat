@@ -2,7 +2,7 @@ import React from 'react'
 import SearchBar from './SearchBar'
 
 const LeftNav = ({ searchValue, onSearchChange }) => 
-  <div style={{padding:'10px', float:'left',height:'100%', background:'#ccc'}}>
+  <div>
     <SearchBar searchValue={searchValue} onSearchChange={onSearchChange}/>
   </div>
 

@@ -13,10 +13,12 @@ const Menu = ({searchValue,onSearchChange}) => {
       <Navbar.Toggle />
     </Navbar.Header>
     <Navbar.Collapse>
+      
+      <Navbar.Form className="searchApp" >
+        <LeftNav searchValue={searchValue} onSearchChange={onSearchChange}/>
+      </Navbar.Form>
+
       <Navbar.Form pullRight>
-        <FormGroup>
-          <LeftNav searchValue={searchValue} onSearchChange={onSearchChange}/>
-        </FormGroup>
         <FormGroup>
           <ButtonGroup >
           <Button bsStyle = "primary">Profile</Button>

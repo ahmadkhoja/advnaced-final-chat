@@ -5,72 +5,11 @@ import Server from './Components/Servers/Server';
 import Menu from './Components/Menu';
 import CreateRoomModal from './Components/Rooms/CreateRoomModal'
 import Room from './Components/Rooms/Room';
-import { Button, Modal, Glyphicon } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
+import SingleMessage from './Components/Messages/SingleMessage'
+import TeamOptions from './Components/Teams/TeamOptions'
+import TeamMember from './Components/Teams/TeamMember'
 
-
-
-const SingleMessage = ({ image, body }) => {
-  return (
-    <div className="singleMessage">
-      <img src={image} alt="batata" className="messageImage" />
-      <p className="bodyText">{body}</p>
-    </div>
-  )
-}
-
-class TeamOptions extends React.Component {
-  constructor(props, context) {
-    super(props, context);
-    this.handleShow = this.handleShow.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-    this.state = {
-      show: false
-    };
-  }
-
-  handleClose() {
-    this.setState({ show: false });
-  }
-
-  handleShow() {
-    this.setState({ show: true });
-  }
-
-  render() {
-    return (
-      <div className="teamOptions">
-
-        <button className="optionTeamSection" onClick={this.handleShow}>
-          <Glyphicon glyph="align-justify" />
-        </button>
-        <Modal show={this.state.show} onHide={this.handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Team Options </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {/* <Button vertical block>Build New Team</Button> */}
-            <Button vertical block>Share Your Code</Button>
-            <Button vertical block>To Do List</Button>
-            <Button vertical block>Invite New Member</Button>
-            <Button vertical block>Remove Member</Button>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={this.handleClose}>Close</Button>
-          </Modal.Footer>
-        </Modal>
-      </div>
-    );
-  }
-}
-
-
-const TeamMember = ({ username, lang }) => {
-  return (
-    <div className="teamMember">
-      <p className="memberUsername">{username}({lang})</p>
-    </div>
-  )
-}
 
 class Home extends React.Component {
 
@@ -84,26 +23,7 @@ class Home extends React.Component {
   onTextChange = (evt) => {
     this.setState({ messageText: evt.target.value })
     evt.target = ''
-    // console.log(this.state.messageText)
   }
-
-  // newMessage = <SingleMessage />
-  // getRef = (element) => this.newMessage = element;
-
-  // messageEnd = <SingleMessage />
-
-  // scrollToBottom = () => {
-
-  //   const batata = this.messageEnd.scrollIntoView({ behavior: "smooth" });
-  //   console.log(this.batata)
-  // }
-
-  // componentDidMount = () => {
-  //     this.scrollToBottom();      
-  // }
-  // componentDidUpdate() {
-  //   this.scrollToBottom();
-  // }
 
   onMessageSubmit = (evt) => {
     evt.preventDefault();
@@ -188,18 +108,9 @@ class Home extends React.Component {
           </div>
 
           <div className="block mainChat">
-
             <div className="mainChatWrapper">
-
               <section className="chatRoom" ref={(el) => this.messageContainer = el}>
-
-                {messages_list}
-
-                {/* <div 
-                        ref={(el) => { this.messagesEnd = el; }}>
-                      </div> */}
-
-
+                  {messages_list}
               </section>
 
               <section className="inputField">

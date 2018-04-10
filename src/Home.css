@@ -395,8 +395,11 @@ button.btn.btn-primary.batata{
       height: 100%;
       position: relative;
     }
-
 }
+.searchApp{
+  display: inline-block;
+}
+
 
 /* 
 
