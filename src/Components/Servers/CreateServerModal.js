@@ -23,7 +23,7 @@ class CreateServerModal extends React.Component {
     render() {
       return (
         <div className="addServer">
-          <Button bsStyle="primary batata" onClick={this.handleShow} >Add Server</Button>  
+          <Button bsStyle="primary" onClick={this.handleShow} >Add Server</Button>  
           <Modal show={this.state.show} onHide={this.handleClose}>
             <Modal.Header closeButton>
               <Modal.Title>New Server</Modal.Title>

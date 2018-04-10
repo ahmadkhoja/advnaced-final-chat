@@ -5,7 +5,6 @@ import Server from './Components/Servers/Server';
 import Menu from './Components/Menu';
 import CreateRoomModal from './Components/Rooms/CreateRoomModal'
 import Room from './Components/Rooms/Room';
-import { Button } from 'react-bootstrap';
 import SingleMessage from './Components/Messages/SingleMessage'
 import TeamOptions from './Components/Teams/TeamOptions'
 import TeamMember from './Components/Teams/TeamMember'

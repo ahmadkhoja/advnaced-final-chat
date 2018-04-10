@@ -10,10 +10,10 @@ const Server = ({servername,image,removeServer}) => {
             {/* {console.log(image)} */}
 
                 <Button bsStyle="info" className="serverNameButton">
-                <Button onClick={removeServer} bsStyle="danger" className="removeServerButton">X</Button>
                 <img src={image} alt='batata' className="server-icon"/>
-                {/* <h4>{servername}</h4> */}
                 </Button> 
+                <Button onClick={removeServer} bsStyle="danger" className="removeServerButton">X</Button>
+                {/* <h4>{servername}</h4> */}
             </div>
         </div>
     )

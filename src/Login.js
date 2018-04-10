@@ -24,13 +24,12 @@ export class Login extends React.Component {
         this.props.socket.emit('authenticate',username,password)
         let user_list = this.props.user_list
         console.log(user_list)
-        user_list.find((user) => {
-            if(user.username === username && user.password === password){
-                this.props.history.push ('/home')
-            }else{
-                this.setState({alert:true})
-            }
-        })
+        const user = user_list.find( user => user.username === username && user.password === password )
+        if(user){
+            this.props.history.push ('/home')
+        }else{
+            this.setState({alert:true})
+        }
     }
         // this.props.socket.on('authenticate:no',()=>{
             // return (

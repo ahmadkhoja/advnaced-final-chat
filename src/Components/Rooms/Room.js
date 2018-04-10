@@ -7,11 +7,11 @@ return(
 
     <div className="RoomSection">  
         <div className="room-name">
-         <div className=""singleRoom>
+         <div className="singleRoom" style={{position:'relative'}}>
             <Button bsStyle="info" className="roomNameButton">
                 <label className="roomName">{roomname}</label>
-                <Button bsStyle="danger" onClick={removeRoom}className="roomCancelButton">X</Button>
             </Button>
+            <Button bsStyle="danger" onClick={removeRoom} className="roomCancelButton">X</Button>
          </div>
         </div>
     </div>

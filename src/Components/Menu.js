@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar, FormControl, FormGroup, Button, ButtonGroup } from 'react-bootstrap';
+import { Navbar, FormGroup, Button, ButtonGroup } from 'react-bootstrap';
 import LeftNav from './SearchBar/LeftNav'
 
 
