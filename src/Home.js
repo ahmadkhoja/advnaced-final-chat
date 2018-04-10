@@ -8,6 +8,7 @@ import Room from './Components/Rooms/Room';
 import { Button, Modal, Glyphicon } from 'react-bootstrap';
 
 
+
 const SingleMessage = ({ image, body }) => {
   return (
     <div className="singleMessage">
@@ -75,7 +76,9 @@ class Home extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = { messageText: '' }
+    this.state = { 
+      messageText: '',
+    }
   }
 
   onTextChange = (evt) => {
@@ -102,7 +105,6 @@ class Home extends React.Component {
   //   this.scrollToBottom();
   // }
 
-
   onMessageSubmit = (evt) => {
     evt.preventDefault();
     const form = evt.target;
@@ -116,7 +118,7 @@ class Home extends React.Component {
   renderMessages() {
     return (
       this.props.messages.map((props, index) =>
-        <SingleMessage user_id={this.props.user_id} body={props.text} key={index} {...props} image={'/images/' + props.image + '.jpg'} />
+        <SingleMessage user_id={this.props.user_id} body={props.text} key={index} {...props} image={'/images/' + props.image + '.jpg'}/>
       )
     )
   }
@@ -162,7 +164,7 @@ class Home extends React.Component {
 
     return (
       <div>
-        <Menu />
+        <Menu search={this.props.search} onSearchChange={this.props.onSearchChange}/>
         <div className="wrapper">
           <div className="servers">
             <h3>Servers </h3>

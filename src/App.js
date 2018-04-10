@@ -34,8 +34,11 @@ class App extends React.Component {
         {text:'bonjour',image:'ahmad'},
         {text:'me llamo ahmad',image:'ahmad'},
       ],
+      search:'',
     }
   }
+
+  
 
   componentDidMount = () => {
     const socket = io();
@@ -69,6 +72,27 @@ class App extends React.Component {
       this.setState({users})
     })
   }
+  
+  onChange = (evt) => {
+    this.setState({search:evt.target.value})
+  }
+  filterMessages = () => {
+    // this.props.messages
+    const search = this.state.search.trim();
+    if(!search){ return this.state.messages }
+    const regex = new RegExp(search,'i');
+     return this.state.messages.map(
+      (message) => {
+        const { text } = message
+        const key = text;
+        message.key = key;
+        message.id = key;
+        return message
+      }
+    ).filter(message => regex.test(message.key) )
+    
+  }
+
   addMessage = (message,image) => {
     this.state.socket.emit('message',message,'ahmad')
   }
@@ -103,6 +127,7 @@ class App extends React.Component {
       this.setState({ rooms:selected });
   }  
   render(){
+    const messages = this.filterMessages()
     return(
           <Switch>
             <Route path="/signup" render={(match) => <Signup socket={this.state.socket} history={match.history} /*addUser={this.addUser}*/ />}/>
@@ -123,8 +148,9 @@ class App extends React.Component {
               addNewRoom={this.addNewRoom}
               rooms_list={this.state.rooms}
               addMessage={this.addMessage}
-              messages={this.state.messages}
+              messages={messages}
               user={this.state.user}
+              onSearchChange={this.onChange}
             />}
             />
           </Switch>

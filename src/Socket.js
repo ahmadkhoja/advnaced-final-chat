@@ -33,7 +33,7 @@ export default function(server){
     io.on('connection', (socket) => {
 
         let user
-        let room
+
         socket.emit('user:list',connected)
         socket.emit('users',users)
 
@@ -78,14 +78,14 @@ export default function(server){
 
             removeUserFromConnected(user)
             
-             room = io.sockets.adapter.rooms[user.language];
+             const room = io.sockets.adapter.rooms[user.language];
             if(room && room.length <= 0 ){
                 const index = languages.indexOf(user.language);
                 if(index < 0 ){ return }
                 languages.splice(index,1); 
             }
         });
-
+        
 
         socket.on('message', (text,image) => {
             if(!user){ return; }

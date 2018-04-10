@@ -1,7 +1,9 @@
 import React from "react";
 import { Navbar, FormControl, FormGroup, Button, ButtonGroup } from 'react-bootstrap';
+import LeftNav from './SearchBar/LeftNav'
 
-const Menu = () => {
+
+const Menu = ({searchValue,onSearchChange}) => {
   return (
     <Navbar>
     <Navbar.Header>
@@ -13,7 +15,7 @@ const Menu = () => {
     <Navbar.Collapse>
       <Navbar.Form pullRight>
         <FormGroup>
-          <FormControl type="text" placeholder="Search" />
+          <LeftNav searchValue={searchValue} onSearchChange={onSearchChange}/>
         </FormGroup>
         <FormGroup>
           <ButtonGroup >
