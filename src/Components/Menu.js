@@ -3,7 +3,7 @@ import { Navbar, FormGroup, Button, ButtonGroup } from 'react-bootstrap';
 import LeftNav from './SearchBar/LeftNav'
 
 
-const Menu = ({searchValue,onSearchChange}) => {
+const Menu = ({searchValue,onSearchChange,logout }) => {
   return (
     <Navbar>
     <Navbar.Header>
@@ -21,9 +21,9 @@ const Menu = ({searchValue,onSearchChange}) => {
       <Navbar.Form pullRight>
         <FormGroup>
           <ButtonGroup >
-          <Button bsStyle = "primary">Profile</Button>
-          <Button bsStyle = "info">Setting</Button>
-          <Button bsStyle = "danger">Logout</Button>
+          {/* <Button bsStyle = "primary">Profile</Button> */}
+          {/* <Button bsStyle = "info">Setting</Button> */}
+          <Button bsStyle = "danger" onClick={logout}>Logout</Button>
           </ButtonGroup>
         </FormGroup>
       </Navbar.Form>

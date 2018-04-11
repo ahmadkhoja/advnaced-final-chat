@@ -18,6 +18,9 @@ class Home extends React.Component {
       messageText: '',
     }
   }
+  logout = () => {
+    this.props.history.push('/')
+  }
 
   onTextChange = (evt) => {
     this.setState({ messageText: evt.target.value })
@@ -84,7 +87,7 @@ class Home extends React.Component {
 
     return (
       <div>
-        <Menu search={this.props.search} onSearchChange={this.props.onSearchChange}/>
+        <Menu search={this.props.search} logout={this.logout} onSearchChange={this.props.onSearchChange}/>
         <div className="wrapper">
           <div className="servers">
             <h3>Servers </h3>

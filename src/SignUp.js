@@ -22,12 +22,12 @@ export class SignUp extends React.Component {
         const username = form.user_name.value;
         const password = form.user_password.value;
         const userlang = this.state.member_lang
+        this.props.socket.emit('signup',username ,password,userlang)
         let user_list = this.props.user_list
         const user = user_list.find( user => user.username === username )
         if(user){
             this.setState({alert:true})
         }else{
-            this.props.socket.emit('signup',username ,password,userlang)
             this.props.history.push ('/home')
         }
         form.user_name.value = '';
