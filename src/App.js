@@ -130,16 +130,17 @@ class App extends React.Component {
     const messages = this.filterMessages()
     return(
           <Switch>
-            <Route path="/signup" render={(match) => <Signup socket={this.state.socket} history={match.history} /*addUser={this.addUser}*/ />}/>
-            <Route path="/login" render={(match) => <Login 
-            user_list = {this.state.user_list}
-            // users = {this.state.users}
-            error={this.state.error} 
+            
+            {/* <Route path="/" render={(match) => <Login socket={this.state.socket} history={match.history}  />}/> */}
+            <Route path="/signup" render={(match) => <Signup 
             socket={this.state.socket} 
-            history={match.history} /*addUser={this.addUser}*/ />}/>
-            <Route path="/" render={
-              ()=>
-            <Home 
+            history={match.history} 
+            user_list = {this.state.user_list}
+            /*addUser={this.addUser}*/ />}/>
+            <Route path="/home" render={
+              (match)=>
+            <Home
+              history = {match.history}
               users_list={this.state.users}
               servers_list={this.state.servers}
               addNewServer={this.addNewServer}
@@ -153,6 +154,12 @@ class App extends React.Component {
               onSearchChange={this.onChange}
             />}
             />
+            <Route path="/" render={(match) => <Login 
+            user_list = {this.state.user_list}
+            // users = {this.state.users}
+            error={this.state.error} 
+            socket={this.state.socket} 
+            history={match.history} /*addUser={this.addUser}*/ />}/>
           </Switch>
     )
   }

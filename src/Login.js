@@ -21,15 +21,20 @@ export class Login extends React.Component {
         const form = evt.target;
         const username = form.user_name.value;
         const password = form.user_password.value;
-        this.props.socket.emit('authenticate',username,password)
         let user_list = this.props.user_list
         console.log(user_list)
         const user = user_list.find( user => user.username === username && user.password === password )
         if(user){
+            this.props.socket.emit('authenticate',username,password)
             this.props.history.push ('/home')
         }else{
             this.setState({alert:true})
         }
+        form.user_name.value = '';
+        form.user_password.value = '';
+    }
+    onSignUp = () => {
+        this.props.history.push ('/signup')
     }
         // this.props.socket.on('authenticate:no',()=>{
             // return (
@@ -57,6 +62,7 @@ export class Login extends React.Component {
                     />
                     
                     <Button type="submit" bsStyle= "success" block>Login</Button>
+                    <Button type="submit" bsStyle= "success" block onClick={this.onSignUp}>Sign Up Now</Button>
                 </form>
             )
         }
@@ -66,6 +72,10 @@ export class Login extends React.Component {
                 <form onSubmit={this.onFormSubmit}>
                 <Alert bsStyle="danger">
                     <strong>{this.props.error}</strong> .. check if you put the username and password correctly
+                    <p>
+                        Or you can <strong>sign up now here </strong>
+                        <Button type="submit" bsStyle= "success" block onClick={this.onSignUp}>Sign Up Now</Button>
+                    </p>
                 </Alert>
                 <FieldGroup
                   name="user_name"
