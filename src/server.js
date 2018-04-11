@@ -21,6 +21,9 @@ server
     if (context.url) {
       res.redirect(context.url);
     } else {
+      const host = req.headers.host.split(':')[0]
+      const css = assets.client.css ? assets.client.css.replace(/localhost:(\d+)/,host+':$1') : null
+      const js = assets.client.js.replace(/localhost:(\d+)/,host+':$1')
       res.status(200).send(
         `<!doctype html>
     <html lang="">
@@ -30,12 +33,12 @@ server
         <title>Welcome to Razzle</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        ${assets.client.css
-          ? `<link rel="stylesheet" href="${assets.client.css}">`
+        ${ css
+          ? `<link rel="stylesheet" href="${css}">`
           : ''}
         ${process.env.NODE_ENV === 'production'
-          ? `<script src="${assets.client.js}" defer></script>`
-          : `<script src="${assets.client.js}" defer crossorigin></script>`}
+          ? `<script src="${js}" defer></script>`
+          : `<script src="${js}" defer crossorigin></script>`}
     </head>
     <body>
         <div id="root">${markup}</div>

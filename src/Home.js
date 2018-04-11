@@ -42,6 +42,7 @@ class Home extends React.Component {
     )
   }
   renderRooms() {
+    // console.log(this.props.rooms_list)
     return (
       this.props.rooms_list.map((props) =>
         <Room roomname={props.roomname} removeRoom={() => this.props.removeRoom(props)} key={props.roomname} {...props} />

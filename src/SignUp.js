@@ -137,7 +137,7 @@ export class SignUp extends React.Component {
     </FormGroup>
 
 
-        <Button type="submit" bsStyle= "success" vertical block>Sign Up</Button>
+        <Button type="submit" bsStyle="success" block>Sign Up</Button>
       </form>
     </div>
     )

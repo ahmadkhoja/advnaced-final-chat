@@ -56,7 +56,7 @@ export class Login extends React.Component {
                     required
                     />
                     
-                    <Button type="submit" bsStyle= "success" vertical block>Login</Button>
+                    <Button type="submit" bsStyle= "success" block>Login</Button>
                 </form>
             )
         }
