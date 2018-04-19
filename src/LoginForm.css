@@ -4,12 +4,23 @@ body{
 .LoginForm{
     width: 50%;
     position: relative;
-    top: 100px;;
+    top: 100px;
     left: 30%;
     background-color: #44B0C4;
     padding: 20px;
     padding-top: 60px;
     border-radius: 20px;
+}
+@media only screen and (max-width: 407px){
+    .LoginForm {
+        width: 100%;
+        background-color: #44B0C4;
+        margin: 0 auto;
+        border-radius: 20px;
+        position: static;
+        padding-top: 10px;
+        margin-top: 40%;
+    }
 }
 .btn-block+.btn-block {
     margin-top: 15px;
