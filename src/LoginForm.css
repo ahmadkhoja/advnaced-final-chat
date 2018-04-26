@@ -6,7 +6,7 @@ body{
     width: 50%;
     position: relative;
     top: 100px;
-    left: 30%;
+    left: 25%;    
     background-color: #464b5e;
     padding: 20px;
     padding-top: 60px;
@@ -38,7 +38,7 @@ body{
     
     background-color: #333745;
     border-color: #8357c5;
-flex-grow: 1;
+    flex-grow: 1;
 }
 .btn-success:active{ 
     background-color: #333745;

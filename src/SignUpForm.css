@@ -1,21 +1,21 @@
 body{
-    background-color: #FFC654;
+    background-color: #15171f;
 }
 .SignUpForm{
+    color:#dce1f5;
     width: 50%;
     position: relative;
-    top: 100px;;
-    left: 30%;
-    background-color: #44B0C4;
+    top: 100px;
+    left: 25%;    
+    background-color: #464b5e;
     padding: 20px;
     padding-top: 60px;
     border-radius: 20px;
 }
-
 @media only screen and (max-width: 407px){
     .SignUpForm {
         width: 100%;
-        background-color: #44B0C4;
+        background-color: #464b5e;
         margin: 0 auto;
         border-radius: 20px;
         position: static;
@@ -23,3 +23,42 @@ body{
         margin-top: 40%;
     }
 }
+.btn-block+.btn-block {
+    margin-top: 15px;
+    
+}
+.btn-success {
+    color: #dce1f5;    
+    background-color: #8357c5;
+    border-color: #8357c5;
+    font-weight: bold;
+}
+
+.btn-success:hover{
+    
+    background-color: #333745;
+    border-color: #8357c5;
+    flex-grow: 1;
+}
+.btn-success:active{ 
+    background-color: #333745;
+    border-color: #8357c5;
+}
+.btn-success:focus{ 
+    background-color: #333745;
+    border-color: #8357c5;
+}
+.btn-success:focus:active{ 
+    background-color: #8357c5;
+    border-color: #333745;
+}
+
+input.form-control{ 
+background: #333745;
+border: none;
+color: #dce1f5;
+border-bottom: .3rem solid darken(#333745, 10%);
+flex-grow: 1;
+}
+
+
