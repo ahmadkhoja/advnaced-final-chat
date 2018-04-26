@@ -26,7 +26,18 @@ body {
   border: 1px solid white;
   text-align: center;
 }
+/* .servers{
+}
+.rooms{
+}
+.mainChat{
+}
+*/
 
+.teams{
+  border: 1px solid white;
+  background-color: #44B0C4;
+}
 /* .chatServersWrapper{
   display: grid;
   grid-column: 1;
@@ -39,8 +50,7 @@ body {
   display: inline-block;
   text-align: center;
   height: 58px auto;
-  /* background-color: #FFC654; */
-  background-color: #464b4e;  
+  background-color: #FFC654;
   overflow: auto;
 }
 .rooms{
@@ -50,18 +60,8 @@ body {
   display: inline-block;
   text-align: center;
   height: 58px auto;
-  /* background-color: #44B0C4; */
-  background-color: #464b4e;  
+  background-color: #44B0C4;
   overflow: auto;
-}
-.chatRoom {
-  /* background-color: white; */
-  height: 90%;
-  overflow: auto;
-  background-color: #c1c1c1;  
-}
-.teams {
-  background-color: #f3f3f3;
 }
 .ServerSection {
   margin-top: 10px;
@@ -114,7 +114,6 @@ body {
 }
 
 .roomNameButton{
-  background-color: #333745;
   text-align: left;
   width: 100%;
   height: 50px;
@@ -130,9 +129,8 @@ body {
   top: 10px;
   width: 20%;
 }
-.navbar-default {
-  /* background-color: #464b4e; */
-  background-color: #464b5e;  
+.navbar-default{
+  background-color: #4B90C9;
 }
 .navbar-default .navbar-nav>li>a {
   color: white;
@@ -142,13 +140,17 @@ body {
   transition-duration: 0.8s;
   color: white;
 }
-
-.singleMessage {
+.chatRoom{
+  background-color: #FFD554;
+  height: 90%;
+  overflow: auto;
+}
+.singleMessage{
   width: 98%;
+  background-color: #4B90C9;
   float: left;
   margin: 10px;
   border-radius: 20px;
-  color: black;
 }
 .messageImage{
   float: left;
@@ -162,7 +164,7 @@ body {
   height: auto;
   text-align: left;
   padding: 10px 10px;
-  /* color: white; */
+   color: white; 
 }
 .mainChatWrapper{
   height: 100%;
@@ -207,7 +209,9 @@ body {
 .navbar {
   margin-bottom: 0px;
 }
-
+button.serverNameButton.btn.btn-info:hover {
+  background-color: rgb(228, 56, 26);
+}
 /* .teamWrapper{
   height: 100px;
 } */
@@ -395,56 +399,32 @@ button.btn.btn-primary.batata{
 .searchApp{
   display: inline-block;
 }
-.btn-info{
-  background-color: #8357c5;
-  border-color: #8357c5;  
-}
-.btn-info.focus, .btn-info:focus {
-  color: #fff;
-  background-color: #333745;
-}
 
-button.btn.btn-info:active {
-  background-color: #333745;
-}
-button.btn.btn-info:focus:active {
-  background-color: #333745;
-}
-button.btn.btn-info:hover {
-  background-color: #333745;
-
-}
-button.serverNameButton.btn.btn-info:hover {
-  background-color: #333745;
-}
-.h3, h3 {
-  font-size: 24px;
-  color: white;
-}
 
 /* 
 changes now 
 
-.btn-info.focus, .btn-info:focus {
-    color: #fff;
-    background-color: #31b0d5;
-    border-color: #1b6d85;
-    background-color: #333745;
-  }
+.chatRoom {
+    background-color: white;
+    height: 90%;
+    overflow: auto;
+}
 
-  button.roomNameButton.btn.btn-info:active {
-    background-color: #333745;
-  }
-  button.roomNameButton.btn.btn-info:focus:active {
-    background-color: #333745;
-  }
-  button.roomNameButton.btn.btn-info:hover {
-    background-color: #333745;
-  
-  }
-  .h3, h3 {
-    font-size: 24px;
-    color: white;
+.singleMessage {
+    width: 98%;
+    background-color: #8357c5;
+    float: left;
+    margin: 10px;
+    border-radius: 20px;
+    color: black;
+}
+.navbar-default {
+    background-color: #464b4e;
+}
+.teams {
+    border: 1px solid white;
+    background-color: #8357c5;
+    background-color: #f3f3f3;
   }
 
 */
