@@ -3,7 +3,7 @@ import { Navbar, FormGroup, Button, ButtonGroup } from 'react-bootstrap';
 import LeftNav from './SearchBar/LeftNav'
 
 
-const Menu = ({searchValue,onSearchChange,logout }) => {
+const MainMenu = ({searchValue,onSearchChange,logout }) => {
   return (
     <Navbar>
     <Navbar.Header>
@@ -32,4 +32,4 @@ const Menu = ({searchValue,onSearchChange,logout }) => {
   )
 }
 
-export default Menu
+export default MainMenu
