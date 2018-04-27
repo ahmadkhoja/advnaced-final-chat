@@ -8,21 +8,8 @@ import Room from './Components/Rooms/Room';
 import SingleMessage from './Components/Messages/SingleMessage'
 import TeamOptions from './Components/Teams/TeamOptions'
 import TeamMember from './Components/Teams/TeamMember'
-import { Sidebar, Menu} from 'semantic-ui-react'
+import LeftToRightSidebar from './Components/LeftToRightSidebar'
 
-class SidebarLeftOverlay extends React.Component {
-
-  render() {
-    const visible = this.props.visible
-    return (
-      <div>
-            <Sidebar as={Menu} animation='overlay' width='thin' visible={visible} icon='labeled' vertical inverted className="rooms-sidebar">
-              {this.props.children}
-            </Sidebar>
-      </div>
-    )
-  }
-}
 class Home extends React.Component {
 
   constructor(props) {
@@ -126,7 +113,7 @@ class Home extends React.Component {
           </div>
           {/* ****************Sidebar Start******************* */}
 
-          <SidebarLeftOverlay visible={this.state.visible} show={this.state.show}>
+          <LeftToRightSidebar visible={this.state.visible} show={this.state.show}>
           <div>
 
             <h3>
@@ -137,7 +124,7 @@ class Home extends React.Component {
             </div>
 
           </div>
-          </SidebarLeftOverlay>
+          </LeftToRightSidebar>
 
           {/* ****************Sidebar Ends******************* */}
 
