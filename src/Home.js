@@ -2,22 +2,51 @@ import React from 'react';
 import './Home.css';
 import CreateServerModal from './Components/Servers/CreateServerModal'
 import Server from './Components/Servers/Server';
-import Menu from './Components/Menu';
+import MainMenu from './Components/MainMenu';
 import CreateRoomModal from './Components/Rooms/CreateRoomModal'
 import Room from './Components/Rooms/Room';
 import SingleMessage from './Components/Messages/SingleMessage'
 import TeamOptions from './Components/Teams/TeamOptions'
 import TeamMember from './Components/Teams/TeamMember'
+import { Sidebar, Menu} from 'semantic-ui-react'
 
+class SidebarLeftOverlay extends React.Component {
 
+  render() {
+    const visible = this.props.visible
+    return (
+      <div>
+            <Sidebar as={Menu} animation='overlay' width='thin' visible={visible} icon='labeled' vertical inverted className="rooms-sidebar">
+              {this.props.children}
+            </Sidebar>
+      </div>
+    )
+  }
+}
 class Home extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = { 
       messageText: '',
+      visible: false,
+      show: false,
+      wrapperclass: 'wrapper'
     }
   }
+  toggleVisibility = () =>{
+    this.setState({ visible: !this.state.visible })
+    if (this.state.wrapperclass === 'wrapper')
+      this.setState({wrapperclass: 'wrapperclick'})
+    else
+      this.setState({wrapperclass: 'wrapper'})
+  } 
+  handleClick() {
+    this.setState({
+      show: !this.state.show
+    });
+  }
+
   logout = () => {
     this.props.history.push('/')
   }
@@ -45,7 +74,6 @@ class Home extends React.Component {
     )
   }
   renderRooms() {
-    // console.log(this.props.rooms_list)
     return (
       this.props.rooms_list.map((props) =>
         <Room roomname={props.roomname} removeRoom={() => this.props.removeRoom(props)} key={props.roomname} {...props} />
@@ -62,7 +90,7 @@ class Home extends React.Component {
   renderServers() {
     return (
       this.props.servers_list.map((props) =>
-        <Server servername={props.servername} removeServer={() => this.props.removeServer(props)} key={props.servername} {...props} image={'/images/' + props.image + '.jpg'} />
+        <Server servername={props.servername} removeServer={() => this.props.removeServer(props)} key={props.servername} {...props} image={'/images/' + props.image + '.jpg'} toggleVisibility={this.toggleVisibility}/>
       )
     )
   }
@@ -87,21 +115,21 @@ class Home extends React.Component {
 
     return (
       <div>
-        <Menu search={this.props.search} logout={this.logout} onSearchChange={this.props.onSearchChange}/>
-        <div className="wrapper">
+        <MainMenu search={this.props.search} logout={this.logout} onSearchChange={this.props.onSearchChange}/>
+        <div className={this.state.wrapperclass}>
           <div className="servers">
-            <h3>Servers </h3>
-            <hr />
+            {/* <h3>Servers </h3> */}
             <CreateServerModal addNewServer={this.props.addNewServer} />
             <div className="serverSectionContainer">
               {server_list}
             </div>
           </div>
-          <div className="rooms">
+          {/* ****************Sidebar Start******************* */}
+
+          <SidebarLeftOverlay visible={this.state.visible} show={this.state.show}>
+          <div>
 
             <h3>
-              Rooms
-                      <hr />
               <CreateRoomModal addNewRoom={this.props.addNewRoom} />
             </h3>
             <div className="roomSectionContainer">
@@ -109,6 +137,9 @@ class Home extends React.Component {
             </div>
 
           </div>
+          </SidebarLeftOverlay>
+
+          {/* ****************Sidebar Ends******************* */}
 
           <div className="block mainChat">
             <div className="mainChatWrapper">

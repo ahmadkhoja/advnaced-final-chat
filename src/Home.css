@@ -18,10 +18,15 @@ body {
 }
 .wrapper {
   display: grid;
+  grid-template-columns: 10% 0% 70% 20%;
+  grid-template-rows: repeat(1, 602px);  
+}
+.wrapperclick {
+  display: grid;
   grid-template-columns: 10% 13% 57% 20%;
   grid-template-rows: repeat(1, 602px);  
-  
 }
+
 .block{
   border: 1px solid white;
   text-align: center;
@@ -396,8 +401,9 @@ button.btn.btn-primary.batata{
   display: inline-block;
 }
 .btn-info{
-  background-color: #8357c5;
-  border-color: #8357c5;  
+  background-color: #333745;
+  /* border-color: #8357c5;   */
+  border:2px #8357c5 solid;
 }
 .btn-info.focus, .btn-info:focus {
   color: #fff;
@@ -448,3 +454,11 @@ changes now
   }
 
 */
+
+.rooms-sidebar{
+  position: relative !important;
+}
+.ui.inverted.vertical.labeled.icon.ui.overlay.left.thin.visible.sidebar.rooms-sidebar.menu{
+  width: 100%;
+  background: #464b4e;
+}
