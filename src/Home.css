@@ -19,12 +19,12 @@ body {
 .wrapper {
   display: grid;
   grid-template-columns: 10% 0% 70% 20%;
-  grid-template-rows: repeat(1, 602px);  
+  grid-template-rows: repeat(1, 605px);  
 }
 .wrapperclick {
   display: grid;
   grid-template-columns: 10% 13% 57% 20%;
-  grid-template-rows: repeat(1, 602px);  
+  grid-template-rows: repeat(1, 605px);  
 }
 
 .block{
@@ -323,25 +323,32 @@ button.btn.btn-primary.batata{
   float: left;
   border-radius: 40%;
 }
-
+/* ********************start of @ media************************** */
 @media only screen and (max-width: 840px) {
     .wrapper{
       display: grid;
-      /* grid-template-columns: 12% 13% 57% 20%; */
-      /* grid-template-rows: repeat(1, 601px); */
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      grid-template-rows: 1fr 2fr 3fr;
+      grid-template-areas: 
+      "servers servers servers servers"
+      "mainChat mainChat mainChat mainChat"
+      "teams teams teams teams" 
+    }
+    .wrapperclick {
+      display: grid;
       grid-template-columns: 1fr 1fr 1fr 1fr;
       grid-template-rows: 1fr 2fr 3fr;
       grid-template-areas: 
       "servers servers servers servers"
       "rooms mainChat mainChat mainChat"
-      "teams teams teams teams" 
+      "teams teams teams teams"   
     }
     .servers {
       grid-column: 1; 
       display: inline-block; 
       text-align: center; 
       height: 100px auto;
-      background-color: #FFC654;
+      background-color: #464b4e;  
       width: 100%;
       grid-area: servers;
     }
@@ -353,14 +360,14 @@ button.btn.btn-primary.batata{
       
     }
     .chatRoom{
-      background-color: #FFD554;
+      background-color: #c1c1c1;  
       height: 345px;
       overflow: auto;
     }
     .teams{
       margin-top: 5px;
       grid-area: teams;
-      overflow: auto;;
+      overflow: auto;
     } 
     .ServerSection {
       margin-top: 10px;
@@ -397,6 +404,8 @@ button.btn.btn-primary.batata{
       position: relative;
     }
 }
+
+/* ********************end of @ media************************** */
 .searchApp{
   display: inline-block;
 }
