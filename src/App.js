@@ -11,9 +11,19 @@ import io from 'socket.io-client';
 
 
 class App extends React.Component {
+  
   constructor(props){
     super(props)
+    const initialDate = new Date()
+    const day = initialDate.getDay()-1
+    const month = initialDate.getMonth()+1
+    const year = initialDate.getFullYear()
+    const fullDate = []
+    fullDate.push(day,month,year)
+    let date = fullDate.join('-')
+
     this.state = {
+      
       socket:null,
       servers: [
         {servername:'ai',image:'ai'},
@@ -30,11 +40,12 @@ class App extends React.Component {
       error:'',
       users :[],
       messages: [
-        {text:'hello',image:'ahmad'},
-        {text:'bonjour',image:'ahmad'},
-        {text:'me llamo ahmad',image:'ahmad'},
+        {username:'ahmad',text:'hello',image:'ahmad',date:'20-10-2017'},
+        {username:'ahmad',text:'bonjour',image:'ahmad',date:'20-10-2017'},
+        {username:'ahmad',text:'me llamo ahmad',image:'ahmad',date:'20-10-2017'},
       ],
       search:'',
+      date: date
     }
   }
 
@@ -44,8 +55,8 @@ class App extends React.Component {
     const socket = io();
     this.setState({socket})
     
-    socket.on('message:broadcast',(id,text,image) => {
-      const message = {id, text,image, me:false}
+    socket.on('message:broadcast',(id,text,image,username,date) => {
+      const message = {id, text,image,username,date, me:false}
       if(id === this.state.user.id){
         message.me = true
       }
@@ -83,8 +94,8 @@ class App extends React.Component {
     const regex = new RegExp(search,'i');
      return this.state.messages.map(
       (message) => {
-        const { text } = message
-        const key = text;
+        const { username,text,date } = message
+        const key = [username,text,date].join(' ');
         message.key = key;
         message.id = key;
         return message
@@ -92,9 +103,21 @@ class App extends React.Component {
     ).filter(message => regex.test(message.key) )
     
   }
+  dateNow = () => {
+    const initialDate = new Date()
+    const day = initialDate.getDay()-1
+    const month = initialDate.getMonth()+1
+    const year = initialDate.getFullYear()
+    const fullDate = []
+    fullDate.push(day,month,year)
+    let date = fullDate.join('-')
+    this.setState({date})
+    // console.log(this.state.date,date)
+  }
 
-  addMessage = (message,image) => {
-    this.state.socket.emit('message',message,'ahmad')
+  addMessage = (message) => {
+  this.dateNow()
+  this.state.socket.emit('message',message,'ahmad',this.state.user.username,this.state.date)
   }
   addNewServer = (servername,image) => {
     const new_server = {servername,image};

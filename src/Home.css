@@ -318,6 +318,12 @@ button.btn.btn-primary.batata{
   width: 100%;
   /* left: 50px; */
 }
+.teamMember:hover {
+  /* cursor: pointer; */
+  color: black;
+  background-color: rgba(114, 118, 125,0.1);
+  height: 40px;
+}
 .memberUsername {
   width: 80%;
   background-color: #FFD554;

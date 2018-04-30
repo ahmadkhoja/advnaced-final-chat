@@ -87,16 +87,16 @@ export default function(server){
         });
         
 
-        socket.on('message', (text,image) => {
+        socket.on('message', (text,image,username,date) => {
             if(!user){ return; }
             languages.forEach( lg => {
                 if( lg === user.language ){
-                    io.to(lg).emit('message:broadcast',user.id,text,image)  
+                    io.to(lg).emit('message:broadcast',user.id,text,image,username,date)  
                         
                 }else{
                     translate(text, { from:user.language, to:lg })
                         .then( ({text}) => 
-                            io.to(lg).emit('message:broadcast',user.id,text,image)
+                            io.to(lg).emit('message:broadcast',user.id,text,image,username,date)
                         )
                         .catch( err => console.error(err))
                 }

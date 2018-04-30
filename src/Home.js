@@ -18,10 +18,11 @@ class Home extends React.Component {
       messageText: '',
       visible: false,
       show: false,
-      wrapperclass: 'wrapper'
+      wrapperclass: 'wrapper',
     }
   }
-  toggleVisibility = () =>{
+  
+  toggleVisibility = () => {
     this.setState({ visible: !this.state.visible })
     if (this.state.wrapperclass === 'wrapper')
       this.setState({wrapperclass: 'wrapperclick'})
@@ -45,6 +46,7 @@ class Home extends React.Component {
 
   onMessageSubmit = (evt) => {
     evt.preventDefault();
+    // this.dateNow()
     const form = evt.target;
     const message = form.message_text.value;
     if(message === ''){
@@ -53,10 +55,11 @@ class Home extends React.Component {
     this.props.addMessage(message)
     form.message_text.value = "";
   }
+  
   renderMessages() {
     return (
       this.props.messages.map((props, index) =>
-        <SingleMessage username={this.props.user.username} user_id={this.props.user_id} body={props.text} key={index} {...props} image={'/images/' + props.image + '.jpg'}/>
+        <SingleMessage  username={this.props.username} date={this.props.date} user_id={this.props.user_id} body={props.text} key={index} {...props} image={'/images/' + props.image + '.jpg'}/>
       )
     )
   }
