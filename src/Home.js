@@ -56,7 +56,7 @@ class Home extends React.Component {
   renderMessages() {
     return (
       this.props.messages.map((props, index) =>
-        <SingleMessage user_id={this.props.user_id} body={props.text} key={index} {...props} image={'/images/' + props.image + '.jpg'}/>
+        <SingleMessage username={this.props.user.username} user_id={this.props.user_id} body={props.text} key={index} {...props} image={'/images/' + props.image + '.jpg'}/>
       )
     )
   }

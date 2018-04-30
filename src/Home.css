@@ -161,6 +161,19 @@ body {
   max-width: 9%;
   max-height: 50px;
 }
+.messageContainer {
+  width: 91%;
+  float: left;
+  padding-left: 10px;
+  padding-top: 6px;
+}
+.messageUsername{
+  float: left;
+}
+.messageDate {
+  float: left;
+  margin-left: 10px;
+}
 .bodyText{
   float: left;
   width: 90%;
