@@ -15,13 +15,20 @@ class App extends React.Component {
   constructor(props){
     super(props)
     const initialDate = new Date()
-    const day = initialDate.getDay()-1
+    const day = initialDate.getUTCDay()
     const month = initialDate.getMonth()+1
     const year = initialDate.getFullYear()
-    const fullDate = []
-    fullDate.push(day,month,year)
-    let date = fullDate.join('-')
-
+    let hours = initialDate.getHours();
+    const minutes = initialDate.getMinutes()
+    let date = ''
+    if (hours < 10){
+            date = '0' + hours + ":" + minutes + " AM " + month + "/" + day + "/" + year;
+    }else if(hours < 12){
+            date = hours + ":" + minutes + " AM " + month + "/" + day + "/" + year;
+    }else {
+            date = hours + ":" + minutes + " PM " + month + "/" + day + "/" + year;
+    }
+    
     this.state = {
       
       socket:null,
@@ -105,12 +112,31 @@ class App extends React.Component {
   }
   dateNow = () => {
     const initialDate = new Date()
-    const day = initialDate.getDay()-1
+    const day = initialDate.getUTCDay()
     const month = initialDate.getMonth()+1
     const year = initialDate.getFullYear()
+    
+    let hours = initialDate.getHours();
+    const minutes = initialDate.getMinutes()
+        
     const fullDate = []
     fullDate.push(day,month,year)
-    let date = fullDate.join('-')
+    let date = ''
+    // if(hours === 0){
+    //   hours = 12
+    // }
+    if (hours < 12){
+      if(hours < 10){
+           date = '0' + hours + ":" + minutes + " AM           " + month + "/" + day + "/" + year;
+           this.setState({date});
+           return;
+      }
+           date = hours + ":" + minutes + " AM " + month + "/" + day + "/" + year;
+      }
+      else {
+           date = hours + ":" + minutes + " PM " + month + "/" + day + "/" + year;
+      }
+    
     this.setState({date})
     // console.log(this.state.date,date)
   }
