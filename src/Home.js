@@ -27,7 +27,7 @@ class Home extends React.Component {
   }
   componentDidMount = () => {
     this.props.socket.on('image:name',(imagename) => {
-      this.props.addMessage({message:this.state.tmp_message.message},imagename)
+        this.props.addMessage({message:this.state.tmp_message.message},imagename)
     })
   }
   toggleVisibility = () => {
@@ -67,7 +67,7 @@ class Home extends React.Component {
     }
     
     const single_message = {message,imagename}
-    if(message != '' && imagename == null){
+    if(message !== '' && imagename === null){
       this.props.addMessage({message},imagename)
     }else {
       this.setState({tmp_message: single_message});      
