@@ -23,7 +23,7 @@ export class Login extends React.Component {
         const password = form.user_password.value;
         this.props.socket.emit('authenticate',username,password)
         let user_list = this.props.user_list
-        console.log(user_list)
+        // console.log(user_list)
         const user = user_list.find( user => user.username === username && user.password === password )
         if(user){
             this.props.history.push ('/home')
