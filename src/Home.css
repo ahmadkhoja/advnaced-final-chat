@@ -490,3 +490,22 @@ changes now
   width: 100%;
   background: #464b4e;
 }
+.inputContainer{
+  position: relative;
+}
+.message-image{
+  position: absolute;
+  width: 40px;
+  left: 0;
+  top: 0;
+  /* bottom: 0*/
+}
+.bodyImage{
+  width: 400px;
+  height: 201px;
+}
+/* .bodyImage:active{
+  width: 100%;
+  height: 500px;
+  transition: 2s;
+} */
