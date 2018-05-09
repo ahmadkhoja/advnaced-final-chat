@@ -9,9 +9,10 @@ import SingleMessage from './Components/Messages/SingleMessage'
 import TeamOptions from './Components/Teams/TeamOptions'
 import TeamMember from './Components/Teams/TeamMember'
 import LeftToRightSidebar from './Components/LeftToRightSidebar'
-
+// import UploadedImages from './Components/UploadedImages'
+// import fetch from 'node-fetch';
 class Home extends React.Component {
-
+  // socket.emit('image:name',fileInfo.name)
   constructor(props) {
     super(props)
     this.state = { 
@@ -19,9 +20,17 @@ class Home extends React.Component {
       visible: false,
       show: false,
       wrapperclass: 'wrapper',
+      tmp_message: {
+        message: '',
+        imagename: ''
+      }
     }
   }
-  
+  componentDidMount = () => {
+    this.props.socket.on('image:name',(imagename) => {
+      this.props.addMessage({message:this.state.tmp_message.message},imagename)
+    })
+  }
   toggleVisibility = () => {
     this.setState({ visible: !this.state.visible })
     if (this.state.wrapperclass === 'wrapper')
@@ -43,23 +52,44 @@ class Home extends React.Component {
     this.setState({ messageText: evt.target.value })
     evt.target = ''
   }
-
+  // onFormSubmit = (evt)=>{
+  //   evt.preventDefault()
+  //   const form = evt.target
+  //   const photoField = form.photo
+  //   const files = photoField.files[0].name
+  //   console.log(files)
+  //   // this.props.uploader.upload(files,{data:{username:'batata'}});
+  // }
   onMessageSubmit = (evt) => {
+    // const photoField = form.photo
     evt.preventDefault();
-    // this.dateNow()
     const form = evt.target;
     const message = form.message_text.value;
-    if(message === ''){
+    const image = form.photo.files
+    let imagename = null
+    
+    if(image.length >0){
+       imagename = image[0].name
+    }
+    if(message === '' && image.length === 0){
       return;
     }
-    this.props.addMessage(message)
-    form.message_text.value = "";
+    
+    const single_message = {message,imagename}
+    if(message != '' && imagename == null){
+      this.props.addMessage({message},imagename)
+    }else {
+      this.setState({tmp_message: single_message});      
+    }
+    this.props.uploader.upload( image /*,{data:{username:'batata'}}*/ );
+      form.message_text.value = "";
   }
   
   renderMessages() {
     return (
       this.props.messages.map((props, index) =>
-        <SingleMessage  username={this.props.username} date={this.props.date} user_id={this.props.user_id} body={props.text} key={index} {...props} image={'/images/' + props.image + '.jpg'}/>
+        <SingleMessage  username={this.props.username} date={this.props.date} user_id={this.props.user_id} body={props.text} key={index} {...props} image={'/images/' + props.image + '.jpg'}
+        imagename={props.imagename}/>
       )
     )
   }
@@ -138,11 +168,29 @@ class Home extends React.Component {
               </section>
 
               <section className="inputField">
+                {/* send message */}
                 <form method="post" onSubmit={this.onMessageSubmit} className="inputForm">
-                  <input type="text" name="message_text" value={this.props.messageText} onChange={this.onTextChange} className="type" placeholder="Write Something..." />
-                  {/* <input type="file" name="message_image" value={this.state.messageImage} onChange={this.onImageChange} className="upload" placeholder="Write Something..."/> */}
+                
+
+
+                <div className="inputContainer">
+                  <input type="text" name="message_text" class="type" placeholder="Write Something..."  />
+                  <input type="file" id="photo" name="photo" className="message-image" />
+                </div>
+                  {/* <input type="text" name="message_text" value={this.props.messageText} onChange={this.onTextChange} className="type" placeholder="Write Something..." />
+                  <input type="file" id="photo" name="photo"/> */}
                   <button className="send">Send</button>
                 </form>
+                {/* ------------------------------------------------ */}
+                {/* <form onSubmit={this.onFormSubmit} >
+                <div className="section">Note: Only image files are allowed.</div>
+                <div className="inner-wrap">
+                  <label><input type="file" id="photo" name="photo"/></label>
+                  <div className="button-section">
+                    <input type="submit" name="Upload" value="Upload Photo"/>
+                  </div>
+                </div>
+                </form>   */}
               </section>
             </div>
           </div>

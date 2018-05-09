@@ -6,7 +6,7 @@ import Signup from './SignUp';
 import Login from './Login';
 import './App.css';
 import io from 'socket.io-client';
-
+import SocketIOFileClient from 'socket.io-file-client';
 
 
 
@@ -47,23 +47,42 @@ class App extends React.Component {
       error:'',
       users :[],
       messages: [
-        {username:'ahmad',text:'hello',image:'ahmad',date:'20-10-2017'},
-        {username:'ahmad',text:'bonjour',image:'ahmad',date:'20-10-2017'},
-        {username:'ahmad',text:'me llamo ahmad',image:'ahmad',date:'20-10-2017'},
+        {username:'ahmad',text:'hello',image:'ahmad',date:'20-10-2017',imagename:''},
+        {username:'ahmad',text:'bonjour',image:'ahmad',date:'20-10-2017',imagename:''},
+        {username:'ahmad',text:'me llamo ahmad',image:'ahmad',date:'20-10-2017',imagename:''},
       ],
       search:'',
-      date: date
+      date: date,
+      // uploader:null
     }
   }
 
   
 
   componentDidMount = () => {
-    const socket = io();
+    const socket = io();//if it wasn't razzle you should do io('http://localhost:3000(or other port)')
+    const uploader = new SocketIOFileClient(socket);
+    uploader.on('start', (fileInfo) => {
+      console.log('Start uploading', fileInfo);
+    });
+    uploader.on('stream', (fileInfo) => {
+      console.log('Streaming... sent ' + fileInfo.sent + ' bytes.');
+    });
+    uploader.on('complete', (fileInfo) => {
+      console.log('Upload Complete', fileInfo);
+    });
+    uploader.on('error', (err) => {
+      console.log('Error!', err);
+    });
+    uploader.on('abort', (fileInfo) => {
+      console.log('Aborted: ', fileInfo);
+    })
+
+    this.setState({uploader})
     this.setState({socket})
     
-    socket.on('message:broadcast',(id,text,image,username,date) => {
-      const message = {id, text,image,username,date, me:false}
+    socket.on('message:broadcast',(id,text,image,username,date,imagename) => {
+      const message = {id, text,image,username,date,imagename, me:false}
       if(id === this.state.user.id){
         message.me = true
       }
@@ -141,9 +160,9 @@ class App extends React.Component {
     // console.log(this.state.date,date)
   }
 
-  addMessage = (message) => {
+  addMessage = ({message},imagename) => {
   this.dateNow()
-  this.state.socket.emit('message',message,'ahmad',this.state.user.username,this.state.date)
+  this.state.socket.emit('message',message,'ahmad',this.state.user.username,this.state.date,imagename)
   }
   addNewServer = (servername,image) => {
     const new_server = {servername,image};
@@ -201,6 +220,8 @@ class App extends React.Component {
               messages={messages}
               user={this.state.user}
               onSearchChange={this.onChange}
+              uploader={this.state.uploader}
+              socket={this.state.socket}
             />}
             />
             <Route path="/" render={(match) => <Login 
