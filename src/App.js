@@ -53,7 +53,6 @@ class App extends React.Component {
       ],
       search:'',
       date: date,
-      // uploader:null
     }
   }
 
@@ -157,7 +156,6 @@ class App extends React.Component {
       }
     
     this.setState({date})
-    // console.log(this.state.date,date)
   }
 
   addMessage = ({message},imagename) => {
@@ -226,10 +224,9 @@ class App extends React.Component {
             />
             <Route path="/" render={(match) => <Login 
             user_list = {this.state.user_list}
-            // users = {this.state.users}
             error={this.state.error} 
             socket={this.state.socket} 
-            history={match.history} /*addUser={this.addUser}*/ />}/>
+            history={match.history} />}/>
           </Switch>
     )
   }
