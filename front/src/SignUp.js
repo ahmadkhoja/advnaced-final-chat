@@ -21,8 +21,20 @@ export class SignUp extends React.Component {
         const form = evt.target;
         const username = form.user_name.value;
         const password = form.user_password.value;
-        const userlang = this.state.member_lang
-        this.props.socket.emit('signup',username ,password,userlang)
+        const language = this.state.member_lang
+        const image = form.photo.files
+        const imageExists = !!image.length // undefined | File(filename, data, )44
+        const data = { username, password, language }        
+        if(imageExists && image){
+            // console.log('upload',image,data,this.state.uploader.upload)
+              this.props.uploader.upload(image,{data:data})
+          }else{
+            // setTimeout(() => {
+                this.props.socket.emit('signup',username ,password,language)        
+            //   this.state.socket.emit('message',data)
+            // }, 1000); 
+          }
+        // this.props.socket.emit('signup',username ,password,userlang)
         let user_list = this.props.user_list
         const user = user_list.find( user => user.username === username )
         if(user){
@@ -140,8 +152,9 @@ export class SignUp extends React.Component {
                   <option value="xh">Xhosa</option>
               </FormControl>
           </FormGroup>
-      
-      
+          <input type="file" id="photo" name="photo" className="profile-image" />
+          <br/>      
+          <br/>      
               <Button type="submit" bsStyle="success" block>Sign Up</Button>
         </form>      
         )
@@ -252,8 +265,9 @@ export class SignUp extends React.Component {
                   <option value="xh">Xhosa</option>
               </FormControl>
           </FormGroup>
-      
-      
+          <input type="file" id="photo" name="photo" className="profile-image" />
+          <br/>      
+          <br/>     
               <Button type="submit" bsStyle="success" block>Sign Up</Button>
             
             </form>

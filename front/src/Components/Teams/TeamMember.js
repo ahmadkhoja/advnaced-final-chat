@@ -1,9 +1,12 @@
 import React from 'react'
 
-const TeamMember = ({ username, lang }) => {
+const TeamMember = ({ username, lang, image }) => {
     return (
       <div className="teamMember">
-        {/* <p className="memberUsername">{username}({lang})</p> */}
+        {
+          image ? 
+          <img className="imageTeamSection" src={'//localhost:8888/uploadedImages/'+image} alt="batata" />: null
+        }
         {username}({lang})
       </div>
     )

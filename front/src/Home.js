@@ -96,7 +96,7 @@ class Home extends React.Component {
     }else{
       return (
         this.props.messages.map((message, index) =>
-          <SingleMessage  username={message.username} date={message.date} user_id={message.user_id} body={message.text} key={index} {...message} image={'images/' + message.username + '.jpg' }
+          <SingleMessage  username={message.username} date={message.date} user_id={message.user_id} body={message.text} key={index} {...message} image={ message.image }
           imagename={message.imagename}/>
         )
       )
@@ -197,7 +197,7 @@ class Home extends React.Component {
 
           <div className="block teams">
             <div className="memberTeamOptions">
-              <img className="imageTeamSection" src="images/ahmad.jpg" alt="batata" />
+              <img className="imageTeamSection" src={'//localhost:8888/uploadedImages/'+this.props.user.image} alt="batata" />
               <label className="usernameTeamSection">{this.props.user.username}({this.props.user.language})</label>
               <TeamOptions />
               <label className="roleTeamSection">Team Leader</label>

@@ -19,10 +19,10 @@ app.get('/',(req,res) => {
 })
     let ids = 4
     const users = [
-        {id:0, username:'ahmad',language:'en',password:'batata'},
-        {id:1, username:'jad',language:'fr',password:'batata'},
-        {id:2, username:'omar',language:'tr',password:'batata'},
-        {id:3, username:'ali',language:'es',password:'batata'},
+        {id:0, username:'ahmad',language:'en',password:'batata',image:'ahmad.jpg'},
+        {id:1, username:'jad',language:'fr',password:'batata'  ,image:'codi.jpg'},
+        {id:2, username:'omar',language:'tr',password:'batata' ,image:'ai.jpg'},
+        {id:3, username:'ali',language:'es',password:'batata'  ,image:'webdev.jpg'},
     ]
     
     const languages = []
@@ -33,6 +33,15 @@ app.get('/',(req,res) => {
         console.log('user connected')
         
         let user
+        const addUser = (_user) => {
+            user = _user
+            if(languages.indexOf(user.language)<0){
+                languages.push(user.language)
+            }
+            socket.join(user.language)
+            connected.push(user)
+            socket.emit('user:list',connected)
+        }
 
         const sendMessage = ({text,image,username,date,imagename}) => {
             if(!user){ return; }
@@ -74,9 +83,17 @@ app.get('/',(req,res) => {
           uploader.on('complete', (fileInfo) => {
             console.log('Upload Complete.');
             const messageData = { ...fileInfo.data, imagename:fileInfo.name }
+            const signUpData = { ...fileInfo.data, image:fileInfo.name }
+            // socket.emit('user:profile_image',fileInfo.name)
+            console.log(signUpData)
             setTimeout(() => {
                 sendMessage(messageData)
-            },500) 
+            },500)
+            // console.log(signUpData)
+            const { username, password, language, image } = signUpData
+            const user = { username, password, language, image }
+            socket.emit('signup:ok',user)
+            addUser(signUpData)
             // console.log('file info ----->',messageData)
           });
           uploader.on('error', (err) => {
@@ -88,17 +105,6 @@ app.get('/',(req,res) => {
 
         socket.emit('user:list',connected)
         socket.emit('users',users)
-
-        const addUser = (_user) => {
-            user = _user
-            if(languages.indexOf(user.language)<0){
-                languages.push(user.language)
-            }
-            socket.join(user.language)
-            connected.push(user)
-            socket.emit('user:list',connected)
-        }
-
         socket.on('signup', ( username, password, language ) =>{
             const user = { username, password, language, id:ids++ }
             users.push(user)

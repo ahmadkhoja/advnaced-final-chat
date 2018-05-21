@@ -4,7 +4,11 @@ const SingleMessage = ({ image, username, body, date, imagename }) => {
 
   return (
       <div className="singleMessage">
-        <img src={image} alt="images/avatar.jpg" className="messageImage" />
+        {
+          image ? 
+          <img className="profileImage" src={'//localhost:8888/uploadedImages/'+image} alt="batata"/> :
+          <img className="profileImage" src={'//localhost:3000/images/avatar.jpg'} alt="batata"/>
+        }
         <div className="messageContainer">
           <p className="messageUsername"> {username}</p>
           <p className="messageDate">{date}</p>

@@ -31,6 +31,7 @@ class App extends React.Component {
     this.state = {
       
       socket:null,
+      uploader:null,
       servers: [
         {servername:'ai',image:'ai'},
         {servername:'codi',image:'codi'},
@@ -45,15 +46,12 @@ class App extends React.Component {
       user_list:[],
       error:'',
       users :[],
-      messages: [
-        {username:'ahmad',text:'hello',image:'ahmad',date:'20-10-2017',imagename:''},
-        {username:'ahmad',text:'bonjour',image:'ahmad',date:'20-10-2017',imagename:''},
-        {username:'ahmad',text:'me llamo ahmad',image:'ahmad',date:'20-10-2017',imagename:''},
-      ],
+      messages: [],
       status:'',
       search:'',
       date: date,
-      imagename:null
+      imagename:null,
+      image:''
     }
   }
 
@@ -89,7 +87,9 @@ class App extends React.Component {
       const messages = [...this.state.messages, message]
       this.setState({messages,status:'success'})
     })
-    
+    socket.on('user:profile_image',(image) => {
+      this.setState({image})
+    })
     socket.on('signup:ok',(user)=>{
       this.setState({user})
     })
@@ -160,7 +160,7 @@ class App extends React.Component {
   addMessage = ({message},image) => {
     this.setState({status:'loading'})
     const date = this.dateNow()
-    const data = { text:message, image:'ahmad', username:this.state.user.username, date }
+    const data = { text:message, image:this.state.user.image, username:this.state.user.username, date }
     if(image){
       console.log('upload',image,data,this.state.uploader.upload)
         this.state.uploader.upload(image,{data:data})
@@ -202,15 +202,21 @@ class App extends React.Component {
   }  
   render(){
     const messages = this.filterMessages()
+    console.log(this.state.user)
     return(
           <Switch>
             
             {/* <Route path="/" render={(match) => <Login socket={this.state.socket} history={match.history}  />}/> */}
-            <Route path="/signup" render={(match) => <Signup 
+            <Route path="/signup" render={
+              (match) => 
+            <Signup 
             socket={this.state.socket} 
             history={match.history} 
-            user_list = {this.state.user_list}
-            /*addUser={this.addUser}*/ />}/>
+            user_list = {this.state.users}
+            uploader={this.state.uploader}
+            image={this.state.image}
+             />}
+            />
             <Route path="/home" render={
               (match)=>
             <Home

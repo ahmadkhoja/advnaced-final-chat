@@ -234,13 +234,15 @@ body {
   position: relative;
   height: 20%;
 }
-.imageTeamSection{
+.imageTeamSection {
   float: left;
   border-radius: 50%;
   max-width: 25%;
   max-height: 50px;
   position: relative;
   left: 4%;
+  width: 30%;
+  height: 70%;
 }
 .usernameTeamSection {
   float: left;
@@ -323,7 +325,7 @@ button.btn.btn-primary.batata{
   /* cursor: pointer; */
   color: black;
   background-color: rgba(114, 118, 125,0.1);
-  height: 40px;
+  height: 10%;
 }
 .memberUsername {
   width: 80%;
@@ -508,6 +510,12 @@ changes now
 .bodyImage{
   width: 400px;
   height: 201px;
+}
+.profileImage{
+    width: 10%;
+    height: 76px;
+    float: left;
+    border-radius: 50%;    
 }
 /* .bodyImage:active{
   width: 100%;
