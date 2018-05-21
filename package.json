@@ -1,32 +1,20 @@
 {
-  "name": "my-razzle-app",
-  "version": "0.1.0",
-  "license": "MIT",
+  "name": "codi-final-project-chat2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "razzle start",
-    "build": "razzle build",
-    "test": "razzle test --env=jsdom",
-    "start:prod": "NODE_ENV=production node build/server.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "cd back && npm start",
+    "client": "cd front && npm start",
+    "back": "cd back && npm install",
+    "front": "cd front && npm install",
+    "start": "concurrently --kill-others-on-fail --names \" server client \" \"npm run server\" \"npm run client\" ",
+    "install": "concurrently --kill-others-on-fail --names \" front back \" \"npm run front\" \"npm run back\" "
   },
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.18.2",
-    "express": "4.16.3",
-    "google-translate-api": "^2.3.0",
-    "mongodb": "^3.0.5",
-    "razzle": "0.8.14",
-    "react": "16.3.0",
-    "react-bootstrap": "^0.32.1",
-    "react-dom": "16.3.0",
-    "react-image-file": "^0.3.0",
-    "react-image-upload": "0.0.1",
-    "react-router-dom": "4.2.2",
-    "react-stay-scrolled": "^2.1.1",
-    "scroll-into-view": "^1.9.3",
-    "scroll-into-view-if-needed": "^1.5.0",
-    "semantic-ui-react": "^0.79.1",
-    "socket.io": "^2.1.0",
-    "socket.io-client": "^2.1.0",
-    "socket.io-file": "^2.0.2",
-    "socket.io-file-client": "^2.0.2"
+    "concurrently": "^3.5.1"
   }
 }
