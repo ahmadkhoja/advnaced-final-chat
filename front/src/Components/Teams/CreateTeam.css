@@ -1,4 +1,4 @@
-.main{
+.user{
     text-align: center;
 }
 .image-container{
@@ -12,4 +12,12 @@
 }
 .user-name{
     text-transform: capitalize;
+}
+.user-selected{
+    text-align: center;
+    color: red;
+}
+.user-selected.col-md-4.col-xs-6.thumbnail.caption.user-name{
+    color: red;
+    content: 'added'
 }
