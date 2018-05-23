@@ -1,0 +1,107 @@
+import React from 'react'
+import MainMenu from '../MainMenu'
+import { Button,Grid,Row,Col,Thumbnail } from 'react-bootstrap'
+import './CreateTeam.css'
+
+const UserThumbnail = ({username,image,addUserToTeam}) => {
+    return(
+        <div className="main">       
+            <Col xs={6} md={4}>
+            <Thumbnail>
+            <p className="image-container"><img className="user-image" src={'//localhost:8888/uploadedImages/'+image} alt="batata" /></p>
+                <h3 className="user-name" style={{color:'black'}} >{username}</h3>
+                <p>
+                <Button bsStyle="primary" onClick={addUserToTeam}>Add</Button>
+                {/* {isAdded ? <Button bsStyle="primary" onClick={removeUserfromTeam}>Added</Button> :<Button bsStyle="primary" onClick={addUserToTeam}>Add</Button>} */}
+                {/* <Button bsStyle="primary">Add Friend</Button> */}
+                {/* <Button bsStyle="default">Button</Button> */}
+                </p>
+            </Thumbnail>
+            </Col>
+        </div>
+    )
+}
+const UserSelectedThumbnail = ({username,image,removeUserfromTeam}) => {
+    return(
+        <div className="main">       
+            <Col xs={6} md={4}>
+            <Thumbnail>
+            <p className="image-container"><img className="user-image" src={'//localhost:8888/uploadedImages/'+image} alt="batata" /></p>
+                <h3 className="user-name" style={{color:'black'}} >{username}</h3>
+                <p>
+                <Button bsStyle="primary" onClick={removeUserfromTeam}>Remove</Button>
+                </p>
+            </Thumbnail>
+            </Col>
+        </div>
+    )
+}
+
+class CreateTeam extends React.Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            teamUsers:[],
+            isAdded:false
+        }
+    }
+    addUserToTeam = (user) => {
+    let isAdded = this.state.isAdded
+    isAdded = true
+    this.setState({isAdded})
+    this.state.teamUsers.push(user)
+    console.log(this.state.teamUsers)
+    }
+    removeUserfromTeam = (user) => {
+    let isAdded = this.state.isAdded
+    isAdded = false
+    this.setState({isAdded})
+    const teamUsers = this.state.teamUsers.slice()
+    const index = teamUsers.indexOf(user)
+    console.log(index)
+    if(index >= 0){
+        teamUsers.splice(index,1)
+    }
+    this.setState({teamUsers})
+    console.log(this.state.teamUsers)
+    }
+    
+    renderAllUsers(){
+        return(
+            this.props.users_list.map((user) => 
+                <UserThumbnail username={user.username} image={user.image} key={user.id} addUserToTeam={()=>this.addUserToTeam(user)} />
+            )
+        )
+    }
+    renderAddedUsers(){
+        return(
+            this.props.users_list.map((user) => 
+                <UserSelectedThumbnail username={user.username} image={user.image} key={user.id} removeUserfromTeam={()=>this.removeUserfromTeam(user)} />
+            )
+        )
+    }
+    renderUsers(){
+        let isAdded = this.state.isAdded
+        console.log(isAdded)
+        if(!isAdded){
+            return this.renderAllUsers()
+        }else{
+            return this.renderAddedUsers()
+        }
+    }
+
+    render(){
+        const user_list = this.renderUsers()
+        return(
+            <div>
+                <Grid>
+                    <Row>
+                        {user_list}
+                    </Row>
+                </Grid>
+            </div>
+        )
+    }
+    
+}
+export default CreateTeam;
