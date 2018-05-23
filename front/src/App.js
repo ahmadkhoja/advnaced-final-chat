@@ -7,6 +7,7 @@ import Login from './Login';
 import './App.css';
 import io from 'socket.io-client';
 import SocketIOFileClient from 'socket.io-file-client';
+import CreateTeam from './Components/Teams/CreateTeam'
 // import fetch from 'node-fetch'
 
 class App extends React.Component {
@@ -207,14 +208,21 @@ class App extends React.Component {
           <Switch>
             
             {/* <Route path="/" render={(match) => <Login socket={this.state.socket} history={match.history}  />}/> */}
+            <Route path="/createteam" render={
+              (match) => 
+            <CreateTeam
+              users_list={this.state.user_list}
+            />}
+            />
+
             <Route path="/signup" render={
               (match) => 
             <Signup 
-            socket={this.state.socket} 
-            history={match.history} 
-            user_list = {this.state.users}
-            uploader={this.state.uploader}
-            image={this.state.image}
+              socket={this.state.socket} 
+              history={match.history} 
+              user_list = {this.state.users}
+              uploader={this.state.uploader}
+              image={this.state.image}
              />}
             />
             <Route path="/home" render={
@@ -239,10 +247,10 @@ class App extends React.Component {
             />}
             />
             <Route path="/" render={(match) => <Login 
-            user_list = {this.state.user_list}
-            error={this.state.error} 
-            socket={this.state.socket} 
-            history={match.history} />}/>
+              user_list = {this.state.user_list}
+              error={this.state.error} 
+              socket={this.state.socket} 
+              history={match.history} />}/>
           </Switch>
     )
   }
