@@ -88,7 +88,7 @@ app.get('/',(req,res) => {
             console.log(signUpData)
             setTimeout(() => {
                 sendMessage(messageData)
-            },500)
+            },1000)
             // console.log(signUpData)
             const { username, password, language, image } = signUpData
             const user = { username, password, language, image }
