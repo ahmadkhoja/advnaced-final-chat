@@ -13,17 +13,12 @@ const UserThumbnail = ({username,image,addUserToTeam,button_value,userClass,text
                 <h3 className="user-name" style={{color:'black'}} >{username}</h3>
                 <p>
                 {!isAdded[index] ? <Button bsStyle="primary" onClick={addUserToTeam}>Add</Button> : <Button bsStyle="primary" onClick={addUserToTeam}>Remove</Button>}
-                
-                {/* {isAdded ? <Button bsStyle="primary" onClick={removeUserfromTeam}>Added</Button> :<Button bsStyle="primary" onClick={addUserToTeam}>Add</Button>} */}
-                {/* <Button bsStyle="primary">Add Friend</Button> */}
-                {/* <Button bsStyle="default">Button</Button> */}
                 </p>
             </Thumbnail>
             </Col>
         </div>
     )
 }
-
 class CreateTeam extends React.Component {
     constructor(props){
         super(props)
@@ -34,7 +29,6 @@ class CreateTeam extends React.Component {
         }
     }
     toggleUsers = () => {
-        // this.setState({ visible: !this.state.visible })
         if (this.state.userClass === 'user')
             this.setState({userClass:'user-selected'})
         else{
