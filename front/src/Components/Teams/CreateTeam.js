@@ -1,5 +1,5 @@
 import React from 'react'
-import MainMenu from '../MainMenu'
+// import MainMenu from '../MainMenu'
 import { Button,Grid,Row,Col,Thumbnail } from 'react-bootstrap'
 import './CreateTeam.css'
 
@@ -42,7 +42,7 @@ class CreateTeam extends React.Component {
         }
       }
     addUserToTeam = (user) => {
-        if (this.state.isAdded.length == 0){ 
+        if (this.state.isAdded.length === 0){ 
             for (var i = 0; i < this.props.users_list.length; i++){
                 this.state.isAdded.push(false)
             }
