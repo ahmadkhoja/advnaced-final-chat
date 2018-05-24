@@ -1,7 +1,7 @@
 import React from "react";
 import { Navbar, FormGroup, Button, ButtonGroup } from 'react-bootstrap';
 import LeftNav from './SearchBar/LeftNav'
-
+// import FaCartPlus from 'react-icons/lib/fa/cart-plus'
 
 const MainMenu = ({searchValue,onSearchChange,logout }) => {
   return (
@@ -23,6 +23,7 @@ const MainMenu = ({searchValue,onSearchChange,logout }) => {
           <ButtonGroup >
           {/* <Button bsStyle = "primary">Profile</Button> */}
           {/* <Button bsStyle = "info">Setting</Button> */}
+          {/* <a href="/team_list"><FaCartPlus/>Build Team</a> */}
           <Button bsStyle = "danger" onClick={logout}>Logout</Button>
           </ButtonGroup>
         </FormGroup>

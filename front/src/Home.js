@@ -109,18 +109,23 @@ class Home extends React.Component {
       )
     )
   }
-  renderUsers() {
-    return (
-      this.props.users_list.map((props, index) =>
-        <TeamMember username={props.name} user_id={this.state.user_id} {...props} lang={props.language} key={props.username} />
-      )
-    )
-  }
+  // renderUsers() {
+  //   return (
+  //     this.props.users_list.map((props, index) =>
+  //       <TeamMember username={props.name} user_id={this.state.user_id} {...props} lang={props.language} key={props.username} />
+  //     )
+  //   )
+  // }
   renderServers() {
     return (
       this.props.servers_list.map((props) =>
         <Server servername={props.servername} removeServer={() => this.props.removeServer(props)} key={props.servername} {...props} image={'/images/' + props.image + '.jpg'} toggleVisibility={this.toggleVisibility}/>
       )
+    )
+  }
+  renderTeamUsers(){
+    return(
+      this.props.teamUsers.map((teamUser,index) => <TeamMember username={teamUser.name} {...teamUser} lang={teamUser.language} key={index} />)
     )
   }
 
@@ -137,7 +142,8 @@ class Home extends React.Component {
   }
 
   render() {
-    const user_list = this.renderUsers()
+    // const user_list = this.renderUsers()
+    const teamUsers = this.renderTeamUsers()
     const server_list = this.renderServers();
     const room_list = this.renderRooms()
     const messages_list = this.renderMessages()
@@ -206,7 +212,7 @@ class Home extends React.Component {
             <hr className="red" />
 
             <div className="teamMembers">
-              {user_list}
+              {teamUsers}
             </div>
 
           </div>

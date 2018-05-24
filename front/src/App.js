@@ -52,7 +52,8 @@ class App extends React.Component {
       search:'',
       date: date,
       imagename:null,
-      image:''
+      image:'',
+      teamUsers:[]
     }
   }
 
@@ -109,6 +110,12 @@ class App extends React.Component {
     socket.on('user:list', users => {
       this.setState({users})
     })
+    socket.on('team:created',(roomname,teamUsers) => {
+      const room = {roomname}
+      this.state.rooms.push(room)
+      this.setState({teamUsers})
+    })
+
   }
   
   onChange = (evt) => {
@@ -211,7 +218,11 @@ class App extends React.Component {
             <Route path="/createteam" render={
               (match) => 
             <CreateTeam
+              history = {match.history}            
               users_list={this.state.user_list}
+              user={this.state.user}
+              socket={this.state.socket}
+              teamUsers={this.state.teamUsers}
             />}
             />
 
@@ -244,6 +255,7 @@ class App extends React.Component {
               socket={this.state.socket}
               imagename={this.state.imagename}
               status={this.state.status}
+              teamUsers={this.state.teamUsers}
             />}
             />
             <Route path="/" render={(match) => <Login 

@@ -146,6 +146,9 @@ app.get('/',(req,res) => {
         
 
         socket.on('message', sendMessage )
+        socket.on('create:team',(teamname,teamUsers) => {
+            socket.emit('team:created',teamname,teamUsers)
+        })
     });
 
 

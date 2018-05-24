@@ -26,7 +26,7 @@ export class Login extends React.Component {
         // console.log(user_list)
         const user = user_list.find( user => user.username === username && user.password === password )
         if(user){
-            this.props.history.push ('/home')
+            this.props.history.push ('/createteam')
         }else{
             this.setState({alert:true})
         }

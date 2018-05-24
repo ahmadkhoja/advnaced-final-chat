@@ -1,6 +1,6 @@
 import React from 'react'
 import MainMenu from '../MainMenu'
-import { Button,Grid,Row,Col,Thumbnail } from 'react-bootstrap'
+import { Button,Grid,Row,Col,Thumbnail,FormGroup,FormControl  } from 'react-bootstrap'
 import './CreateTeam.css'
 
 
@@ -30,8 +30,13 @@ class CreateTeam extends React.Component {
         this.state = {
             teamUsers:[],
             isAdded:[],
-            userClass:'user'
+            userClass:'user',
+            teamName:''
         }
+    }
+    teamNameCahnge = (e) => {
+        const teamName = e.target.value
+        this.setState({teamName})
     }
     toggleUsers = () => {
         // this.setState({ visible: !this.state.visible })
@@ -42,7 +47,7 @@ class CreateTeam extends React.Component {
         }
       }
     addUserToTeam = (user) => {
-        if (this.state.isAdded.length == 0){ 
+        if (this.state.isAdded.length === 0){ 
             for (var i = 0; i < this.props.users_list.length; i++){
                 this.state.isAdded.push(false)
             }
@@ -71,6 +76,16 @@ class CreateTeam extends React.Component {
              console.log(this.state.teamUsers)
          }
     }
+    CreateTeam = () => {
+        // you have the user for auth
+        const user = this.props.user
+        if(user.username){
+            this.props.socket.emit('create:team',this.state.teamName,this.state.teamUsers)
+            this.props.history.push ('/home')
+        }else{
+            alert('Sorry..You are not logged in')
+        }
+    }
     renderUsers(){
         return(
             this.props.users_list.map((user,index) => 
@@ -81,13 +96,24 @@ class CreateTeam extends React.Component {
 
     render(){
         const user_list = this.renderUsers()
+        console.log(this.state.teamName)
         return(
             <div>
+                <MainMenu/>
                 <Grid>
                     <Row>
+                        <div className="Team-info">
+                            <h4>Step:1 Name your team:</h4>
+                            <FormGroup controlId="formInlineName">
+                                <FormControl type="text" name="team-name" onChange={this.teamNameCahnge} placeholder="Name Of Your Team" className="team-name" required/>
+                            </FormGroup>
+                        </div>
+                        <h4 className="choosing-team">Step:2 Choose your team:</h4>                        
                         {user_list}
                     </Row>
                 </Grid>
+                <p><Button onClick={this.CreateTeam} bsStyle="success" className="create-team">Create Team</Button></p>
+                
             </div>
         )
     }
