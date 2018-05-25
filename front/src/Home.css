@@ -592,9 +592,10 @@ input[type=file]::-webkit-file-upload-button {
  
 /* } */
 .alert-not-your-room {
-  padding: 20px;
+  padding: 15px;
   background-color: #f44336;
   color: white;
+  text-align: center;
 }
 
 .closebtn {
