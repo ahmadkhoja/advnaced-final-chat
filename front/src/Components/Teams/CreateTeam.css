@@ -46,7 +46,19 @@ h4{
     color: white;
 }
 .create-team{
-    width: 50%;
-    margin: 15px 0;
+    width: 25%;
+    /* margin: 15px 0; */
+    /* float: left; */
+}
 
+.buttons-section{
+    display: flex;
+    justify-content: center;
+    margin: 15px 0px auto;
+}
+.create-team.btn.btn-success:hover {    
+    background-color: #333745;
+    border-color: #8357c5;
+    -ms-flex-positive: 1;
+    flex-grow: 0;
 }

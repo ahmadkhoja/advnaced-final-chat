@@ -86,6 +86,14 @@ class CreateTeam extends React.Component {
             alert('Sorry..You are not logged in')
         }
     }
+    Skip = () => {
+        const user = this.props.user
+        if(user.username){
+            this.props.history.push('/home')
+        }else{
+            alert('Sorry..you are not logged in')
+        }
+    }
     renderUsers(){
         return(
             this.props.users_list.map((user,index) => 
@@ -112,7 +120,10 @@ class CreateTeam extends React.Component {
                         {user_list}
                     </Row>
                 </Grid>
-                <p><Button onClick={this.CreateTeam} bsStyle="success" className="create-team">Create Team</Button></p>
+                <p className="buttons-section">
+                    <Button onClick={this.CreateTeam} bsStyle="success" className="create-team">Create Team</Button>
+                    <Button className="create-team" onClick={this.Skip} bsStyle="primary">Skip</Button>
+                </p>
                 
             </div>
         )

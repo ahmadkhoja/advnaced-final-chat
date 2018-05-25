@@ -83,7 +83,7 @@ class Home extends React.Component {
      if(this.props.status === 'loading'){
       return (
         <div className="upload-loader">
-            {this.props.messages.map((message, index) =>
+            {this.props.currentTeam.messages.map((message, index) =>
               <SingleMessage  username={message.username} date={message.date} user_id={message.user_id} body={message.text} key={index} {...message} image={'images/' + message.username + '.jpg' }
               imagename={message.imagename}/>
            )
@@ -95,27 +95,27 @@ class Home extends React.Component {
         )
     }else{
       return (
-        this.props.messages.map((message, index) =>
+        this.props.currentTeam.messages.map((message, index) =>
           <SingleMessage  username={message.username} date={message.date} user_id={message.user_id} body={message.text} key={index} {...message} image={ message.image }
           imagename={message.imagename}/>
         )
       )
     }
   }
-  renderRooms() {
-    return (
-      this.props.rooms_list.map((props) =>
-        <Room roomname={props.roomname} removeRoom={() => this.props.removeRoom(props)} key={props.roomname} {...props} />
-      )
-    )
-  }
-  // renderUsers() {
+  // renderRooms() {
   //   return (
-  //     this.props.users_list.map((props, index) =>
-  //       <TeamMember username={props.name} user_id={this.state.user_id} {...props} lang={props.language} key={props.username} />
+  //     this.props.rooms_list.map((props) =>
+  //       <Room roomname={props.roomname} removeRoom={() => this.props.removeRoom(props)} key={props.roomname} {...props} />
   //     )
   //   )
   // }
+  renderRooms() {
+    return (
+      this.props.teams.map((props,index) =>
+        <Room teamname={props.teamname} changeIndex={ () => this.props.changeIndex(index)} removeRoom={() => this.props.removeRoom(props)} key={index} {...props} />
+      )
+    )
+  }
   renderServers() {
     return (
       this.props.servers_list.map((props) =>
@@ -124,9 +124,23 @@ class Home extends React.Component {
     )
   }
   renderTeamUsers(){
+    // console.log('test')
+    // console.log('teams--->',this.props.teams)
+    // let teamUsers = []
+    // console.log('teamUsers',teamUsers)
+    // const team = this.props.teams.map.find( team => team === currentTeam)
+    
+    // const team = this.props.currentTeam
+    // const users = team.teamUsers
+    // console.log('team',team)
     return(
-      this.props.teamUsers.map((teamUser,index) => <TeamMember username={teamUser.name} {...teamUser} lang={teamUser.language} key={index} />)
+      this.props.currentTeam.teamUsers.map( 
+        (teamUser,index) => <TeamMember username={teamUser.username} {...teamUser} lang={teamUser.language} image={teamUser.image} key={index} />
+      )
     )
+    // return(
+    //   teamUsers.map((teamUser,index) => <TeamMember username={teamUser.username} {...teamUser} lang={teamUser.language} image={teamUser.image} key={index} />)
+    // )
   }
 
   goToBottom(){
@@ -147,7 +161,6 @@ class Home extends React.Component {
     const server_list = this.renderServers();
     const room_list = this.renderRooms()
     const messages_list = this.renderMessages()
-
     return (
       <div>
         <MainMenu search={this.props.search} logout={this.logout} onSearchChange={this.props.onSearchChange}/>

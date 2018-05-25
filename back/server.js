@@ -18,11 +18,40 @@ app.get('/',(req,res) => {
     res.send("Welcome to this new project")
 })
     let ids = 4
+    let team_ids = 2
     const users = [
-        {id:0, username:'ahmad',language:'en',password:'batata',image:'ahmad.jpg'},
-        {id:1, username:'jad',language:'fr',password:'batata'  ,image:'codi.jpg'},
-        {id:2, username:'omar',language:'tr',password:'batata' ,image:'ai.jpg'},
-        {id:3, username:'ali',language:'es',password:'batata'  ,image:'webdev.jpg'},
+        {id:0, username:'ahmad',language:'en',password:'batata',image:'ahmad.jpg' /*,team:[]*/},
+        {id:1, username:'jad',language:'fr',password:'batata'  ,image:'codi.jpg'  /*,team:[]*/},
+        {id:2, username:'omar',language:'tr',password:'batata' ,image:'ai.jpg'    /*,team:[]*/},
+        {id:3, username:'ali',language:'es',password:'batata'  ,image:'webdev.jpg'/*,team:[]*/}
+    ]
+    //id,text,image,username,date,imagename
+    const teams = [
+        {
+            id:0, 
+            teamname:'wind' ,
+            teamUsers:[
+                {id:0, username:'ahmad',language:'en',password:'batata',image:'ahmad.jpg' /*,team:[]*/},
+                {id:3, username:'ali',language:'es',password:'batata'  ,image:'webdev.jpg'/*,team:[]*/}        
+            ],
+            messages:[
+                {id:0, text:'Hello ali',username:'ahmad',language:'en',image:'ahmad.jpg',date:'13:17 PM 5/4/2018'},
+                {id:1, text:'Hola Ahmad',username:'ali',language:'es',image:'webdev.jpg',date:'15:17 PM 5/4/2018'},
+                {id:2, text:'How are you?',username:'ahmad',language:'en',image:'ahmad.jpg',date:'17:17 PM 5/4/2018'},
+            ] 
+        },
+        {
+            id:1,
+            teamname:'fire' ,
+            teamUsers:[
+            {id:1, username:'jad',language:'fr',password:'batata'  ,image:'codi.jpg'  /*,team:[]*/},
+            {id:2, username:'omar',language:'tr',password:'batata' ,image:'ai.jpg'    /*,team:[]*/},
+            ],
+            messages:[
+                {id:0, text:'Bonjour Omar',username:'jad',language:'fr',image:'codi.jpg',date:'13:17 PM 3/14/2017'},
+                {id:1, text:'Merhaba Jad',username:'omar',language:'tr',image:'ai.jpg',date:'15:17 PM 3/14/2017'},
+            ]
+        },
     ]
     
     const languages = []
@@ -144,10 +173,18 @@ app.get('/',(req,res) => {
             }
         });
         
-
+        
         socket.on('message', sendMessage )
+        
+        socket.emit('teams',teams)
         socket.on('create:team',(teamname,teamUsers) => {
-            socket.emit('team:created',teamname,teamUsers)
+            const team = {teamname,teamUsers,messages:[],team_ids:team_ids++}
+            console.log('team:',team)
+            teams.push(team)
+            socket.emit('teams',teams)
+            // console.log('teams--->',teams)
+            // const messages = []
+            // socket.emit('team:created',teamname,teamUsers,messages)
         })
     });
 
