@@ -69,8 +69,13 @@ class Home extends React.Component {
     if(message === '' && !imageExists){
       return;
     }
+    let user_name = this.props.user.username
+    if(user_name){
+      this.props.addMessage({message},imageExists && image)
+    }else{
+      return
+    }
     
-    this.props.addMessage({message},imageExists && image)
     form.message_text.value = '';
     this.functionThatResetsTheFileInput()
   }
