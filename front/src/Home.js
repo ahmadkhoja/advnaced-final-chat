@@ -158,23 +158,32 @@ class Home extends React.Component {
   render() {
     // const user_list = this.renderUsers()
     const teamUsers = this.renderTeamUsers()
-    const server_list = this.renderServers();
+    // const server_list = this.renderServers();
     const room_list = this.renderRooms()
     const messages_list = this.renderMessages()
     return (
       <div>
         <MainMenu search={this.props.search} logout={this.logout} onSearchChange={this.props.onSearchChange}/>
+        {
+        this.props.alert ? <div className="alert-not-your-room">
+          <span className="closebtn" onClick={this.props.closeAlert}>&times;</span> 
+          <strong>Danger!</strong> You are not member of this team
+        </div> : null
+        }
         <div className={this.state.wrapperclass}>
-          <div className="servers">
+          {/* <div className="servers">
             {/* <h3>Servers </h3> */}
-            <CreateServerModal addNewServer={this.props.addNewServer} />
+            {/* <CreateServerModal addNewServer={this.props.addNewServer} />
             <div className="serverSectionContainer">
               {server_list}
             </div>
+          </div> */}  
+                  {/* ****************Sidebar Start******************* */}
+          <div className="rooms">
+          <h3>Your Teams:</h3>
+            {room_list}
           </div>
-          {/* ****************Sidebar Start******************* */}
-
-          <LeftToRightSidebar visible={this.state.visible} show={this.state.show}>
+          {/* <LeftToRightSidebar visible={this.state.visible} show={this.state.show}>
           <div>
 
             <h3>
@@ -185,7 +194,7 @@ class Home extends React.Component {
             </div>
 
           </div>
-          </LeftToRightSidebar>
+          </LeftToRightSidebar> */}
 
           {/* ****************Sidebar Ends******************* */}
 
@@ -231,7 +240,7 @@ class Home extends React.Component {
           </div>
 
         </div>
-      </div>
+      // </div>
     );
   }
 }

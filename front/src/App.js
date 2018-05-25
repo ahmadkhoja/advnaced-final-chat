@@ -81,11 +81,10 @@ class App extends React.Component {
             ]
         },
     ],
-      index:0
+      index:0,
+      alert:false
     }
   }
-
-  
 
   componentDidMount = () => {
     const socket = io('http://localhost:8888');//if it wasn't razzle you should do io('http://localhost:3000(or other port)')
@@ -118,11 +117,12 @@ class App extends React.Component {
         message.me = true
         messages.push(message)
         copyState.teams[this.state.index].messages = messages
-        this.setState({copyState,status:'success'})
+        this.setState({copyState,alert:false})
       }else{
-        alert('you are not in this room')
-        this.setState({state:'success'})
+        // alert('you are not in this room')
+        this.setState({alert:true})
       }
+      this.setState({status:'success'})
     })
     socket.on('user:profile_image',(image) => {
       this.setState({image})
@@ -246,6 +246,9 @@ class App extends React.Component {
       this.setState({ rooms:selected });
   }  
   changeIndex = (index) => this.setState({index})
+  closeAlert = () => {
+    this.setState({alert:false})
+  }
 
   render(){
     const messages = this.filterMessages()
@@ -294,11 +297,11 @@ class App extends React.Component {
               socket={this.state.socket}
               imagename={this.state.imagename}
               status={this.state.status}
-              // teamUsers={this.state.teamUsers}
               teams={this.state.teams}
               changeIndex={this.changeIndex}
               currentTeam={this.state.teams[this.state.index]}
-              // currentTeam={this.state.teams[0]}
+              alert={this.state.alert}
+              closeAlert={this.closeAlert}
             />}
             />
             <Route path="/" render={(match) => <Login 
