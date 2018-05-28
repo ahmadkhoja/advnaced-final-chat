@@ -14,8 +14,6 @@ const UserThumbnail = ({username,image,addUserToTeam,button_value,userClass,text
                 </p>
                 <h3 className="user-name" style={{color:'black'}} >{username}</h3>
                 <p>
-
-                {!isAdded[index] ? <Button bsStyle="primary" onClick={addUserToTeam}>Add</Button> : <Button bsStyle="primary" onClick={addUserToTeam}>Remove</Button>}
                 {!isAdded[index] ? <Button bsStyle="primary" onClick={addUserToTeam}>{add}</Button> : <Button bsStyle="primary" onClick={addUserToTeam}>{remove}</Button>}
                 
                 {/* {isAdded ? <Button bsStyle="primary" onClick={removeUserfromTeam}>Added</Button> :<Button bsStyle="primary" onClick={addUserToTeam}>Add</Button>} */}
