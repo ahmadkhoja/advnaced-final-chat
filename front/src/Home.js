@@ -1,14 +1,14 @@
 import React from 'react';
 import './Home.css';
-import CreateServerModal from './Components/Servers/CreateServerModal'
-import Server from './Components/Servers/Server';
+// import CreateServerModal from './Components/Servers/CreateServerModal'
+// import Server from './Components/Servers/Server';
 import MainMenu from './Components/MainMenu';
-import CreateRoomModal from './Components/Rooms/CreateRoomModal'
-import Room from './Components/Rooms/Room';
+// import CreateRoomModal from './Components/Rooms/CreateRoomModal'
+import Team from './Components/Rooms/Room';
 import SingleMessage from './Components/Messages/SingleMessage'
 import TeamOptions from './Components/Teams/TeamOptions'
 import TeamMember from './Components/Teams/TeamMember'
-import LeftToRightSidebar from './Components/LeftToRightSidebar'
+// import LeftToRightSidebar from './Components/LeftToRightSidebar'
 
 class Home extends React.Component {
 
@@ -45,6 +45,7 @@ class Home extends React.Component {
   }
 
   logout = () => {
+    this.props.socket.emit('user:logout',this.props.user)
     this.props.history.push('/')
   }
 
@@ -65,7 +66,7 @@ class Home extends React.Component {
     const message = form.message_text.value;
     const image = form.photo.files
     const imageExists = !!image.length // undefined | File(filename, data, )
-
+    
     if(message === '' && !imageExists){
       return;
     }
@@ -99,35 +100,36 @@ class Home extends React.Component {
         </div>
         )
     }else{
-      return (
-        this.props.currentTeam.messages.map((message, index) =>
-          <SingleMessage  username={message.username} date={message.date} user_id={message.user_id} body={message.text} key={index} {...message} image={ message.image }
-          imagename={message.imagename}/>
+      if(this.props.currentTeam){
+        return (
+          this.props.currentTeam.messages.map((message, index) =>
+            <SingleMessage  username={message.username} date={message.date} user_id={message.user_id} body={message.text} key={index} {...message} image={ message.image }
+            imagename={message.imagename}/>
+          )
         )
-      )
+      }
     }
   }
-  // renderRooms() {
+  renderUserTeams(){
+    return(
+        this.props.user_teams.map((props,index) =>
+          // console.log(props.id)
+          <Team teamname={props.teamname} changeIndex={ () => this.props.changeIndex(props.team_id)} removeRoom={() => this.props.removeRoom(props)} key={index} {...props} />)
+      )
+  }
+  // renderTeams() {      
+  //     return(
+  //       this.props.teams.map((props,index) =>
+  //           <Team teamname={props.teamname} changeIndex={ () => this.props.changeIndex(index)} removeRoom={() => this.props.removeRoom(props)} key={index} {...props} />)
+  //         )
+  // }
+  // renderServers() {
   //   return (
-  //     this.props.rooms_list.map((props) =>
-  //       <Room roomname={props.roomname} removeRoom={() => this.props.removeRoom(props)} key={props.roomname} {...props} />
+  //     this.props.servers_list.map((props) =>
+  //       <Server servername={props.servername} removeServer={() => this.props.removeServer(props)} key={props.servername} {...props} image={'/images/' + props.image + '.jpg'} toggleVisibility={this.toggleVisibility}/>
   //     )
   //   )
   // }
-  renderRooms() {
-    return (
-      this.props.teams.map((props,index) =>
-        <Room teamname={props.teamname} changeIndex={ () => this.props.changeIndex(index)} removeRoom={() => this.props.removeRoom(props)} key={index} {...props} />
-      )
-    )
-  }
-  renderServers() {
-    return (
-      this.props.servers_list.map((props) =>
-        <Server servername={props.servername} removeServer={() => this.props.removeServer(props)} key={props.servername} {...props} image={'/images/' + props.image + '.jpg'} toggleVisibility={this.toggleVisibility}/>
-      )
-    )
-  }
   renderTeamUsers(){
     // console.log('test')
     // console.log('teams--->',this.props.teams)
@@ -138,11 +140,14 @@ class Home extends React.Component {
     // const team = this.props.currentTeam
     // const users = team.teamUsers
     // console.log('team',team)
-    return(
-      this.props.currentTeam.teamUsers.map( 
-        (teamUser,index) => <TeamMember username={teamUser.username} {...teamUser} lang={teamUser.language} image={teamUser.image} key={index} />
+    if(this.props.currentTeam){
+//      console.log('this.props.currentTeam.teamUsers-->',this.props.currentTeam.teamUsers)
+      return(
+        this.props.currentTeam.teamUsers.map( 
+          (teamUser,index) => <TeamMember username={teamUser.username} {...teamUser} lang={teamUser.language} image={teamUser.image} key={index} />
+        )
       )
-    )
+    }
     // return(
     //   teamUsers.map((teamUser,index) => <TeamMember username={teamUser.username} {...teamUser} lang={teamUser.language} image={teamUser.image} key={index} />)
     // )
@@ -164,11 +169,12 @@ class Home extends React.Component {
     // const user_list = this.renderUsers()
     const teamUsers = this.renderTeamUsers()
     // const server_list = this.renderServers();
-    const room_list = this.renderRooms()
+    // const teams = this.renderTeams()
     const messages_list = this.renderMessages()
+    const users_teams = this.renderUserTeams()
     return (
       <div>
-        <MainMenu search={this.props.search} logout={this.logout} onSearchChange={this.props.onSearchChange}/>
+        <MainMenu value={this.props.translated_page.search} logoutTitle={this.props.translated_page.logout} search={this.props.search} logout={this.logout} onSearchChange={this.props.onSearchChange}/>
         {
         this.props.alert ? <div className="alert-not-your-room">
           <span className="closebtn" onClick={this.props.closeAlert}>&times;</span> 
@@ -185,8 +191,10 @@ class Home extends React.Component {
           </div> */}  
                   {/* ****************Sidebar Start******************* */}
           <div className="rooms">
-          <h3>Your Teams:</h3>
-            {room_list}
+          {/* <h3>Your Teams:</h3> */}
+          <h3>{this.props.translated_page.team_title}:</h3>
+            {/* { users_teams } */}
+            { users_teams }
           </div>
           {/* <LeftToRightSidebar visible={this.state.visible} show={this.state.show}>
           <div>
@@ -220,7 +228,7 @@ class Home extends React.Component {
                   <input type="file" id="photo" name="photo" className="message-image" 
                   key={this.state.theInputKey || '' } />
                 </div>
-                  <button className="send">Send</button>
+                  <button className="send">{this.props.translated_page.send}</button>
                 </form>
                 {/* ------------------------------------------------ */}
                 
@@ -232,8 +240,12 @@ class Home extends React.Component {
             <div className="memberTeamOptions">
               <img className="imageTeamSection" src={'//localhost:8888/uploadedImages/'+this.props.user.image} alt="batata" />
               <label className="usernameTeamSection">{this.props.user.username}({this.props.user.language})</label>
-              <TeamOptions />
-              <label className="roleTeamSection">Team Leader</label>
+              <TeamOptions 
+              teamOptionsTitle={this.props.translated_page.team_options}
+              inviteMember={this.props.translated_page.invite_member}
+              createTeam={this.props.translated_page.create_team}
+              />
+              {/* <label className="roleTeamSection">Team Leader</label> */}
             </div>
 
             <hr className="red" />
@@ -245,7 +257,7 @@ class Home extends React.Component {
           </div>
 
         </div>
-      // </div>
+       </div>
     );
   }
 }

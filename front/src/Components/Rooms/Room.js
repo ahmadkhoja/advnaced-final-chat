@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button} from 'react-bootstrap';
 
-const Room = ({teamname,removeRoom,changeIndex}) => {
+const Team = ({teamname,removeRoom,changeIndex}) => {
     
 return(
 
@@ -18,4 +18,4 @@ return(
     )
 }
 
-export default Room;
+export default Team;

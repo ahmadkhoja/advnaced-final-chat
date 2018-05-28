@@ -7,6 +7,7 @@ const SocketIo = require('socket.io')
 const translate = require('google-translate-api')
 const SocketIOFile = require('socket.io-file')
 const io = SocketIo(server);
+const fs = require('fs')
 
 app.use('/uploadedImages',express.static('./uploadedImages'))
 app.use(function(req, res, next) {
@@ -19,41 +20,58 @@ app.get('/',(req,res) => {
 })
     let ids = 4
     let team_ids = 2
-    const users = [
+    let users = [
         {id:0, username:'ahmad',language:'en',password:'batata',image:'ahmad.jpg' /*,team:[]*/},
         {id:1, username:'jad',language:'fr',password:'batata'  ,image:'codi.jpg'  /*,team:[]*/},
         {id:2, username:'omar',language:'tr',password:'batata' ,image:'ai.jpg'    /*,team:[]*/},
         {id:3, username:'ali',language:'es',password:'batata'  ,image:'webdev.jpg'/*,team:[]*/}
     ]
     //id,text,image,username,date,imagename
-    const teams = [
+    let teams = [
         {
-            id:0, 
+            team_id:0, 
             teamname:'wind' ,
             teamUsers:[
                 {id:0, username:'ahmad',language:'en',password:'batata',image:'ahmad.jpg' /*,team:[]*/},
                 {id:3, username:'ali',language:'es',password:'batata'  ,image:'webdev.jpg'/*,team:[]*/}        
             ],
             messages:[
-                {id:0, text:'Hello ali',username:'ahmad',language:'en',image:'ahmad.jpg',date:'13:17 PM 5/4/2018'},
-                {id:1, text:'Hola Ahmad',username:'ali',language:'es',image:'webdev.jpg',date:'15:17 PM 5/4/2018'},
-                {id:2, text:'How are you?',username:'ahmad',language:'en',image:'ahmad.jpg',date:'17:17 PM 5/4/2018'},
+                {id:0, text:'Hello ali',username:'ahmad',language:'en',image:'ahmad.jpg',date:'13:17 PM 5/4/2018',team_id:0},
+                {id:1, text:'Hola Ahmad',username:'ali',language:'es',image:'webdev.jpg',date:'15:17 PM 5/4/2018',team_id:0},
+                {id:2, text:'How are you?',username:'ahmad',language:'en',image:'ahmad.jpg',date:'17:17 PM 5/4/2018',team_id:0},
             ] 
         },
         {
-            id:1,
+            team_id:1,
             teamname:'fire' ,
             teamUsers:[
             {id:1, username:'jad',language:'fr',password:'batata'  ,image:'codi.jpg'  /*,team:[]*/},
             {id:2, username:'omar',language:'tr',password:'batata' ,image:'ai.jpg'    /*,team:[]*/},
             ],
             messages:[
-                {id:0, text:'Bonjour Omar',username:'jad',language:'fr',image:'codi.jpg',date:'13:17 PM 3/14/2017'},
-                {id:1, text:'Merhaba Jad',username:'omar',language:'tr',image:'ai.jpg',date:'15:17 PM 3/14/2017'},
+                {id:0, text:'Bonjour Omar',username:'jad',language:'fr',image:'codi.jpg',date:'13:17 PM 3/14/2017',team_id:1},
+                {id:1, text:'Merhaba Jad',username:'omar',language:'tr',image:'ai.jpg',date:'15:17 PM 3/14/2017',team_id:1},
             ]
         },
     ]
-    
+ 
+// const save = () => {
+//     fs.writeFileSync('../data.json',JSON.stringify({ids, team_ids, users, teams},null,2))
+// }
+
+// const load = () => {
+//     const data_string = fs.readFileSync('../data.json',{encoding:'utf8'})
+//     const data = JSON.parse(data_string)
+//     teams = data.teams
+//     users = data.users
+//     ids = data.ids
+//     team_ids = data.team_ids
+// }
+
+// load()
+
+//setInterval(save,1000)
+
     const languages = []
     const connected = []
 
@@ -72,17 +90,17 @@ app.get('/',(req,res) => {
             socket.emit('user:list',connected)
         }
 
-        const sendMessage = ({text,image,username,date,imagename}) => {
+        const sendMessage = ({text,image,username,date,imagename,team_id}) => {
             if(!user){ return; }
             
             languages.forEach( lg => {
                 if( lg === user.language ){
-                    io.to(lg).emit('message:broadcast',user.id,text,image,username,date,imagename)  
+                    io.to(lg).emit('message:broadcast',user.id,text,image,username,date,imagename,team_id)  
                         
                 }else{
                     translate(text, { from:user.language, to:lg })
                         .then( ({text}) => 
-                            io.to(lg).emit('message:broadcast',user.id,text,image,username,date,imagename)
+                            io.to(lg).emit('message:broadcast',user.id,text,image,username,date,imagename,team_id)
                         )
                         .catch( err => console.error(err))
                 }
@@ -111,19 +129,19 @@ app.get('/',(req,res) => {
           });
           uploader.on('complete', (fileInfo) => {
             console.log('Upload Complete.');
-            const messageData = { ...fileInfo.data, imagename:fileInfo.name }
-            const signUpData = { ...fileInfo.data, image:fileInfo.name }
-            // socket.emit('user:profile_image',fileInfo.name)
-            console.log(signUpData)
-            setTimeout(() => {
-                sendMessage(messageData)
-            },1000)
-            // console.log(signUpData)
-            const { username, password, language, image } = signUpData
-            const user = { username, password, language, image }
-            socket.emit('signup:ok',user)
-            addUser(signUpData)
-            // console.log('file info ----->',messageData)
+            const operation = fileInfo.data.commandType
+            if(operation === 'message'){
+                const messageData = { ...fileInfo.data, imagename:fileInfo.name }
+                setTimeout(() => {
+                    sendMessage(messageData)
+                },1000)
+            }else if(operation === 'signup'){
+                const signUpData = { ...fileInfo.data, image:fileInfo.name }
+                const { username, password, language, image } = signUpData
+                const user = { username, password, language, image }
+                socket.emit('signup:ok',user)
+                addUser(signUpData)
+            }
           });
           uploader.on('error', (err) => {
             console.log('Error!', err);
@@ -178,7 +196,7 @@ app.get('/',(req,res) => {
         
         socket.emit('teams',teams)
         socket.on('create:team',(teamname,teamUsers) => {
-            const team = {teamname,teamUsers,messages:[],team_ids:team_ids++}
+            const team = {teamname,teamUsers,messages:[],team_id:team_ids++}
             console.log('team:',team)
             teams.push(team)
             socket.emit('teams',teams)
@@ -186,6 +204,37 @@ app.get('/',(req,res) => {
             // const messages = []
             // socket.emit('team:created',teamname,teamUsers,messages)
         })
+        socket.on('user:logout',(user) => {
+            const index = connected.indexOf(user)
+            connected.splice(index,1)
+            console.log(connected)
+        })
+        // team_title,team_options,create_team,invite_member,search,send,team_name,team_choose,add,remove,create_team_button,skip_button,logging_error,logout
+        socket.on('translated:page', titlesObject => {
+            // console.log(team_title)
+            if(!user){ return; }
+            languages.forEach( lg => {
+                if( lg === user.language ){
+                    const translated_page = {}
+                    const titlesArray = Object.keys(titlesObject)
+                    // ['team_title','team_options','create_team','invite_member','search','send','team_name', 'team_choose','add','remove','create_team_button','skip_button','logging_error','logout']
+                    
+                    const promises = titlesArray.map( key => {
+                        const originalText = titlesObject[key]
+                        return translate(originalText, { to:user.language })
+                        .then( ({text}) => 
+                            translated_page[key] = text || originalText                        
+                        )
+                        .catch((err)=>{throw err})
+                    })
+                    
+                    Promise.all(promises)
+                        .then(()=>socket.emit('translated:page:success',translated_page)  )
+                        .catch((err)=>{ throw err })
+                }
+            })  
+        })
+        
     });
 
 

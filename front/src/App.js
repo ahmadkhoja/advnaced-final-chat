@@ -54,35 +54,26 @@ class App extends React.Component {
       image:'',
       // teamUsers:[],
       // teams:[],
-      teams: [
-        {
-            id:0, 
-            teamname:'wind' ,
-            teamUsers:[
-                {id:0, username:'ahmad',language:'en',password:'batata',image:'ahmad.jpg' /*,team:[]*/},
-                {id:3, username:'ali',language:'es',password:'batata'  ,image:'webdev.jpg'/*,team:[]*/}        
-            ],
-            messages:[
-                {id:0, text:'Hello ali',username:'ahmad',language:'en',image:'ahmad.jpg',date:'13:17 PM 5/4/2018'},
-                {id:1, text:'Hola Ahmad',username:'ali',language:'es',image:'webdev.jpg',date:'15:17 PM 5/4/2018'},
-                {id:2, text:'How are you?',username:'ahmad',language:'en',image:'ahmad.jpg',date:'17:17 PM 5/4/2018'},
-            ] 
-        },
-        {
-            id:1,
-            teamname:'fire' ,
-            teamUsers:[
-            {id:1, username:'jad',language:'fr',password:'batata'  ,image:'codi.jpg'  /*,team:[]*/},
-            {id:2, username:'omar',language:'tr',password:'batata' ,image:'ai.jpg'    /*,team:[]*/},
-            ],
-            messages:[
-                {id:0, text:'Bonjour Omar',username:'jad',language:'fr',image:'codi.jpg',date:'13:17 PM 3/14/2017'},
-                {id:1, text:'Merhaba Jad',username:'omar',language:'tr',image:'ai.jpg',date:'15:17 PM 3/14/2017'},
-            ]
-        },
-    ],
-      index:0,
-      alert:false
+      teams: [],
+      team_id_index:0,
+      alert:false,
+      team_title:'Your Teams',
+      translated_page:{
+        team_title:'Your Teams',
+        team_options:'Team Options',
+        create_team:'Create a Team',
+        invite_member:'Invite Member',
+        search:'Search',
+        send:'Send',
+        team_name:'Step:1 Name your team',
+        team_choose:'Step:2 Choose your team',
+        add:'add',
+        remove:'remove',
+        create_team_button:'Create a Team',
+        skip_button:'Skip',
+        logging_error:'Sorry..you are not logged in',
+        logout:'Logout'
+      }
     }
   }
 
@@ -108,15 +99,17 @@ class App extends React.Component {
     this.setState({uploader})
     this.setState({socket})
 
-    socket.on('message:broadcast',(id,text,image,username,date,imagename) => {
-      const message = {id, text,image,username,date,imagename, me:false}
-      const messages = this.state.teams[this.state.index].messages
+    socket.on('message:broadcast',(id,text,image,username,date,imagename,team_id) => {
+      const message = {id, text,image,username,date,imagename,team_id, me:false}
+      const messages = this.state.teams[this.state.team_id_index].messages
       const copyState = Object.assign({},this.state)
-      let user_name = this.state.teams[this.state.index].teamUsers.find(user => user.username === username)
-      if(user_name){
+      let user_name = this.state.teams[this.state.team_id_index].teamUsers.find(user => user.username === username)
+      let teamid = this.state.teams.find(team => team.team_id === team_id)
+//      console.log('team_id coming:',team_id,teamid)
+      if(user_name && teamid){
         message.me = true
         messages.push(message)
-        copyState.teams[this.state.index].messages = messages
+        copyState.teams[this.state.team_id_index].messages = messages
         this.setState({copyState,alert:false})
       }else{
         // alert('you are not in this room')
@@ -152,6 +145,11 @@ class App extends React.Component {
     // })
     socket.on('teams',(teams) => {
       this.setState({teams})
+      // console.log('teams socket on :',teams)
+    })
+    // socket.emit('translated:page',this.state.team_title)
+    socket.on('translated:page:success', translated_page => {
+      this.setState({translated_page})
     })
   }
   
@@ -204,10 +202,13 @@ class App extends React.Component {
 
   addMessage = ({message},image) => {
     this.setState({status:'loading'})
+    const team_id = this.state.teams[this.state.team_id_index].team_id
+    // user_teams.find(team=>team.team_id === this.state.team_id_index)
     const date = this.dateNow()
-    const data = { text:message, image:this.state.user.image, username:this.state.user.username, date }
+    const data = { text:message, image:this.state.user.image, username:this.state.user.username, date,team_id, commandType:'message'}
+    console.log(data)
     if(image){
-      console.log('upload',image,data,this.state.uploader.upload)
+      // console.log('upload',image,data,this.state.uploader.upload)
         this.state.uploader.upload(image,{data:data})
     }else{
       // setTimeout(() => {
@@ -236,23 +237,39 @@ class App extends React.Component {
       selected.splice(index, 1);
       this.setState({ servers:selected });
   }
-  removeRoom = (room) => {
-    const index = this.state.rooms.indexOf(room)
+  removeRoom = (team) => {
+    const index = this.state.teams.indexOf(team)
     if (index < 0) {
       return;
     }
-      const selected = this.state.rooms.slice();
+      const selected = this.state.teams.slice();
       selected.splice(index, 1);
-      this.setState({ rooms:selected });
+      console.log('selected',selected)
+      let copyState2 = Object.assign({},this.state)
+      copyState2.teams = selected 
+      this.setState(copyState2);
   }  
-  changeIndex = (index) => this.setState({index})
+  changeIndex = (team_id_index) => {
+//    console.log(team_id_index)
+    this.setState({team_id_index})
+  }
+
   closeAlert = () => {
     this.setState({alert:false})
   }
 
   render(){
     const messages = this.filterMessages()
-    console.log(this.state.teams[this.state.index])
+    // console.log('teams at team_id_index 0: ',this.state.teams[this.state.team_id_index])
+    const user_teams = []
+    this.state.teams.forEach( team => {
+      const userInTeam = team.teamUsers.find( user => user.username === this.state.user.username)
+      if(userInTeam){ user_teams.push(team) }
+      return;
+    })
+    let teamID = user_teams.find(team=>team.team_id === this.state.team_id_index)
+    console.log('teamID',teamID)
+    console.log('team_id_index',this.state.team_id_index)
     return(
           <Switch>
             
@@ -265,6 +282,7 @@ class App extends React.Component {
               user={this.state.user}
               socket={this.state.socket}
               teamUsers={this.state.teamUsers}
+              translated_page={this.state.translated_page}
             />}
             />
 
@@ -298,17 +316,22 @@ class App extends React.Component {
               imagename={this.state.imagename}
               status={this.state.status}
               teams={this.state.teams}
+              user_teams={user_teams}
               changeIndex={this.changeIndex}
-              currentTeam={this.state.teams[this.state.index]}
+              currentTeam={this.state.teams[this.state.team_id_index]}
               alert={this.state.alert}
               closeAlert={this.closeAlert}
+              translated_page={this.state.translated_page}
             />}
             />
             <Route path="/" render={(match) => <Login 
               user_list = {this.state.user_list}
               error={this.state.error} 
               socket={this.state.socket} 
-              history={match.history} />}/>
+              history={match.history} 
+              translated_page={this.state.translated_page}
+              />}
+              />
           </Switch>
     )
   }
