@@ -1,0 +1,164 @@
+{
+  "ids": 6,
+  "team_ids": 3,
+  "users": [
+    {
+      "id": 0,
+      "username": "ahmad",
+      "language": "en",
+      "password": "batata",
+      "image": "ahmad.jpg"
+    },
+    {
+      "id": 1,
+      "username": "jad",
+      "language": "fr",
+      "password": "batata",
+      "image": "codi.jpg"
+    },
+    {
+      "id": 2,
+      "username": "omar",
+      "language": "tr",
+      "password": "batata",
+      "image": "ai.jpg"
+    },
+    {
+      "id": 3,
+      "username": "ali",
+      "language": "es",
+      "password": "batata",
+      "image": "webdev.jpg"
+    },
+    {
+      "username": "yassin",
+      "password": "batata",
+      "language": "ar",
+      "image": "charityhands.jpeg"
+    },
+    {
+      "username": "naruto",
+      "password": "batata",
+      "language": "ja",
+      "id": 4
+    },
+    {
+      "username": "yassin",
+      "password": "batata",
+      "language": "ar",
+      "image": "charityhands.jpeg",
+      "id": 5
+    }
+  ],
+  "teams": [
+    {
+      "team_id": 0,
+      "teamname": "wind",
+      "teamUsers": [
+        {
+          "id": 0,
+          "username": "ahmad",
+          "language": "en",
+          "password": "batata",
+          "image": "ahmad.jpg"
+        },
+        {
+          "id": 3,
+          "username": "ali",
+          "language": "es",
+          "password": "batata",
+          "image": "webdev.jpg"
+        }
+      ],
+      "messages": [
+        {
+          "id": 0,
+          "text": "Hello ali",
+          "username": "ahmad",
+          "language": "en",
+          "image": "ahmad.jpg",
+          "date": "13:17 PM 5/4/2018",
+          "team_id": 0
+        },
+        {
+          "id": 1,
+          "text": "Hola Ahmad",
+          "username": "ali",
+          "language": "es",
+          "image": "webdev.jpg",
+          "date": "15:17 PM 5/4/2018",
+          "team_id": 0
+        },
+        {
+          "id": 2,
+          "text": "How are you?",
+          "username": "ahmad",
+          "language": "en",
+          "image": "ahmad.jpg",
+          "date": "17:17 PM 5/4/2018",
+          "team_id": 0
+        }
+      ]
+    },
+    {
+      "team_id": 1,
+      "teamname": "fire",
+      "teamUsers": [
+        {
+          "id": 1,
+          "username": "jad",
+          "language": "fr",
+          "password": "batata",
+          "image": "codi.jpg"
+        },
+        {
+          "id": 2,
+          "username": "omar",
+          "language": "tr",
+          "password": "batata",
+          "image": "ai.jpg"
+        }
+      ],
+      "messages": [
+        {
+          "id": 0,
+          "text": "Bonjour Omar",
+          "username": "jad",
+          "language": "fr",
+          "image": "codi.jpg",
+          "date": "13:17 PM 3/14/2017",
+          "team_id": 1
+        },
+        {
+          "id": 1,
+          "text": "Merhaba Jad",
+          "username": "omar",
+          "language": "tr",
+          "image": "ai.jpg",
+          "date": "15:17 PM 3/14/2017",
+          "team_id": 1
+        }
+      ]
+    },
+    {
+      "teamname": "friends",
+      "teamUsers": [
+        {
+          "id": 0,
+          "username": "ahmad",
+          "language": "en",
+          "password": "batata",
+          "image": "ahmad.jpg"
+        },
+        {
+          "username": "yassin",
+          "password": "batata",
+          "language": "ar",
+          "image": "charityhands.jpeg"
+        }
+      ],
+      "messages": [],
+      "team_id": 2
+    }
+  ]
+}

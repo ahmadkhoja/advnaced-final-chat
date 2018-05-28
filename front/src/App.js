@@ -293,6 +293,7 @@ class App extends React.Component {
               history={match.history} 
               user_list = {this.state.users}
               uploader={this.state.uploader}
+              translated_page={this.state.translated_page}
               image={this.state.image}
              />}
             />

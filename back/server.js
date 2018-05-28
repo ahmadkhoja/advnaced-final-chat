@@ -24,7 +24,7 @@ app.get('/',(req,res) => {
         {id:0, username:'ahmad',language:'en',password:'batata',image:'ahmad.jpg' /*,team:[]*/},
         {id:1, username:'jad',language:'fr',password:'batata'  ,image:'codi.jpg'  /*,team:[]*/},
         {id:2, username:'omar',language:'tr',password:'batata' ,image:'ai.jpg'    /*,team:[]*/},
-        {id:3, username:'ali',language:'es',password:'batata'  ,image:'webdev.jpg'/*,team:[]*/}
+        {id:3, username:'ali',language:'es',password:'batata'  ,image:'webdev.jpg'/*,team:[]*/},
     ]
     //id,text,image,username,date,imagename
     let teams = [
@@ -55,22 +55,22 @@ app.get('/',(req,res) => {
         },
     ]
  
-// const save = () => {
-//     fs.writeFileSync('../data.json',JSON.stringify({ids, team_ids, users, teams},null,2))
-// }
+const save = () => {
+    fs.writeFileSync('../data.json',JSON.stringify({ids, team_ids, users, teams},null,2))
+}
 
-// const load = () => {
-//     const data_string = fs.readFileSync('../data.json',{encoding:'utf8'})
-//     const data = JSON.parse(data_string)
-//     teams = data.teams
-//     users = data.users
-//     ids = data.ids
-//     team_ids = data.team_ids
-// }
+const load = () => {
+    const data_string = fs.readFileSync('../data.json',{encoding:'utf8'})
+    const data = JSON.parse(data_string)
+    teams = data.teams
+    users = data.users
+    ids = data.ids
+    team_ids = data.team_ids
+}
 
-// load()
+load()
 
-//setInterval(save,1000)
+setInterval(save,1000)
 
     const languages = []
     const connected = []
@@ -138,7 +138,8 @@ app.get('/',(req,res) => {
             }else if(operation === 'signup'){
                 const signUpData = { ...fileInfo.data, image:fileInfo.name }
                 const { username, password, language, image } = signUpData
-                const user = { username, password, language, image }
+                const user = { username, password, language, image, id:ids++ }
+                users.push(user)
                 socket.emit('signup:ok',user)
                 addUser(signUpData)
             }
