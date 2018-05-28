@@ -18,14 +18,15 @@ body {
 }
 .wrapper {
   display: grid;
-  grid-template-columns: 10% 0% 70% 20%;
+  /* grid-template-columns: 10% 0% 70% 20%; */
+  grid-template-columns: 20% 60% 20%;
   grid-template-rows: repeat(1, 605px);  
 }
-.wrapperclick {
+/* .wrapperclick {
   display: grid;
   grid-template-columns: 10% 13% 57% 20%;
   grid-template-rows: repeat(1, 605px);  
-}
+} */
 
 .block{
   border: 1px solid white;
@@ -37,21 +38,19 @@ body {
   grid-column: 1;
   height: 100%;
 } */
-.servers{
+/* .servers{
   border: 1px solid white;
   position: relative;
-  /* grid-column: 1; */
   display: inline-block;
   text-align: center;
   height: 58px auto;
-  /* background-color: #FFC654; */
   background-color: #464b4e;  
   overflow: auto;
-}
+} */
 .rooms{
   border: 1px solid white;
   position: relative;
-  grid-column: 2 / 3;
+  /* grid-column: 1 / 2; */
   display: inline-block;
   text-align: center;
   height: 58px auto;
@@ -125,6 +124,7 @@ body {
   width: 100%;
   height: 50px;
   position: relative;
+  text-transform: capitalize;
 }
 .roomName{
   width: 80%;
@@ -360,7 +360,7 @@ button.btn.btn-primary.batata{
       grid-template-columns: 1fr 1fr 1fr 1fr;
       grid-template-rows: 1fr 2fr 3fr;
       grid-template-areas: 
-      "servers servers servers servers"
+      /* "servers servers servers servers" */
       "mainChat mainChat mainChat mainChat"
       "teams teams teams teams" 
     }
@@ -369,11 +369,11 @@ button.btn.btn-primary.batata{
       grid-template-columns: 1fr 1fr 1fr 1fr;
       grid-template-rows: 1fr 2fr 3fr;
       grid-template-areas: 
-      "servers servers servers servers"
+      /* "servers servers servers servers" */
       "rooms mainChat mainChat mainChat"
       "teams teams teams teams"   
     }
-    .servers {
+    /* .servers {
       grid-column: 1; 
       display: inline-block; 
       text-align: center; 
@@ -381,7 +381,7 @@ button.btn.btn-primary.batata{
       background-color: #464b4e;  
       width: 100%;
       grid-area: servers;
-    }
+    } */
     .rooms{
       grid-area: rooms;
     }
@@ -591,3 +591,24 @@ input[type=file]::-webkit-file-upload-button {
    100% { transform: rotate(360deg); } */
  
 /* } */
+.alert-not-your-room {
+  padding: 15px;
+  background-color: #f44336;
+  color: white;
+  text-align: center;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}

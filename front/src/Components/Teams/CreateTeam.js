@@ -1,18 +1,26 @@
 import React from 'react'
 // import MainMenu from '../MainMenu'
-import { Button,Grid,Row,Col,Thumbnail } from 'react-bootstrap'
+import { Button,Grid,Row,Col,Thumbnail,FormGroup,FormControl  } from 'react-bootstrap'
 import './CreateTeam.css'
 
-
-const UserThumbnail = ({username,image,addUserToTeam,button_value,userClass,text,index,isAdded}) => {
+const UserThumbnail = ({username,image,addUserToTeam,button_value,userClass,text,index,isAdded,add,remove}) => {
     return(
         <div className={userClass}>       
             <Col xs={6} md={4}>
             <Thumbnail>
-            <p className="image-container"><img className="user-image" src={'//localhost:8888/uploadedImages/'+image} alt="batata" /></p>
+                <p className="image-container">{image ? <img className="user-image" src={'//localhost:8888/uploadedImages/'+image} alt="batata" />
+                :<img className="user-image" src={'/images/'+'avatar.jpg'} alt="batata" /> 
+                }
+                </p>
                 <h3 className="user-name" style={{color:'black'}} >{username}</h3>
                 <p>
+
                 {!isAdded[index] ? <Button bsStyle="primary" onClick={addUserToTeam}>Add</Button> : <Button bsStyle="primary" onClick={addUserToTeam}>Remove</Button>}
+                {!isAdded[index] ? <Button bsStyle="primary" onClick={addUserToTeam}>{add}</Button> : <Button bsStyle="primary" onClick={addUserToTeam}>{remove}</Button>}
+                
+                {/* {isAdded ? <Button bsStyle="primary" onClick={removeUserfromTeam}>Added</Button> :<Button bsStyle="primary" onClick={addUserToTeam}>Add</Button>} */}
+                {/* <Button bsStyle="primary">Add Friend</Button> */}
+                {/* <Button bsStyle="default">Button</Button> */}
                 </p>
             </Thumbnail>
             </Col>
@@ -25,8 +33,13 @@ class CreateTeam extends React.Component {
         this.state = {
             teamUsers:[],
             isAdded:[],
-            userClass:'user'
+            userClass:'user',
+            teamName:''
         }
+    }
+    teamNameCahnge = (e) => {
+        const teamName = e.target.value
+        this.setState({teamName})
     }
     toggleUsers = () => {
         if (this.state.userClass === 'user')
@@ -65,23 +78,58 @@ class CreateTeam extends React.Component {
              console.log(this.state.teamUsers)
          }
     }
+    CreateTeam = () => {
+        // you have the user for auth
+        const user = this.props.user        
+        if(this.props.user){
+            this.state.teamUsers.push(user)
+        }
+        if(user.username){
+            this.props.socket.emit('create:team',this.state.teamName,this.state.teamUsers)
+            this.props.history.push ('/home')
+        }else{
+            alert('Sorry..You are not logged in')
+        }
+    }
+    Skip = () => {
+        const user = this.props.user
+        if(user.username){
+            this.props.history.push('/home')
+        }else{
+            alert('Sorry..you are not logged in')
+        }
+    }
     renderUsers(){
         return(
             this.props.users_list.map((user,index) => 
-                <UserThumbnail username={user.username} image={user.image} key={user.id} addUserToTeam={()=>this.addUserToTeam(user)} userClass={this.state.userClass} index = {index} isAdded = {this.state.isAdded} />
+                <UserThumbnail add={this.props.translated_page.add} remove={this.props.translated_page.remove} username={user.username} image={user.image} key={user.id} addUserToTeam={()=>this.addUserToTeam(user)} userClass={this.state.userClass} index = {index} isAdded = {this.state.isAdded} />
             )
         )
     }
 
     render(){
         const user_list = this.renderUsers()
+        console.log(this.state.teamName)
         return(
             <div>
+                {/* <MainMenu logout={this.props.logout}/> */}
                 <Grid>
                     <Row>
+                        <div className="Team-info">
+                            <h4>{this.props.translated_page.team_name}:</h4>
+                            <FormGroup controlId="formInlineName">
+                                <FormControl type="text" name="team-name" onChange={this.teamNameCahnge} placeholder="Name Of Your Team" className="team-name" required/>
+                            </FormGroup>
+                        </div>
+                        <h4 className="choosing-team">{this.props.translated_page.team_choose}:</h4>                        
                         {user_list}
                     </Row>
                 </Grid>
+                <p className="buttons-section">
+                    <Button onClick={this.CreateTeam} bsStyle="success" className="create-team">{this.props.translated_page.create_team_button}</Button>
+                    <Button className="create-team" onClick={this.Skip} bsStyle="primary">{this.props.translated_page.skip_button}</Button>
+                </p>
+                
             </div>
         )
     }

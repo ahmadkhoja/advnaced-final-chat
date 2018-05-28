@@ -24,7 +24,7 @@ export class SignUp extends React.Component {
         const language = this.state.member_lang
         const image = form.photo.files
         const imageExists = !!image.length // undefined | File(filename, data, )44
-        const data = { username, password, language }        
+        const data = { username, password, language,commandType:'signup' }        
         if(imageExists && image){
             // console.log('upload',image,data,this.state.uploader.upload)
               this.props.uploader.upload(image,{data:data})
@@ -40,7 +40,8 @@ export class SignUp extends React.Component {
         if(user){
             this.setState({alert:true})
         }else{
-            this.props.history.push ('/home')
+            this.props.socket.emit('translated:page',this.props.translated_page)
+            this.props.history.push ('/createteam')
         }
         form.user_name.value = '';
         form.user_password.value = '';
