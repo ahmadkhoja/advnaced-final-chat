@@ -1,9 +1,9 @@
 import React from "react";
 import { Navbar, FormGroup, Button, ButtonGroup } from 'react-bootstrap';
 import LeftNav from './SearchBar/LeftNav'
+// import FaCartPlus from 'react-icons/lib/fa/cart-plus'
 
-
-const MainMenu = ({searchValue,onSearchChange,logout }) => {
+const MainMenu = ({searchValue,onSearchChange,logout,value,logoutTitle }) => {
   return (
     <Navbar>
     <Navbar.Header>
@@ -15,7 +15,7 @@ const MainMenu = ({searchValue,onSearchChange,logout }) => {
     <Navbar.Collapse>
       
       <Navbar.Form className="searchApp" >
-        <LeftNav searchValue={searchValue} onSearchChange={onSearchChange}/>
+        <LeftNav searchValue={searchValue} onSearchChange={onSearchChange} value={value}/>
       </Navbar.Form>
 
       <Navbar.Form pullRight>
@@ -23,7 +23,8 @@ const MainMenu = ({searchValue,onSearchChange,logout }) => {
           <ButtonGroup >
           {/* <Button bsStyle = "primary">Profile</Button> */}
           {/* <Button bsStyle = "info">Setting</Button> */}
-          <Button bsStyle = "danger" onClick={logout}>Logout</Button>
+          {/* <a href="/team_list"><FaCartPlus/>Build Team</a> */}
+          <Button bsStyle = "danger" onClick={logout}>{logoutTitle}</Button>
           </ButtonGroup>
         </FormGroup>
       </Navbar.Form>

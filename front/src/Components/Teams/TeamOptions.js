@@ -1,6 +1,9 @@
 import React from 'react'
 import { Button, Modal, Glyphicon } from 'react-bootstrap';
-
+import './TeamOptions.css'
+import FaGroup from 'react-icons/lib/fa/group'
+import FaUserPlus from 'react-icons/lib/fa/user-plus'
+// import FaUserTimes from 'react-icons/lib/fa/user-times'
 class TeamOptions extends React.Component {
     constructor(props, context) {
       super(props, context);
@@ -32,10 +35,11 @@ class TeamOptions extends React.Component {
             </Modal.Header>
             <Modal.Body>
               {/* <Button vertical block>Build New Team</Button> */}
-              <Button vertical block>Share Your Code</Button>
-              <Button vertical block>To Do List</Button>
-              <Button vertical block>Invite New Member</Button>
-              <Button vertical block>Remove Member</Button>
+              {/* <Button vertical block>Share Your Code</Button> */}
+              {/* <Button vertical block>To Do List</Button> */}
+              <p><a className="team-options-links" href="/createteam"><span><FaGroup/></span>Create a Team</a></p>
+              <p><a className="team-options-links" href="/invite"><span><FaUserPlus/></span>Invite Member</a></p>
+              {/* <p><a className="team-options-links" href="/remove"><span><FaUserTimes/></span>Remove Member</a></p> */}
             </Modal.Body>
             <Modal.Footer>
               <Button onClick={this.handleClose}>Close</Button>
