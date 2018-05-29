@@ -196,6 +196,16 @@ setInterval(save,1000)
         socket.on('message', sendMessage )
         
         socket.emit('teams',teams)
+
+        socket.on('invite:user:to:team',(friends,selectedTeam) => {
+            // console.log('friends',friends)
+            const index = selectedTeam.team_id
+            // console.log('index',index)
+            // a = [...a,...b]
+            teams[index].teamUsers = [...teams[index].teamUsers,...friends]
+            socket.emit('teams',teams)
+            console.log(teams)
+        })
         socket.on('create:team',(teamname,teamUsers) => {
             const team = {teamname,teamUsers,messages:[],team_id:team_ids++}
             console.log('team:',team)

@@ -8,7 +8,8 @@ import './App.css';
 import io from 'socket.io-client';
 import SocketIOFileClient from 'socket.io-file-client';
 import CreateTeam from './Components/Teams/CreateTeam'
-
+// import CopyToClipboardComponent from './Components/CopyToClipboard'
+import InviteFriend from './Components/InviteFriend'
 class App extends React.Component {
   
   constructor(props){
@@ -276,6 +277,18 @@ class App extends React.Component {
           <Switch>
             
             {/* <Route path="/" render={(match) => <Login socket={this.state.socket} history={match.history}  />}/> */}
+            <Route path="/invite" render={
+              (match) => 
+              <InviteFriend 
+              history = {match.history}            
+              users_list={this.state.user_list}
+              user={this.state.user}
+              socket={this.state.socket}
+              teamUsers={this.state.teamUsers}
+              translated_page={this.state.translated_page}
+              user_teams={user_teams}
+              />
+            }/>
             <Route path="/createteam" render={
               (match) => 
             <CreateTeam
