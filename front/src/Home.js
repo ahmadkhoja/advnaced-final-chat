@@ -254,6 +254,7 @@ class Home extends React.Component {
               teamOptionsTitle={this.props.translated_page.team_options}
               inviteMember={this.props.translated_page.invite_member}
               createTeam={this.props.translated_page.create_team}
+              history={this.props.history}
               />
               {/* <label className="roleTeamSection">Team Leader</label> */}
             </div>

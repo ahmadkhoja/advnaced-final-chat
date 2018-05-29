@@ -21,6 +21,12 @@ class TeamOptions extends React.Component {
     handleShow() {
       this.setState({ show: true });
     }
+    createTeamPath = () => {
+      this.props.history.push('/createteam')
+    }
+    inviteMemberPath = () => {
+      this.props.history.push('/invite')
+    }
   
     render() {
       return (
@@ -37,8 +43,8 @@ class TeamOptions extends React.Component {
               {/* <Button vertical block>Build New Team</Button> */}
               {/* <Button vertical block>Share Your Code</Button> */}
               {/* <Button vertical block>To Do List</Button> */}
-              <p><a className="team-options-links" href="/createteam"><span><FaGroup/></span>Create a Team</a></p>
-              <p><a className="team-options-links" href="/invite"><span><FaUserPlus/></span>Invite Member</a></p>
+              <p><button className="team-options-links" onClick={this.createTeamPath}><span><FaGroup/></span>Create a Team</button></p>
+              <p><button className="team-options-links" onClick={this.inviteMemberPath}><span><FaUserPlus/></span>Invite Member</button></p>
               {/* <p><a className="team-options-links" href="/remove"><span><FaUserTimes/></span>Remove Member</a></p> */}
             </Modal.Body>
             <Modal.Footer>

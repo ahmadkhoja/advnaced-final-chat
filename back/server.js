@@ -204,7 +204,7 @@ setInterval(save,1000)
             // a = [...a,...b]
             teams[index].teamUsers = [...teams[index].teamUsers,...friends]
             socket.emit('teams',teams)
-            console.log(teams)
+            // console.log(teams)
         })
         socket.on('create:team',(teamname,teamUsers) => {
             const team = {teamname,teamUsers,messages:[],team_id:team_ids++}

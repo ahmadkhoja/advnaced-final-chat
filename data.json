@@ -1,6 +1,6 @@
 {
   "ids": 4,
-  "team_ids": 2,
+  "team_ids": 3,
   "users": [
     {
       "id": 0,
@@ -120,6 +120,34 @@
           "team_id": 1
         }
       ]
+    },
+    {
+      "teamname": "batata",
+      "teamUsers": [
+        {
+          "id": 1,
+          "username": "jad",
+          "language": "fr",
+          "password": "batata",
+          "image": "codi.jpg"
+        },
+        {
+          "id": 0,
+          "username": "ahmad",
+          "language": "en",
+          "password": "batata",
+          "image": "ahmad.jpg"
+        },
+        {
+          "id": 2,
+          "username": "omar",
+          "language": "tr",
+          "password": "batata",
+          "image": "ai.jpg"
+        }
+      ],
+      "messages": [],
+      "team_id": 2
     }
   ]
 }
