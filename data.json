@@ -1,6 +1,6 @@
 {
-  "ids": 6,
-  "team_ids": 3,
+  "ids": 4,
+  "team_ids": 2,
   "users": [
     {
       "id": 0,
@@ -29,25 +29,6 @@
       "language": "es",
       "password": "batata",
       "image": "webdev.jpg"
-    },
-    {
-      "username": "yassin",
-      "password": "batata",
-      "language": "ar",
-      "image": "charityhands.jpeg"
-    },
-    {
-      "username": "naruto",
-      "password": "batata",
-      "language": "ja",
-      "id": 4
-    },
-    {
-      "username": "yassin",
-      "password": "batata",
-      "language": "ar",
-      "image": "charityhands.jpeg",
-      "id": 5
     }
   ],
   "teams": [
@@ -139,26 +120,6 @@
           "team_id": 1
         }
       ]
-    },
-    {
-      "teamname": "friends",
-      "teamUsers": [
-        {
-          "id": 0,
-          "username": "ahmad",
-          "language": "en",
-          "password": "batata",
-          "image": "ahmad.jpg"
-        },
-        {
-          "username": "yassin",
-          "password": "batata",
-          "language": "ar",
-          "image": "charityhands.jpeg"
-        }
-      ],
-      "messages": [],
-      "team_id": 2
     }
   ]
 }
