@@ -92,20 +92,29 @@ setInterval(save,1000)
 
         const sendMessage = ({text,image,username,date,imagename,team_id}) => {
             if(!user){ return; }
-            
+            const message = { text,image,username,date,imagename,team_id, me:false }
+            const messages = teams[team_id].messages
+            let user_name = teams[team_id].teamUsers.find(user => user.username === username)
+            let teamid = teams.find(team => team.team_id === team_id)
+            console.log('team_id coming:',team_id)
+            console.log(teams[team_id].messages)
+
+            if(user_name && teamid){
+              message.me = true
+              messages.push(message)
             languages.forEach( lg => {
                 if( lg === user.language ){
-                    io.to(lg).emit('message:broadcast',user.id,text,image,username,date,imagename,team_id)  
-                        
+                    io.to(lg).emit('message:broadcast',teams)
                 }else{
                     translate(text, { from:user.language, to:lg })
                         .then( ({text}) => 
-                            io.to(lg).emit('message:broadcast',user.id,text,image,username,date,imagename,team_id)
+                            io.to(lg).emit('message:broadcast',teams)
                         )
                         .catch( err => console.error(err))
                 }
             })
         }
+    }
 
         let uploader = new SocketIOFile(socket, {
             // uploadDir: {			// multiple directories

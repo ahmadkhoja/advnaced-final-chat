@@ -100,23 +100,15 @@ class App extends React.Component {
     this.setState({uploader})
     this.setState({socket})
 
-    socket.on('message:broadcast',(id,text,image,username,date,imagename,team_id) => {
-      const message = {id, text,image,username,date,imagename,team_id, me:false}
-      const messages = this.state.teams[this.state.team_id_index].messages
-      const copyState = Object.assign({},this.state)
-      let user_name = this.state.teams[this.state.team_id_index].teamUsers.find(user => user.username === username)
-      let teamid = this.state.teams.find(team => team.team_id === team_id)
-//      console.log('team_id coming:',team_id,teamid)
-      if(user_name && teamid){
-        message.me = true
-        messages.push(message)
-        copyState.teams[this.state.team_id_index].messages = messages
-        this.setState({copyState,alert:false})
-      }else{
-        // alert('you are not in this room')
-        this.setState({alert:true})
-      }
-      this.setState({status:'success'})
+    socket.on('message:broadcast',(teams) => {
+//       const message = {id, text,image,username,date,imagename,team_id, me:false}
+//       const messages = this.state.teams[this.state.team_id_index].messages
+//       const copyState = Object.assign({},this.state)
+//       let user_name = this.state.teams[this.state.team_id_index].teamUsers.find(user => user.username === username)
+//       let teamid = this.state.teams.find(team => team.team_id === team_id)
+// //      console.log('team_id coming:',team_id,teamid)
+      this.setState({teams,status:'success'})
+      // this.setState({status:'success'})
     })
     socket.on('user:profile_image',(image) => {
       this.setState({image})
