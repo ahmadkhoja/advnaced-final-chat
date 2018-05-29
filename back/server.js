@@ -205,10 +205,19 @@ setInterval(save,1000)
             // const messages = []
             // socket.emit('team:created',teamname,teamUsers,messages)
         })
+
+        socket.on('remove:team', (team) => {
+            const index = teams.indexOf(team)
+            console.log('index',index)
+            if(index<0){
+                return;
+            }
+            teams.splice(index,1)
+        })        
         socket.on('user:logout',(user) => {
             const index = connected.indexOf(user)
             connected.splice(index,1)
-            console.log(connected)
+            console.log('connected',connected)
         })
         // team_title,team_options,create_team,invite_member,search,send,team_name,team_choose,add,remove,create_team_button,skip_button,logging_error,logout
         socket.on('translated:page', titlesObject => {

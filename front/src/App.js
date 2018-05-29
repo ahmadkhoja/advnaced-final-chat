@@ -237,17 +237,19 @@ class App extends React.Component {
       selected.splice(index, 1);
       this.setState({ servers:selected });
   }
-  removeRoom = (team) => {
-    const index = this.state.teams.indexOf(team)
-    if (index < 0) {
-      return;
-    }
-      const selected = this.state.teams.slice();
-      selected.splice(index, 1);
-      console.log('selected',selected)
-      let copyState2 = Object.assign({},this.state)
-      copyState2.teams = selected 
-      this.setState(copyState2);
+  removeTeam = (team) => {
+    this.state.socket.emit('remove:team',team)
+    console.log(team)
+    // const index = this.state.teams.indexOf(team)
+    // if (index < 0) {
+    //   return;
+    // }
+      // const selected = this.state.teams.slice();
+      // selected.splice(index, 1);
+      // console.log('selected',selected)
+      // let copyState2 = Object.assign({},this.state)
+      // copyState2.teams = selected 
+      // this.setState(copyState2);
   }  
   changeIndex = (team_id_index) => {
 //    console.log(team_id_index)
@@ -305,7 +307,7 @@ class App extends React.Component {
               servers_list={this.state.servers}
               addNewServer={this.addNewServer}
               removeServer={this.removeServer}
-              removeRoom={this.removeRoom}
+              removeRoom={this.removeTeam}
               addNewRoom={this.addNewRoom}
               rooms_list={this.state.rooms}
               addMessage={this.addMessage}
