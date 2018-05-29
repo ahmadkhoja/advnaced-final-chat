@@ -552,7 +552,7 @@ input[type=file]::-webkit-file-upload-button {
 }
 .upload-loader{
   /* padding: 5px; */
-  height: 100%;
+  /* height: 100%; */
   width: 100%;
   /* 
   border-radius: 50%;
@@ -561,7 +561,7 @@ input[type=file]::-webkit-file-upload-button {
   left: 20%; */
   background: url('/loaders/loading1.gif');
   display: block; 
-  position: absolute; 
+  /* position: absolute;  */
   background-repeat: no-repeat;
   background-size: cover; 
   /* left: 20%; 

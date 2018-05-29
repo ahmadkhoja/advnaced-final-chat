@@ -86,20 +86,20 @@ class Home extends React.Component {
     let message = []
     let value = messages.pop()
     message.push(value)
-     if(this.props.status === 'loading'){
-      return (
-        <div className="upload-loader">
-            {this.props.currentTeam.messages.map((message, index) =>
-              <SingleMessage  username={message.username} date={message.date} user_id={message.user_id} body={message.text} key={index} {...message} image={'images/' + message.username + '.jpg' }
-              imagename={message.imagename}/>
-           )
-           }
-           {/* <div className="upload-loader">
+    //  if(this.props.status === 'loading'){
+    //   return (
+    //     <div className="upload-loader">
+    //         {this.props.currentTeam.messages.map((message, index) =>
+    //           <SingleMessage  username={message.username} date={message.date} user_id={message.user_id} body={message.text} key={index} {...message} image={'images/' + message.username + '.jpg' }
+    //           imagename={message.imagename}/>
+    //        )
+    //        }
+    //        {/* <div className="upload-loader">
             
-          </div> */}
-        </div>
-        )
-    }else{
+    //       </div> */}
+    //     </div>
+    //     )
+    // }else{
       if(this.props.currentTeam){
         return (
           this.props.currentTeam.messages.map((message, index) =>
@@ -109,7 +109,7 @@ class Home extends React.Component {
         )
       }
     }
-  }
+  // }
   renderUserTeams(){
     return(
         this.props.user_teams.map((props,index) =>
@@ -213,9 +213,19 @@ class Home extends React.Component {
 
           <div className="block mainChat">
             <div className="mainChatWrapper">
-              <section className="chatRoom" ref={(el) => this.messageContainer = el}>
-                  {messages_list}
-              </section>
+              
+              { this.props.status === 'loading' ? 
+                <section className="chatRoom upload-loader" ref={(el) => this.messageContainer = el}>
+                {/* {messages_list} */}
+                </section>
+               : 
+               <section className="chatRoom" ref={(el) => this.messageContainer = el}>
+               {messages_list}
+               </section>
+               }
+              {/* <section className="chatRoom" ref={(el) => this.messageContainer = el}>
+              {messages_list}
+              </section> */}
 
               <section className="inputField">
                 {/* send message */}
