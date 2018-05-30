@@ -235,8 +235,11 @@ class Home extends React.Component {
 
                 <div className="inputContainer">
                   <input type="text" name="message_text" className="type" placeholder="Write Something..."  />
-                  <input type="file" id="photo" name="photo" className="message-image" 
+                  <label className="fileContainer">
+                    <input type="file" id="photo" name="photo" className="message-image" 
                   key={this.state.theInputKey || '' } />
+                  </label>
+                  {/* <input type="file" name="file" id="file" class="inputfile" /> */}
                 </div>
                   <button className="send">{this.props.translated_page.send}</button>
                 </form>
