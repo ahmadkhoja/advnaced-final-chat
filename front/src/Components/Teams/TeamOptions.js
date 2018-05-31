@@ -43,8 +43,8 @@ class TeamOptions extends React.Component {
               {/* <Button vertical block>Build New Team</Button> */}
               {/* <Button vertical block>Share Your Code</Button> */}
               {/* <Button vertical block>To Do List</Button> */}
-              <p><Button bsStyle="primary" className="team-options-links" onClick={this.createTeamPath}><span><FaGroup/></span>Create a Team</Button></p>
-              <p><Button bsStyle="primary" className="team-options-links" onClick={this.inviteMemberPath}><span><FaUserPlus/></span>Invite Member</Button></p>
+              <p><Button bsStyle="primary" className="team-options-links" onClick={this.createTeamPath}><span><FaGroup/></span>{this.props.createTeam}</Button></p>
+              <p><Button bsStyle="primary" className="team-options-links" onClick={this.inviteMemberPath}><span><FaUserPlus/></span>{this.props.inviteMember}</Button></p>
               {/* <p><a className="team-options-links" href="/remove"><span><FaUserTimes/></span>Remove Member</a></p> */}
             </Modal.Body>
             <Modal.Footer>

@@ -79,13 +79,7 @@ class CreateTeam extends React.Component {
              console.log(this.state.friends)
          }
     }
-    chooseTeam = (team) => {
-        console.log('team',team)
-        const copyState = Object.assign({},this.state)
-        copyState.selectedTeam = team
-        this.setState(copyState)
-        console.log(this.state.selectedTeam)
-    }
+
     ProceedInvitaion = () => {
         // you have the user for auth
         const user = this.props.user
@@ -98,8 +92,8 @@ class CreateTeam extends React.Component {
         }
     }
     changeValue = (e) => {
-        const value = e.target.value
-        this.setState({value})
+        const team_id = e.target.value
+        this.setState({ selectedTeam: team_id })
     }
     returnHome = () => {
         const user = this.props.user
@@ -128,11 +122,11 @@ class CreateTeam extends React.Component {
                     <div className="Team-info">
                             <h4>Step:1 Choose which team you want your friends to join it</h4>
                             <FormGroup controlId="formInlineName">
-                                <FormControl value={this.state.value} componentClass="select" className="team-name" placeholder="Select" style={{color:"black"}} onChange={this.changeValue}>
+                                <FormControl value={this.state.selectedTeam} componentClass="select" className="team-name" placeholder="Select" style={{color:"black"}} onChange={this.changeValue}>
                                 <option>Select</option>
                                     {
                                         this.props.user_teams.map((user_team) => 
-                                            <option value={user_team.teamname} onClick={() =>this.chooseTeam(user_team)}>{user_team.teamname}</option>
+                                            <option value={user_team.team_id}>{user_team.teamname}</option>
                                         )
                                     }
                                 </FormControl>

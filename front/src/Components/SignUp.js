@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, FormGroup, ControlLabel,FormControl,Alert } from 'react-bootstrap';
-import FieldGroup from './Components/FieldGroup';
+import FieldGroup from './FieldGroup';
 import './SignUpForm.css';
 
 export class SignUp extends React.Component {

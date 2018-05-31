@@ -7,9 +7,9 @@ import Login from './Login';
 import './App.css';
 import io from 'socket.io-client';
 import SocketIOFileClient from 'socket.io-file-client';
-import CreateTeam from './Components/Teams/CreateTeam'
+import CreateTeam from './Teams/CreateTeam'
 // import CopyToClipboardComponent from './Components/CopyToClipboard'
-import InviteFriend from './Components/InviteFriend'
+import InviteFriend from './InviteFriend'
 class App extends React.Component {
   
   constructor(props){

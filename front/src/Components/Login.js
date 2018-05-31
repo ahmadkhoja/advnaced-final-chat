@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Alert } from 'react-bootstrap';
-import FieldGroup from './Components/FieldGroup';
+import FieldGroup from './FieldGroup';
 import './LoginForm.css';
 
 export class Login extends React.Component {
@@ -28,7 +28,7 @@ export class Login extends React.Component {
         if(user){
             this.props.socket.emit('translated:page',this.props.translated_page)
             // this.props.history.push ('/createteam')
-            this.props.history.push ('/invite')
+            this.props.history.push ('/home')
         }else{
             this.setState({alert:true})
         }

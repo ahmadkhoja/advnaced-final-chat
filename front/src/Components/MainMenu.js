@@ -1,15 +1,16 @@
 import React from "react";
 import { Navbar, FormGroup, Button, ButtonGroup } from 'react-bootstrap';
 import LeftNav from './SearchBar/LeftNav'
-// import FaCartPlus from 'react-icons/lib/fa/cart-plus'
+import FullScreenDialog from './FullScreenDialog'
 
-const MainMenu = ({searchValue,onSearchChange,logout,value,logoutTitle }) => {
+const MainMenu = ({searchValue,onSearchChange,logout,value,logoutTitle,teamUsers }) => {
   return (
     <Navbar>
     <Navbar.Header>
       <Navbar.Brand>
         <a href="#home">Brand</a>
       </Navbar.Brand>
+      <FullScreenDialog teamUsers={teamUsers}/>
       <Navbar.Toggle />
     </Navbar.Header>
     <Navbar.Collapse>

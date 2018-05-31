@@ -55,22 +55,24 @@ app.get('/',(req,res) => {
         },
     ]
  
-const save = () => {
-    fs.writeFileSync('../data.json',JSON.stringify({ids, team_ids, users, teams},null,2))
-}
+// const save = () => {
+//     fs.writeFileSync('../data.json',JSON.stringify({ids, team_ids, users, teams},null,2))
+// }
 
-const load = () => {
-    const data_string = fs.readFileSync('../data.json',{encoding:'utf8'})
-    const data = JSON.parse(data_string)
-    teams = data.teams
-    users = data.users
-    ids = data.ids
-    team_ids = data.team_ids
-}
+// const load = () => {
+//     const data_string = fs.readFileSync('../data.json',{encoding:'utf8'})
+//     if(!data_string){
+//         throw new Error('file is empty')
+//     }
+//     const data = JSON.parse(data_string)
+//     teams = data.teams
+//     users = data.users
+//     ids = data.ids
+//     team_ids = data.team_ids
+// }
+// load()
 
-load()
-
-setInterval(save,1000)
+// setInterval(save,1000)
 
     const languages = []
     const connected = []
@@ -170,6 +172,7 @@ setInterval(save,1000)
         });
         
         socket.on('authenticate',(username,password)=>{
+            console.log(username,password)
             const user = users.find((user)=>user.username === username && user.password === password)
             if(!user){
                 socket.emit('authenticate:no')
@@ -208,7 +211,12 @@ setInterval(save,1000)
 
         socket.on('invite:user:to:team',(friends,selectedTeam) => {
             // console.log('friends',friends)
-            const index = selectedTeam.team_id
+            selectedTeam = parseInt(selectedTeam)
+            const index = teams.findIndex(({team_id})=>team_id === selectedTeam)
+            console.log('team_ids',teams.map(team=>team.team_id))
+            if(index < 0){
+                throw new Error('team `'+selectedTeam+'` not found')
+            }
             // console.log('index',index)
             // a = [...a,...b]
             teams[index].teamUsers = [...teams[index].teamUsers,...friends]
