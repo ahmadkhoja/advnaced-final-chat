@@ -74,7 +74,9 @@ class App extends React.Component {
         skip_button:'Skip',
         logging_error:'Sorry..you are not logged in',
         logout:'Logout'
-      }
+      },
+      typing:true,
+      typingText:''
     }
   }
 
@@ -140,11 +142,23 @@ class App extends React.Component {
       this.setState({teams})
       // console.log('teams socket on :',teams)
     })
-    // socket.emit('translated:page',this.state.team_title)
     socket.on('translated:page:success', translated_page => {
       this.setState({translated_page})
     })
-  }
+    socket.on('someone:typing',(typing,typingText,/*team_id*/) => {
+      // console.log("team_id:",team_id)
+        let timeout = undefined
+        this.setState({typing:typing,typingText})
+        if(this.state.typing===false){
+          this.setState({typing:false,typingText})
+        }else{
+          clearTimeout(timeout)
+          timeout = setTimeout(() => {
+            this.setState({typing:false,typingText})
+            }, 5000);
+        }
+    })   
+}
   
   onChange = (evt) => {
     this.setState({search:evt.target.value})
@@ -257,14 +271,15 @@ class App extends React.Component {
     const messages = this.filterMessages()
     // console.log('teams at team_id_index 0: ',this.state.teams[this.state.team_id_index])
     const user_teams = []
+    console.log("team_id_index: ",this.state.team_id_index)
     this.state.teams.forEach( team => {
       const userInTeam = team.teamUsers.find( user => user.username === this.state.user.username)
       if(userInTeam){ user_teams.push(team) }
       return;
     })
     let teamID = user_teams.find(team=>team.team_id === this.state.team_id_index)
-    console.log('teamID',teamID)
-    console.log('team_id_index',this.state.team_id_index)
+    // console.log('teamID',teamID)
+    // console.log('team_id_index',this.state.team_id_index)
     return(
           <Switch>
             
@@ -330,6 +345,10 @@ class App extends React.Component {
               alert={this.state.alert}
               closeAlert={this.closeAlert}
               translated_page={this.state.translated_page}
+              typing={this.state.typing}
+              typingText={this.state.typingText}
+              // index={this.state.team_id_index}
+              teamID={teamID}
             />}
             />
             <Route path="/" render={(match) => <Login 

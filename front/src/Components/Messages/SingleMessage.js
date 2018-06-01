@@ -1,6 +1,7 @@
 import React from 'react'
+import { Emoji } from 'emoji-mart'
 
-const SingleMessage = ({ image, username, body, date, imagename }) => {
+const SingleMessage = ({ image, username, body, date, imagename, colons }) => {
 
   return (
       <div className="singleMessage">
@@ -16,7 +17,17 @@ const SingleMessage = ({ image, username, body, date, imagename }) => {
         {
           body ? 
           <div className="message-text">
-            <p className="bodyText">{body}</p>
+            <p className="bodyText">{ body.split(" ").map(
+              (word) => {
+                const colon = colons.find((colon)=>colon.colons === word)
+                console.log('colon',colon)
+                if(colon){
+                  return <Emoji emoji={colon.colons} size={16} />
+                }else{
+                  return <span style={{marginRight:'0'}} > { word } </span>
+                }
+              }
+            ) }</p>
           </div> : null
         }
         {

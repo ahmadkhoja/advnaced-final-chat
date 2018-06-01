@@ -5,7 +5,9 @@ import Team from './Rooms/Room';
 import SingleMessage from './Messages/SingleMessage'
 import TeamOptions from './Teams/TeamOptions'
 import TeamMember from './Teams/TeamMember'
-
+import { Picker } from 'emoji-mart'
+import 'emoji-mart/css/emoji-mart.css'
+import { Button, Divider, Image, Transition } from 'semantic-ui-react'
 class Home extends React.Component {
 
   constructor(props) {
@@ -16,15 +18,11 @@ class Home extends React.Component {
       show: false,
       theInputKey:'',
       wrapperclass: 'wrapper',
+      colons_list:[]
     }
   }
-  toggleVisibility = () => {
-    this.setState({ visible: !this.state.visible })
-    if (this.state.wrapperclass === 'wrapper')
-      this.setState({wrapperclass: 'wrapperclick'})
-    else
-      this.setState({wrapperclass: 'wrapper'})
-  } 
+  toggleVisibility = () => this.setState({ visible: !this.state.visible })
+
   handleClick() {
     this.setState({
       show: !this.state.show
@@ -77,7 +75,7 @@ class Home extends React.Component {
         return (
           this.props.currentTeam.messages.map((message, index) =>
             <SingleMessage  username={message.username} date={message.date} user_id={message.user_id} body={message.text} key={index} {...message} image={ message.image }
-            imagename={message.imagename}/>
+            imagename={message.imagename} colons={this.state.colons_list}/>
           )
         )
       }
@@ -111,11 +109,28 @@ class Home extends React.Component {
   componentDidMount(){
     this.goToBottom();
   }
+  addEmoji = (emoji) => {
+      // const a = Object.keys(emoji)
+      // console.log(a.name)
+      // console.log('emoji: '+Object.keys(emoji))
+      console.log(emoji)
+      const colons = emoji.colons
+      this.state.colons_list.push(emoji)
+      // console.log("colons list: ",this.state.colons_list)
+      this.input.value = this.input.value + " " + colons
+  }
+  textTyping = (e) => {
+    const typing = true
+    const typingText = "Some one is typing"
+    // const team_id = this.props.teams.team_id
+    this.props.socket.emit('user:typing',typing,typingText,/*team_id*/)
+    // this.props.socket.emit('user:typing',e.target.message_text.value)
+  }
 
   render() {
     const teamUsers = this.renderTeamUsers()
     const messages_list = this.renderMessages()
-    const users_teams = this.renderUserTeams()
+    const users_teams = this.renderUserTeams() 
     return (
       <div>
         <MainMenu teamUsers={teamUsers} value={this.props.translated_page.search} logoutTitle={this.props.translated_page.logout} search={this.props.search} logout={this.logout} onSearchChange={this.props.onSearchChange}/>
@@ -142,17 +157,29 @@ class Home extends React.Component {
                </section>
                }
 
+              <section className="typing">
+               <p>{this.props.typing? this.props.typingText : null}</p>
+              </section>
               <section className="inputField">
                 <form method="post" onSubmit={this.onMessageSubmit} className="inputForm">
                   <div className="inputContainer">
-                    <input type="text" name="message_text" className="type" placeholder="Write Something..."  />
+                    <input onChange={this.textTyping} ref={(e) => this.input = e} type="text" name="message_text" className="type" placeholder="Write Something..."  />
                     <label className="fileContainer">
                       <input type="file" id="photo" name="photo" className="message-image" 
                     key={this.state.theInputKey || '' } />
                     </label>
+                  <Button content={this.state.visible ? 'Hide' : 'Show'} onClick={this.toggleVisibility}>
+                    <img src="https://cdn.shopify.com/s/files/1/1061/1924/products/Hugging_Face_Emoji_2028ce8b-c213-4d45-94aa-21e1a0842b4d_large.png?v=1480481059" style={{height:"100%"}} />
+                  </Button>
                   </div>
+                  {/* <Divider hidden /> */}
                   <button className="send">{this.props.translated_page.send}</button>
                 </form>
+                  <Transition visible={this.state.visible} animation='scale' duration={500}>
+                    <div className="ui hidden">
+                    <Picker onSelect={(emoji) => this.addEmoji(emoji)} />
+                    </div>
+                  </Transition>
               </section>
             </div>
           </div>
