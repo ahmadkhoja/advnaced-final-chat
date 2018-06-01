@@ -1,32 +1,47 @@
+// The port where the server is running on
 const port = 8888;
+// Importing HTTP package to create a server for socket  
 const http = require('http')
+// Importing Express package to create a server the application  
 const express = require('express')
+// Assigning app to be the express server and has express functions
 const app = express()
+// Creating the server by http and putting the app in it (so sockets can work)
 const server = http.createServer(app)
+// Importing Socket (for live chat)
 const SocketIo = require('socket.io')
+// Importing Google Translate API (as it's name --> translation library from google)
 const translate = require('google-translate-api')
+// Importing Socket file (for socket to upload and recieve files)
 const SocketIOFile = require('socket.io-file')
+// Assigning io to be the socket and giving it the server
 const io = SocketIo(server);
+// Importing fs which is for saving to data.json and loading
 const fs = require('fs')
-
+// Assigning a static server that serves images from folder "uploadedImages" in http://localhost:8888/uploadedImages
 app.use('/uploadedImages',express.static('./uploadedImages'))
+// Giving access to any other server to send and recive from this server
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
+// At url="localhost:8888/" ==> output: "Welcome to this new project"
 app.get('/',(req,res) => {
     res.send("Welcome to this new project")
 })
+    // ids used for incrementing and assigning to users
     let ids = 4
+    // ids used for incrementing and assigning to teams
     let team_ids = 2
+    // All the users in this app
     let users = [
         {id:0, username:'ahmad',language:'en',password:'batata',image:'ahmad.jpg' /*,team:[]*/},
         {id:1, username:'jad',language:'fr',password:'batata'  ,image:'codi.jpg'  /*,team:[]*/},
         {id:2, username:'omar',language:'tr',password:'batata' ,image:'ai.jpg'    /*,team:[]*/},
         {id:3, username:'ali',language:'es',password:'batata'  ,image:'webdev.jpg'/*,team:[]*/},
     ]
-    //id,text,image,username,date,imagename
+    // All the teams in this app
     let teams = [
         {
             team_id:0, 
@@ -54,31 +69,42 @@ app.get('/',(req,res) => {
             ]
         },
     ]
- 
+// As it looks it a function to save our data for persistence
 // const save = () => {
+    // It uses fs to save in data.json the following {ids, team_ids, users, teams} as a String
 //     fs.writeFileSync('../data.json',JSON.stringify({ids, team_ids, users, teams},null,2))
 // }
 
+// As it looks it a function to load our data
 // const load = () => {
+    // It uses fs to read the data.json
 //     const data_string = fs.readFileSync('../data.json',{encoding:'utf8'})
+    // Checking if it's empty
 //     if(!data_string){
+    // If empty throw an error
 //         throw new Error('file is empty')
 //     }
+    //  Return the following {ids, team_ids, users, teams} as JavaScript Objects
 //     const data = JSON.parse(data_string)
 //     teams = data.teams
 //     users = data.users
 //     ids = data.ids
 //     team_ids = data.team_ids
 // }
+
+// Calling the load function
 // load()
 
+// Calling the save function every second
 // setInterval(save,1000)
 
+    // All the languages
     const languages = []
+    // All the Connected Users
     const connected = []
 
     io.on('connection', (socket) => {
-        
+        // output: user connected
         console.log('user connected')
         
         let user
@@ -98,8 +124,8 @@ app.get('/',(req,res) => {
             const messages = teams[team_id].messages
             let user_name = teams[team_id].teamUsers.find(user => user.username === username)
             let teamid = teams.find(team => team.team_id === team_id)
-            console.log('team_id coming:',team_id)
-            console.log(teams[team_id].messages)
+            // console.log('team_id coming:',team_id)
+            // console.log(teams[team_id].messages)
 
             if(user_name && teamid){
               message.me = true
@@ -247,11 +273,36 @@ app.get('/',(req,res) => {
             console.log('connected',connected)
         })
         // team_title,team_options,create_team,invite_member,search,send,team_name,team_choose,add,remove,create_team_button,skip_button,logging_error,logout
+        socket.on('user:typing',(typing,typingText/*,team_id*/) => {
+            // io.emit('someone:typing',typing,typingText)
+            // console.log('team_id',team_id)
+            // const team = teams.find(team => team.team_id === team_id)
+            // if(team){
+                const promises = languages.forEach( lg => {
+    
+                    if( lg === user.language && user.language ){
+                        io.to(lg).emit('someone:typing',typing,typingText/*,team_id*/)
+                        // .then((text) =>  io.to(lg).emit('someone:typing',text,typing))
+                        // .catch( err => console.error(err))
+                    }else{
+                        translate(typingText, { from:user.language, to:lg })
+                            .then( ({text}) => io.to(lg).emit('someone:typing',typing,text/*,team_id*/)
+                            )
+                            .catch( err => console.error(err))
+                    }
+                })  
+            // }else{
+            //     throw new Error("not team")
+            // }
+            // Promise.all(promises)
+            // .then(()=>socket.emit('translated:page:success',translated_page)  )
+            // .catch((err)=>{ throw err })
+        })
         socket.on('translated:page', titlesObject => {
             // console.log(team_title)
             if(!user){ return; }
             languages.forEach( lg => {
-                if( lg === user.language ){
+                if( lg === user.language && user.language ){
                     const translated_page = {}
                     const titlesArray = Object.keys(titlesObject)
                     // ['team_title','team_options','create_team','invite_member','search','send','team_name', 'team_choose','add','remove','create_team_button','skip_button','logging_error','logout']
