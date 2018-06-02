@@ -169,7 +169,7 @@ class Home extends React.Component {
                     key={this.state.theInputKey || '' } />
                     </label>
                   <Button content={this.state.visible ? 'Hide' : 'Show'} onClick={this.toggleVisibility}>
-                    <img src="https://cdn.shopify.com/s/files/1/1061/1924/products/Hugging_Face_Emoji_2028ce8b-c213-4d45-94aa-21e1a0842b4d_large.png?v=1480481059" style={{height:"100%"}} />
+                    <img src="https://cdn.shopify.com/s/files/1/1061/1924/products/Hugging_Face_Emoji_2028ce8b-c213-4d45-94aa-21e1a0842b4d_large.png?v=1480481059" style={{height:"87%",width: '86%'}} />
                   </Button>
                   </div>
                   {/* <Divider hidden /> */}
