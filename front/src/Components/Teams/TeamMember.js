@@ -7,7 +7,7 @@ const TeamMember = ({ username, lang, image }) => {
           image ? 
           <img className="image-friend" src={'//localhost:8888/uploadedImages/'+image} alt="batata" />: null
         }
-        {username}({lang})
+        <span className="teammember-name">{username}({lang})</span>
       </div>
     )
   }

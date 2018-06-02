@@ -76,11 +76,32 @@ class App extends React.Component {
         logout:'Logout'
       },
       typing:true,
-      typingText:''
+      typingText:'',
+      showTeams:false,
+      showUsers:false,
+      showTeamOptions:true,
+      showUsersTeam:true
     }
   }
 
   componentDidMount = () => {
+
+    window.addEventListener('resize', () => {
+      if(window.innerWidth <= 840){
+        this.setState({ showUsers:true, showTeamOptions:false });
+      }
+      else{
+        this.setState({ showUsers:false, showTeamOptions:true });
+      }
+    })
+    window.addEventListener('resize',() => {
+      if(window.innerWidth <= 620){
+        this.setState({ showTeams:true, showUsersTeam:false });
+      }else{
+        this.setState({ showTeams:false, showUsersTeam:true });
+      }
+    })
+
     const socket = io('http://localhost:8888');//if it wasn't razzle you should do io('http://localhost:3000(or other port)')
     const uploader = new SocketIOFileClient(socket);
     uploader.on('start', (fileInfo) => {
@@ -245,8 +266,8 @@ class App extends React.Component {
       this.setState({ servers:selected });
   }
   removeTeam = (team) => {
+    // console.log('team will be removed:',this.state.team_id_index)
     this.state.socket.emit('remove:team',team)
-    console.log(team)
     // const index = this.state.teams.indexOf(team)
     // if (index < 0) {
     //   return;
@@ -278,8 +299,7 @@ class App extends React.Component {
       return;
     })
     let teamID = user_teams.find(team=>team.team_id === this.state.team_id_index)
-    // console.log('teamID',teamID)
-    // console.log('team_id_index',this.state.team_id_index)
+
     return(
           <Switch>
             
@@ -348,7 +368,11 @@ class App extends React.Component {
               typing={this.state.typing}
               typingText={this.state.typingText}
               // index={this.state.team_id_index}
-              teamID={teamID}
+              teamID={teamID}showUsers
+              showTeams={this.state.showTeams}
+              showTeamOptions={this.state.showTeamOptions}
+              showUsersTeam={this.state.showUsersTeam}
+              showUsers={this.state.showUsers}
             />}
             />
             <Route path="/" render={(match) => <Login 

@@ -8,6 +8,8 @@ import TeamMember from './Teams/TeamMember'
 import { Picker } from 'emoji-mart'
 import 'emoji-mart/css/emoji-mart.css'
 import { Button, Divider, Image, Transition } from 'semantic-ui-react'
+import FaGroup from 'react-icons/lib/fa/group'
+import FaUserPlus from 'react-icons/lib/fa/user-plus'
 class Home extends React.Component {
 
   constructor(props) {
@@ -18,7 +20,7 @@ class Home extends React.Component {
       show: false,
       theInputKey:'',
       wrapperclass: 'wrapper',
-      colons_list:[]
+      colons_list:[],
     }
   }
   toggleVisibility = () => this.setState({ visible: !this.state.visible })
@@ -81,11 +83,13 @@ class Home extends React.Component {
       }
     }
   renderUserTeams(){
-    return(
-        this.props.user_teams.map((props,index) =>
-          // console.log(props.id)
-          <Team teamname={props.teamname} changeIndex={ () => this.props.changeIndex(props.team_id)} removeRoom={() => this.props.removeRoom(props)} key={index} {...props} />)
-      )
+    if(this.props.user){
+      return(
+          this.props.user_teams.map((props,index) =>
+            // console.log(props.id)
+            <Team teamname={props.teamname} changeIndex={ () => this.props.changeIndex(props.team_id)} removeRoom={() => this.props.removeRoom(props)} key={index} {...props} />)
+        )
+    }
   }
   
   renderTeamUsers(){
@@ -126,6 +130,13 @@ class Home extends React.Component {
     this.props.socket.emit('user:typing',typing,typingText,/*team_id*/)
     // this.props.socket.emit('user:typing',e.target.message_text.value)
   }
+  createTeamPath = () => {
+    this.props.history.push('/createteam')
+  }
+  inviteMemberPath = () => {
+    this.props.history.push('/invite')
+  }
+
 
   render() {
     const teamUsers = this.renderTeamUsers()
@@ -133,7 +144,12 @@ class Home extends React.Component {
     const users_teams = this.renderUserTeams() 
     return (
       <div>
-        <MainMenu teamUsers={teamUsers} value={this.props.translated_page.search} logoutTitle={this.props.translated_page.logout} search={this.props.search} logout={this.logout} onSearchChange={this.props.onSearchChange}/>
+        <MainMenu  users_teams={users_teams} teamUsers={teamUsers} value={this.props.translated_page.search} logoutTitle={this.props.translated_page.logout} search={this.props.search} logout={this.logout} onSearchChange={this.props.onSearchChange}  visibleTeams={this.props.showTeams} visibleUsers={this.props.showUsers} children={
+          <div>
+            <p><Button variant="raised" color="primary" className="team-options-links" onClick={this.createTeamPath}><span><FaGroup/></span>{this.props.createTeam}</Button></p>
+            <p><Button variant="raised" color="primary" className="team-options-links" onClick={this.inviteMemberPath}><span><FaUserPlus/></span>{this.props.inviteMember}</Button></p>
+          </div>
+        } />
         {
         this.props.alert ? <div className="alert-not-your-room">
           <span className="closebtn" onClick={this.props.closeAlert}>&times;</span> 
@@ -141,11 +157,16 @@ class Home extends React.Component {
         </div> : null
         }
         <div className={this.state.wrapperclass}>
-          <div className="rooms">
-          <h3>{this.props.translated_page.team_title}:</h3>
-            { users_teams }
-          </div>
-          <div className="block mainChat">
+        
+         { this.props.showUsersTeam ? 
+
+            <div className="rooms">
+               <h3>{this.props.translated_page.team_title}:</h3>
+                { users_teams }
+          </div> : null
+        }
+
+          <div className="mainChat">
             <div className="mainChatWrapper">
               
               { this.props.status === 'loading' ? 
@@ -183,25 +204,27 @@ class Home extends React.Component {
               </section>
             </div>
           </div>
+        
+            { this.props.showTeamOptions ?
+            <div className="teams">
+              <div className="memberTeamOptions">
+                <img className="imageTeamSection" src={'//localhost:8888/uploadedImages/'+this.props.user.image} alt="batata" />
+                <label className="usernameTeamSection">{this.props.user.username}({this.props.user.language})</label>
+                <TeamOptions 
+                teamOptionsTitle={this.props.translated_page.team_options}
+                inviteMember={this.props.translated_page.invite_member}
+                createTeam={this.props.translated_page.create_team}
+                history={this.props.history}
+                />
+              </div>
 
-          <div className="block teams">
-            <div className="memberTeamOptions">
-              <img className="imageTeamSection" src={'//localhost:8888/uploadedImages/'+this.props.user.image} alt="batata" />
-              <label className="usernameTeamSection">{this.props.user.username}({this.props.user.language})</label>
-              <TeamOptions 
-              teamOptionsTitle={this.props.translated_page.team_options}
-              inviteMember={this.props.translated_page.invite_member}
-              createTeam={this.props.translated_page.create_team}
-              history={this.props.history}
-              />
+              <hr className="red" />
+
+              <div className="teamMembers">
+                {teamUsers}
+              </div>
             </div>
-
-            <hr className="red" />
-
-            <div className="teamMembers">
-              {teamUsers}
-            </div>
-          </div>
+            : null}
         </div>
        </div>
     );

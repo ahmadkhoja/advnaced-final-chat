@@ -221,6 +221,14 @@ body {
   width: 22%;
   height: 80%;
 }
+.teammember-name {
+  margin-right: 10px;
+  margin-left: 15%;
+  text-transform: capitalize;
+  display: inline-block;
+  margin-top: 2%;
+  width: 55%;
+}
 .usernameTeamSection {
   float: left;
   width: 50%;
@@ -285,6 +293,7 @@ button.btn.btn-primary.batata{
   position: relative;
   height: 10%;
   width: 100%;
+  margin-top: 2%;
 }
 .teamMember:hover {
   color: black;
@@ -439,18 +448,17 @@ label {
   "teams teams teams teams ";
   grid-template-columns: 1fr 1fr 1fr 1fr;
   /* grid-template-rows: 0fr 1fr 0fr; */
-  grid-template-rows: repeat(1, 592px);
+  grid-template-rows: repeat(1, 608px);
 }
-  .rooms{
-    grid-area: rooms;
+.mainChat{
+  grid-area: mainChat;
   }
-  .mainChat{
-    grid-area: mainChat;
-    
-  }
+    .rooms{
+      grid-area: rooms;
+    }
   .chatRoom{
     background-color: #c1c1c1;  
-    height: 90%;
+    height: 86%;
     overflow: auto;
   }
   .teams{
@@ -491,84 +499,106 @@ label {
     width: 75%;
     height: 100%;
     position: relative;
+  }
+  
+  .MuiPaper-root-42.MuiPaper-elevation24-68.MuiPaper-rounded-43.MuiDialog-paper-30.MuiDialog-paperWidthSm-32.MuiDialog-paperFullScreen-35{
+    background-color: silver;
+  }
+  .header-dialog {
+    color: #fff;
+    background-color: #8357c5;
+  }
+  .header-users-dialog{
+    color: #fff;
+    background-color: #8357c5;
+  }
+  .image-friend {
+    border-radius: 50%;
+    max-width: 7%;
+    max-height: 88%;
+    position: relative;
+    width: 22%;
+    height: 80%;
+    text-transform: capitalize;
+    margin: 0 2%;
+  }
+  .teammember-name {
+    margin-right: 10px;
+    margin-left: 16%;
+    text-transform: capitalize;
+    display: block;
+    margin-top: 2%;
+    width: 20%;
+  }
+  button.ui.primary.button.team-options-links {
+    width: 80%;
+    margin-top: 10px;
+    height: 100px;
+    margin-left: 10%;
   }
 }
 /* ********************** Second Media Query********************************************************** */
 
 @media only screen and (max-width: 620px) {
-  /* .wrapper{
+  .wrapper {
     display: grid;
+    grid-template-columns: 20% 80%;
+    grid-template-areas: "mainChat mainChat mainChat mainChat";
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 2fr 3fr;
-    grid-template-areas: 
-    
-    "rooms mainChat mainChat mainChat"
-    /* "rooms mainChat mainChat mainChat" */
-    /* "teams teams teams teams"  */
- /* } */
- .wrapper {
-  display: grid;
-  grid-template-columns: 20% 80%;
-  grid-template-areas: 
-  "rooms mainChat mainChat mainChat"
-  "teams teams teams teams ";
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  /* grid-template-rows: 0fr 1fr 0fr; */
-  grid-template-rows: repeat(1, 592px);
-}
-  .rooms{
-    grid-area: rooms;
+    grid-template-rows: repeat(1, 608px);
   }
   .mainChat{
     grid-area: mainChat;
-    
   }
-  .chatRoom{
-    background-color: #c1c1c1;  
-    height: 90%;
-    overflow: auto;
-  }
-  .teams{
-    margin-top: 5px;
-    grid-area: teams;
-    overflow: auto;
-  } 
-  .ServerSection {
-    margin-top: 10px;
-    height: auto;
-    max-width: 20%;
-    float: right;
-  }
-  .serverSectionContainer {
-    width: 100%;
-    overflow-x: auto;
-    height: 100px;
-  }
-  .roomSectionContainer{
-    width: 100%;
-    overflow: auto;
-    height: 300px;
-  }
-  .roleTeamSection {
-    float: left;
-    position: absolute;
-    left: 5px;
-    top: 50px;
-    width: 28%;
-  }  
-  .addServer{
-    margin: 0px;
-    height: 30px;
-    width: 80%;
-    left: 10%;
-  }
-  .server-name{
-    width: 75%;
-    height: 100%;
+  .scale.ui.hidden.visible.transition{
+    width: 360px;
     position: relative;
+    bottom: 483px;
+    left: 50px;
+  } 
+  .image-friend {
+    border-radius: 50%;
+    max-width: 7%;
+    max-height: 88%;
+    position: relative;
+    width: 22%;
+    height: 80%;
+    text-transform: capitalize;
+    margin: 0 2%;
+  }
+  .teammember-name {
+    margin-right: 10px;
+    margin-left: 16%;
+    text-transform: capitalize;
+    display: block;
+    margin-top: 2%;
+    width: 20%;
+  } 
+  .roomName {
+    width: 80%;
+    overflow: hidden;
+    text-align: center;
+}
+  .roomCancelButton {
+    position: absolute;
+    right: 274px;
+    top: 9px;
+    width: 5%;
+  }
+  .roomNameButton {
+    background-color: #333745;
+    text-align: left;
+    width: 33%;
+    height: 50px;
+    position: relative;
+    text-transform: capitalize;
+    margin: 0 auto;
+    display: block;
   }
 }
+
 /* ********************end of @ media************************** */
+
 header.MuiPaper-root-40.MuiPaper-elevation4-46.MuiAppBar-root-67.MuiAppBar-positionFixed-68.MuiAppBar-colorPrimary-73.mui-fixed.FullScreenDialog-appBar-1 {
   margin-bottom: 2%;
 }
@@ -597,14 +627,32 @@ header.MuiPaper-root-40.MuiPaper-elevation4-46.MuiAppBar-root-67.MuiAppBar-posit
     left: 150px;
   } 
 }
-@media only screen and (max-width: 850px) {
-  .scale.ui.hidden.visible.transition{
-    width: 360px;
-    position: relative;
-    bottom: 483px;
-    left: 50px;
-  } 
-}
+/* @media only screen and (max-width: 850px) {
+    .scale.ui.hidden.visible.transition{
+      width: 360px;
+      position: relative;
+      bottom: 483px;
+      left: 50px;
+    } 
+    .image-friend {
+      border-radius: 50%;
+      max-width: 7%;
+      max-height: 88%;
+      position: relative;
+      width: 22%;
+      height: 80%;
+      text-transform: capitalize;
+      margin: 0 2%;
+    }
+    .teammember-name {
+      margin-right: 10px;
+      margin-left: 16%;
+      text-transform: capitalize;
+      display: block;
+      margin-top: 2%;
+      width: 20%;
+  }
+} */
 @media only screen and (max-width: 557px) {
   .scale.ui.hidden.visible.transition{
     width: 360px;
@@ -624,4 +672,15 @@ header.MuiPaper-root-40.MuiPaper-elevation4-46.MuiAppBar-root-67.MuiAppBar-posit
 .typing{
   height: 4%;
   background-color: #c1c1c1;
+}
+.navbar-toggle.collapsed{
+  display: none
+}
+button.btn.btn-danger {
+  position: absolute;
+  right: 6px;
+  top: 10px;
+}
+a.navbar-brand{
+  display: none;
 }

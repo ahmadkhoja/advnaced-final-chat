@@ -2,17 +2,13 @@ import  React from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-// import ListItemText from '@material-ui/core/ListItemText';
-// import ListItem from '@material-ui/core/ListItem';
-// import List from '@material-ui/core/List';
-// import Divider from '@material-ui/core/Divider';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
-import FaUser from 'react-icons/lib/fa/user'
+import MdSettingsApplications from 'react-icons/lib/md/settings-applications'
 
 const styles = {
     appBar: {
@@ -28,7 +24,7 @@ function Transition(props) {
     return <Slide direction="up" {...props} />;
   }
   
-  class FullScreenDialog extends React.Component {
+  class TeamOptionsDialog extends React.Component {
     state = {
       open: false,
     };
@@ -45,7 +41,7 @@ function Transition(props) {
       const { classes } = this.props;
       return (
         <div style={{display:'inline-block',marginTop: '5px'}} >
-          <Button onClick={this.handleClickOpen}><FaUser style={{fill:'deepskyblue'}}/></Button>
+          <Button onClick={this.handleClickOpen}><MdSettingsApplications style={{fill:'deepskyblue'}}/></Button>
           <Dialog
             fullScreen
             open={this.state.open}
@@ -53,33 +49,21 @@ function Transition(props) {
             TransitionComponent={Transition}
           >
             <AppBar className={classes.appBar}>
-              <Toolbar>
-                <IconButton color="inherit" onClick={this.handleClose} aria-label="Close">
-                  <CloseIcon />
-                </IconButton>
+              <Toolbar className="header-users-dialog">
                 <Typography variant="title" color="inherit" className={classes.flex}>
-                  Sound
+                  Options
                 </Typography>
                 <Button color="inherit" onClick={this.handleClose}>
-                  save
+                <CloseIcon />
                 </Button>
               </Toolbar>
             </AppBar>
-            {this.props.teamUsers}
-            {/* <List>
-              <ListItem button>
-                <ListItemText primary="Phone ringtone" secondary="Titania" />
-              </ListItem>
-              <Divider />
-              <ListItem button>
-                <ListItemText primary="Default notification ringtone" secondary="Tethys" />
-              </ListItem>
-            </List> */}
+            {this.props.children}
           </Dialog>
         </div>
       );
     }
   }
   
-  export default withStyles(styles)(FullScreenDialog);
+  export default withStyles(styles)(TeamOptionsDialog);
   

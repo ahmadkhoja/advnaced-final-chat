@@ -1,35 +1,23 @@
-import React from "react";
+import React, { Children } from "react";
 import { Navbar, FormGroup, Button, ButtonGroup } from 'react-bootstrap';
 import LeftNav from './SearchBar/LeftNav'
-import FullScreenDialog from './FullScreenDialog'
+import TeamUsersDialog from './TeamUsersDialog'
+import UsersTeamDialog from './UsersTeamDialog'
+import TeamOptionsDialog from './TeamOptionsDialog'
 
-const MainMenu = ({searchValue,onSearchChange,logout,value,logoutTitle,teamUsers }) => {
+const MainMenu = ({searchValue,onSearchChange,logout,value,logoutTitle,teamUsers,visibleUsers,users_teams,visibleTeams, children }) => {
   return (
     <Navbar>
     <Navbar.Header>
       <Navbar.Brand>
         <a href="#home">Brand</a>
       </Navbar.Brand>
-      <FullScreenDialog teamUsers={teamUsers}/>
+      {visibleUsers ? <TeamUsersDialog teamUsers={teamUsers} /> : null }
+      {visibleUsers ? <TeamOptionsDialog children={children} /> : null }
+      {visibleTeams ? <UsersTeamDialog users_teams={users_teams} /> : null }
+      <Button bsStyle = "danger" onClick={logout}>{logoutTitle}</Button>      
       <Navbar.Toggle />
     </Navbar.Header>
-    <Navbar.Collapse>
-      
-      <Navbar.Form className="searchApp" >
-        <LeftNav searchValue={searchValue} onSearchChange={onSearchChange} value={value}/>
-      </Navbar.Form>
-
-      <Navbar.Form pullRight>
-        <FormGroup>
-          <ButtonGroup >
-          {/* <Button bsStyle = "primary">Profile</Button> */}
-          {/* <Button bsStyle = "info">Setting</Button> */}
-          {/* <a href="/team_list"><FaCartPlus/>Build Team</a> */}
-          <Button bsStyle = "danger" onClick={logout}>{logoutTitle}</Button>
-          </ButtonGroup>
-        </FormGroup>
-      </Navbar.Form>
-    </Navbar.Collapse>
   </Navbar>
   )
 }
