@@ -121,40 +121,37 @@ setInterval(save,1000)
         const sendMessage = ({text,image,username,date,imagename,team_id}) => {
             if(!user){ return; }
             let message = { text,image,username,date,imagename,team_id, me:false }
-            // let messages = []
-            // const messages = teams[team_id].messages
             const user_name = teams[team_id].teamUsers.find(user => user.username === username)
             const teamid = teams.find(team => team.team_id === team_id)
 
             if(user_name && teamid){
-              message.me = true
-            //   messages.push(message)
-            teams[team_id].messages.push(message)
+                message.me = true
+                teams[team_id].messages.push(message)
             
-            const promises = languages.map( lg => {
-                if( lg !== user.language ){
-                    return translate(text, { from:user.language, to:lg })
-                        .then( ({text}) => {
-                            message[lg] = text
-                            io.emit('lg',lg)
-                        })
-                        .catch( err => { throw err })
-                }else{
-                    message[lg] = text
-                    return Promise.resolve()
-                }
-            })
-
-            Promise.all(promises)
-                .then( () => {
-                    console.log(message)
-                    io.emit('message:broadcast',teams)
+                const promises = languages.map( lg => {
+                    if( lg !== user.language ){
+                        return translate(text, { from:user.language, to:lg })
+                            .then( ({text}) => {
+                                message[lg] = text
+                                io.emit('lg',lg)
+                            })
+                            .catch( err => { throw err })
+                    }else{
+                        message[lg] = text
+                        return Promise.resolve()
+                    }
                 })
-                .catch( err => console.log(err))
-        }else{
-            throw new Error('not user or not in the same teams')
+
+                Promise.all(promises)
+                    .then( () => {
+                        console.log(message)
+                        io.emit('message:broadcast',teams)
+                    })
+                    .catch( err => console.log(err))
+            }else{
+                throw new Error('not user or not in the same teams')
+            }
         }
-    }
 
         let uploader = new SocketIOFile(socket, {
             // uploadDir: {			// multiple directories
@@ -242,35 +239,25 @@ setInterval(save,1000)
             }
         });
         
-        
         socket.on('message', (data)=>{
             sendMessage(data)
         } )
         
         socket.emit('teams',teams)
-
         socket.on('invite:user:to:team',(friends,selectedTeam) => {
-            // console.log('friends',friends)
             selectedTeam = parseInt(selectedTeam)
             const index = teams.findIndex(({team_id})=>team_id === selectedTeam)
             console.log('team_ids',teams.map(team=>team.team_id))
             if(index < 0){
                 throw new Error('team `'+selectedTeam+'` not found')
             }
-            // console.log('index',index)
-            // a = [...a,...b]
             teams[index].teamUsers = [...teams[index].teamUsers,...friends]
-            socket.emit('teams',teams)
-            // console.log(teams)
+            socket.emit('user:invited:successfully',teams,index)
         })
         socket.on('create:team',(teamname,teamUsers) => {
             const team = {teamname,teamUsers,messages:[],team_id:team_ids++}
-            // console.log('team:',team)
             teams.push(team)
-            socket.emit('teams',teams)
-            // console.log('teams--->',teams)
-            // const messages = []
-            // socket.emit('team:created',teamname,teamUsers,messages)
+            socket.emit('teams:created:successfully',teams,team.team_id)
         })
 
         socket.on('remove:team', (team) => {
@@ -281,7 +268,6 @@ setInterval(save,1000)
             }
             teams.splice(index,1)
             console.log("teams after one is removed",teams)
-            // socket.emit('teams',teams)
         })        
         socket.on('user:logout',(user) => {
             const index = connected.indexOf(user)

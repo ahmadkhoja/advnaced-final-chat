@@ -123,8 +123,10 @@ class App extends React.Component {
 
     socket.on('authenticate:ok',(user)=>{
       const user_teams = this.getUserTeam(user.username, this.state.teams)
-      const team_id_index = user_teams[0].team_id
-      this.setState({user, team_id_index})
+      if(user_teams){
+        const team_id_index = user_teams[0].team_id
+        this.setState({user, team_id_index})
+      }
     })
 
     socket.on('authenticate:no',(user)=>{
@@ -137,30 +139,19 @@ class App extends React.Component {
     socket.on('user:list', users => {
       this.setState({users})
     })
-    // socket.on('team:created',(roomname,teamUsers) => {
-    //   const room = {roomname}
-    //   this.state.rooms.push(room)
-    //   this.setState({teamUsers})
-    // })
     socket.on('teams',(teams) => {
       this.setState({teams})
+    })
+    socket.on('user:invited:successfully',(teams,team_id) => {
+        this.setState({teams, team_id_index:team_id})
+      
+    })
+    socket.on('teams:created:successfully',(teams,team_id) => {
+      this.setState({teams, team_id_index:team_id})
     })
     socket.on('translated:page:success', translated_page => {
       this.setState({translated_page})
     })
-    // socket.on('someone:typing',(typing,typingText,/*team_id*/) => {
-    //   // console.log("team_id:",team_id)
-    //     let timeout = undefined
-    //     this.setState({typing:typing,typingText})
-    //     if(this.state.typing===false){
-    //       this.setState({typing:false,typingText})
-    //     }else{
-    //       clearTimeout(timeout)
-    //       timeout = setTimeout(() => {
-    //         this.setState({typing:false,typingText})
-    //         }, 5000);
-    //     }
-    // })
     socket.on('lg',lg => this.setState({lg}))    
 }
   
@@ -168,7 +159,6 @@ class App extends React.Component {
     this.setState({search:evt.target.value})
   }
   filterMessages = () => {
-    // this.props.messages
     const search = this.state.search.trim();
     if(!search){ return this.state.messages }
     const regex = new RegExp(search,'i');
@@ -188,16 +178,12 @@ class App extends React.Component {
     const day = initialDate.getUTCDay()
     const month = initialDate.getMonth()+1
     const year = initialDate.getFullYear()
-    
     let hours = initialDate.getHours();
     const minutes = initialDate.getMinutes()
-        
     const fullDate = []
     fullDate.push(day,month,year)
     let date = ''
-    // if(hours === 0){
-    //   hours = 12
-    // }
+
     if (hours < 12){
       if(hours < 10){
            date = '0' + hours + ":" + minutes + " AM           " + month + "/" + day + "/" + year;
@@ -214,17 +200,13 @@ class App extends React.Component {
   addMessage = ({message},image) => {
     this.setState({status:'loading'})
     const team_id = this.state.teams[this.state.team_id_index].team_id
-    // user_teams.find(team=>team.team_id === this.state.team_id_index)
     const date = this.dateNow()
     const data = { text:message, image:this.state.user.image, username:this.state.user.username, date,team_id, commandType:'message'}
     console.log(data)
     if(image){
-      // console.log('upload',image,data,this.state.uploader.upload)
         this.state.uploader.upload(image,{data:data})
     }else{
-      // setTimeout(() => {
         this.state.socket.emit('message',data)
-      // }, 1000); 
     }
   }
   addNewServer = (servername,image) => {
@@ -273,7 +255,6 @@ class App extends React.Component {
 
   getUserTeam = (username, teams) => {
     const user_teams = []
-    // console.log("team_id_index: ",this.state.team_id_index)
     teams.forEach( team => {
       const userInTeam = team.teamUsers.find( user => user.username === username)
       if(userInTeam){ user_teams.push(team) }
@@ -284,15 +265,12 @@ class App extends React.Component {
 
   render(){
     const messages = this.filterMessages()
-    // console.log('teams at team_id_index 0: ',this.state.teams[this.state.team_id_index])
-
     const user_teams = this.getUserTeam(this.state.user.username, this.state.teams)
     let teamID = user_teams.find(team=>team.team_id === this.state.team_id_index)
 
     return(
           <Switch>
             
-            {/* <Route path="/" render={(match) => <Login socket={this.state.socket} history={match.history}  />}/> */}
             <Route path="/invite" render={
               (match) => 
               <InviteFriend 
@@ -357,7 +335,6 @@ class App extends React.Component {
               translated_page={this.state.translated_page}
               typing={this.state.typing}
               typingText={this.state.typingText}
-              // index={this.state.team_id_index}
               teamID={teamID}showUsers
               showTeams={this.state.showTeams}
               showTeamOptions={this.state.showTeamOptions}
