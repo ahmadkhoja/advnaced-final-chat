@@ -91,7 +91,7 @@ const load = () => {
     ids = data.ids
     team_ids = data.team_ids
 }
-
+ 
 // Calling the load function
 load()
 
