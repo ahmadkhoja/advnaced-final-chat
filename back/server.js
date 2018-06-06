@@ -70,33 +70,33 @@ app.get('/',(req,res) => {
         },
     ]
 // As it looks it a function to save our data for persistence
-// const save = () => {
+const save = () => {
     // It uses fs to save in data.json the following {ids, team_ids, users, teams} as a String
-//     fs.writeFileSync('../data.json',JSON.stringify({ids, team_ids, users, teams},null,2))
-// }
+    fs.writeFileSync('../data.json',JSON.stringify({ids, team_ids, users, teams},null,2))
+}
 
 // As it looks it a function to load our data
-// const load = () => {
+const load = () => {
     // It uses fs to read the data.json
-//     const data_string = fs.readFileSync('../data.json',{encoding:'utf8'})
+    const data_string = fs.readFileSync('../data.json',{encoding:'utf8'})
     // Checking if it's empty
-//     if(!data_string){
+    if(!data_string){
     // If empty throw an error
-//         throw new Error('file is empty')
-//     }
+        throw new Error('file is empty')
+    }
     //  Return the following {ids, team_ids, users, teams} as JavaScript Objects
-//     const data = JSON.parse(data_string)
-//     teams = data.teams
-//     users = data.users
-//     ids = data.ids
-//     team_ids = data.team_ids
-// }
+    const data = JSON.parse(data_string)
+    teams = data.teams
+    users = data.users
+    ids = data.ids
+    team_ids = data.team_ids
+}
 
 // Calling the load function
-// load()
+load()
 
 // Calling the save function every second
-// setInterval(save,1000)
+setInterval(save,1000)
 
     // All the languages
     const languages = []
@@ -120,27 +120,39 @@ app.get('/',(req,res) => {
 
         const sendMessage = ({text,image,username,date,imagename,team_id}) => {
             if(!user){ return; }
-            const message = { text,image,username,date,imagename,team_id, me:false }
-            const messages = teams[team_id].messages
-            let user_name = teams[team_id].teamUsers.find(user => user.username === username)
-            let teamid = teams.find(team => team.team_id === team_id)
-            // console.log('team_id coming:',team_id)
-            // console.log(teams[team_id].messages)
+            let message = { text,image,username,date,imagename,team_id, me:false }
+            // let messages = []
+            // const messages = teams[team_id].messages
+            const user_name = teams[team_id].teamUsers.find(user => user.username === username)
+            const teamid = teams.find(team => team.team_id === team_id)
 
             if(user_name && teamid){
               message.me = true
-              messages.push(message)
-            languages.forEach( lg => {
-                if( lg === user.language ){
-                    io.to(lg).emit('message:broadcast',teams)
+            //   messages.push(message)
+            teams[team_id].messages.push(message)
+            
+            const promises = languages.map( lg => {
+                if( lg !== user.language ){
+                    return translate(text, { from:user.language, to:lg })
+                        .then( ({text}) => {
+                            message[lg] = text
+                            io.emit('lg',lg)
+                        })
+                        .catch( err => { throw err })
                 }else{
-                    translate(text, { from:user.language, to:lg })
-                        .then( ({text}) => 
-                            io.to(lg).emit('message:broadcast',teams)
-                        )
-                        .catch( err => console.error(err))
+                    message[lg] = text
+                    return Promise.resolve()
                 }
             })
+
+            Promise.all(promises)
+                .then( () => {
+                    console.log(message)
+                    io.emit('message:broadcast',teams)
+                })
+                .catch( err => console.log(err))
+        }else{
+            throw new Error('not user or not in the same teams')
         }
     }
 
@@ -231,7 +243,9 @@ app.get('/',(req,res) => {
         });
         
         
-        socket.on('message', sendMessage )
+        socket.on('message', (data)=>{
+            sendMessage(data)
+        } )
         
         socket.emit('teams',teams)
 
@@ -251,7 +265,7 @@ app.get('/',(req,res) => {
         })
         socket.on('create:team',(teamname,teamUsers) => {
             const team = {teamname,teamUsers,messages:[],team_id:team_ids++}
-            console.log('team:',team)
+            // console.log('team:',team)
             teams.push(team)
             socket.emit('teams',teams)
             // console.log('teams--->',teams)
@@ -260,12 +274,14 @@ app.get('/',(req,res) => {
         })
 
         socket.on('remove:team', (team) => {
-            const index = teams.indexOf(team)
-            console.log('index',index)
+            const index = teams.find(t =>t.team_id === team.team_id)
+            console.log("remove team index:",index.team_id)
             if(index<0){
                 return;
             }
             teams.splice(index,1)
+            console.log("teams after one is removed",teams)
+            // socket.emit('teams',teams)
         })        
         socket.on('user:logout',(user) => {
             const index = connected.indexOf(user)
@@ -273,31 +289,31 @@ app.get('/',(req,res) => {
             console.log('connected',connected)
         })
         // team_title,team_options,create_team,invite_member,search,send,team_name,team_choose,add,remove,create_team_button,skip_button,logging_error,logout
-        socket.on('user:typing',(typing,typingText/*,team_id*/) => {
-            // io.emit('someone:typing',typing,typingText)
-            // console.log('team_id',team_id)
-            // const team = teams.find(team => team.team_id === team_id)
-            // if(team){
-                const promises = languages.forEach( lg => {
+        // socket.on('user:typing',(typing,typingText/*,team_id*/) => {
+        //     // io.emit('someone:typing',typing,typingText)
+        //     // console.log('team_id',team_id)
+        //     // const team = teams.find(team => team.team_id === team_id)
+        //     // if(team){
+        //         const promises = languages.forEach( lg => {
     
-                    if( lg === user.language && user.language ){
-                        io.to(lg).emit('someone:typing',typing,typingText/*,team_id*/)
-                        // .then((text) =>  io.to(lg).emit('someone:typing',text,typing))
-                        // .catch( err => console.error(err))
-                    }else{
-                        translate(typingText, { from:user.language, to:lg })
-                            .then( ({text}) => io.to(lg).emit('someone:typing',typing,text/*,team_id*/)
-                            )
-                            .catch( err => console.error(err))
-                    }
-                })  
-            // }else{
-            //     throw new Error("not team")
-            // }
-            // Promise.all(promises)
-            // .then(()=>socket.emit('translated:page:success',translated_page)  )
-            // .catch((err)=>{ throw err })
-        })
+        //             if( lg === user.language && user.language && user ){
+        //                 io.to(lg).emit('someone:typing',typing,typingText/*,team_id*/)
+        //                 // .then((text) =>  io.to(lg).emit('someone:typing',text,typing))
+        //                 // .catch( err => console.error(err))
+        //             }else{
+        //                 translate(typingText, { from:user.language, to:lg })
+        //                     .then( ({text}) => io.to(lg).emit('someone:typing',typing,text/*,team_id*/)
+        //                     )
+        //                     .catch( err => console.error(err))
+        //             }
+        //         })  
+        //     // }else{
+        //     //     throw new Error("not team")
+        //     // }
+        //     // Promise.all(promises)
+        //     // .then(()=>socket.emit('translated:page:success',translated_page)  )
+        //     // .catch((err)=>{ throw err })
+        // })
         socket.on('translated:page', titlesObject => {
             // console.log(team_title)
             if(!user){ return; }

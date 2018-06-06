@@ -78,7 +78,7 @@ class CreateTeam extends React.Component {
     }
     CreateTeam = () => {
         // you have the user for auth
-        const user = this.props.user        
+        const user = this.props.user
         if(this.props.user){
             this.state.teamUsers.push(user)
         }

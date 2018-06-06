@@ -37,6 +37,7 @@ export class SignUp extends React.Component {
         // this.props.socket.emit('signup',username ,password,userlang)
         let user_list = this.props.user_list
         const user = user_list.find( user => user.username === username )
+        console.log('signup user',user)
         if(user){
             this.setState({alert:true})
         }else{

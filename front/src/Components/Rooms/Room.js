@@ -11,7 +11,7 @@ return(
             <Button bsStyle="info" className="roomNameButton" onClick={changeIndex}>
                 <label className="roomName">{teamname}</label>
             </Button>
-            <Button bsStyle="danger" onClick={removeRoom} className="roomCancelButton">X</Button>
+            {/* <Button bsStyle="danger" onClick={removeRoom} className="roomCancelButton">X</Button> */}
          </div>
         </div>
     </div>

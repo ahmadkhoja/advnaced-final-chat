@@ -30,19 +30,8 @@ class App extends React.Component {
     }
     
     this.state = {
-      
       socket:null,
       uploader:null,
-      servers: [
-        {servername:'ai',image:'ai'},
-        {servername:'codi',image:'codi'},
-        {servername:'webdev',image:'webdev'},
-      ],
-      rooms: [
-        {roomname:'Welcome'},
-        {roomname:'General'},
-        {roomname:'Web Development'},
-      ],
       user:{},
       user_list:[],
       error:'',
@@ -53,8 +42,6 @@ class App extends React.Component {
       date: date,
       imagename:null,
       image:'',
-      // teamUsers:[],
-      // teams:[],
       teams: [],
       team_id_index:0,
       alert:false,
@@ -80,7 +67,8 @@ class App extends React.Component {
       showTeams:false,
       showUsers:false,
       showTeamOptions:true,
-      showUsersTeam:true
+      showUsersTeam:true,
+      lg:''
     }
   }
 
@@ -108,13 +96,13 @@ class App extends React.Component {
       console.log('Start uploading', fileInfo);
     });
     uploader.on('stream', (fileInfo) => {
-      console.log('Streaming... sent ' + fileInfo.sent + ' bytes.');
+      // console.log('Streaming... sent ' + fileInfo.sent + ' bytes.');
     });
     uploader.on('complete', (fileInfo) => {
       console.log('Upload Complete', fileInfo);
     });
     uploader.on('error', (err) => {
-      console.log('Error!', err);
+      // console.log('Error!', err);
     });
     uploader.on('abort', (fileInfo) => {
       console.log('Aborted: ', fileInfo);
@@ -124,14 +112,7 @@ class App extends React.Component {
     this.setState({socket})
 
     socket.on('message:broadcast',(teams) => {
-//       const message = {id, text,image,username,date,imagename,team_id, me:false}
-//       const messages = this.state.teams[this.state.team_id_index].messages
-//       const copyState = Object.assign({},this.state)
-//       let user_name = this.state.teams[this.state.team_id_index].teamUsers.find(user => user.username === username)
-//       let teamid = this.state.teams.find(team => team.team_id === team_id)
-// //      console.log('team_id coming:',team_id,teamid)
-      this.setState({teams,status:'success'})
-      // this.setState({status:'success'})
+      this.setState({ teams, status:'success'})
     })
     socket.on('user:profile_image',(image) => {
       this.setState({image})
@@ -141,7 +122,9 @@ class App extends React.Component {
     })
 
     socket.on('authenticate:ok',(user)=>{
-      this.setState({user})
+      const user_teams = this.getUserTeam(user.username, this.state.teams)
+      const team_id_index = user_teams[0].team_id
+      this.setState({user, team_id_index})
     })
 
     socket.on('authenticate:no',(user)=>{
@@ -161,24 +144,24 @@ class App extends React.Component {
     // })
     socket.on('teams',(teams) => {
       this.setState({teams})
-      // console.log('teams socket on :',teams)
     })
     socket.on('translated:page:success', translated_page => {
       this.setState({translated_page})
     })
-    socket.on('someone:typing',(typing,typingText,/*team_id*/) => {
-      // console.log("team_id:",team_id)
-        let timeout = undefined
-        this.setState({typing:typing,typingText})
-        if(this.state.typing===false){
-          this.setState({typing:false,typingText})
-        }else{
-          clearTimeout(timeout)
-          timeout = setTimeout(() => {
-            this.setState({typing:false,typingText})
-            }, 5000);
-        }
-    })   
+    // socket.on('someone:typing',(typing,typingText,/*team_id*/) => {
+    //   // console.log("team_id:",team_id)
+    //     let timeout = undefined
+    //     this.setState({typing:typing,typingText})
+    //     if(this.state.typing===false){
+    //       this.setState({typing:false,typingText})
+    //     }else{
+    //       clearTimeout(timeout)
+    //       timeout = setTimeout(() => {
+    //         this.setState({typing:false,typingText})
+    //         }, 5000);
+    //     }
+    // })
+    socket.on('lg',lg => this.setState({lg}))    
 }
   
   onChange = (evt) => {
@@ -288,16 +271,22 @@ class App extends React.Component {
     this.setState({alert:false})
   }
 
-  render(){
-    const messages = this.filterMessages()
-    // console.log('teams at team_id_index 0: ',this.state.teams[this.state.team_id_index])
+  getUserTeam = (username, teams) => {
     const user_teams = []
-    console.log("team_id_index: ",this.state.team_id_index)
-    this.state.teams.forEach( team => {
-      const userInTeam = team.teamUsers.find( user => user.username === this.state.user.username)
+    // console.log("team_id_index: ",this.state.team_id_index)
+    teams.forEach( team => {
+      const userInTeam = team.teamUsers.find( user => user.username === username)
       if(userInTeam){ user_teams.push(team) }
       return;
     })
+    return user_teams
+  }
+
+  render(){
+    const messages = this.filterMessages()
+    // console.log('teams at team_id_index 0: ',this.state.teams[this.state.team_id_index])
+
+    const user_teams = this.getUserTeam(this.state.user.username, this.state.teams)
     let teamID = user_teams.find(team=>team.team_id === this.state.team_id_index)
 
     return(
@@ -333,10 +322,11 @@ class App extends React.Component {
             <Signup 
               socket={this.state.socket} 
               history={match.history} 
-              user_list = {this.state.users}
+              user_list = {this.state.user_list}
               uploader={this.state.uploader}
               translated_page={this.state.translated_page}
               image={this.state.image}
+              user={this.state.user}
              />}
             />
             <Route path="/home" render={
@@ -373,6 +363,7 @@ class App extends React.Component {
               showTeamOptions={this.state.showTeamOptions}
               showUsersTeam={this.state.showUsersTeam}
               showUsers={this.state.showUsers}
+              lg={this.state.lg}
             />}
             />
             <Route path="/" render={(match) => <Login 

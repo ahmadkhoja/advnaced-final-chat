@@ -76,7 +76,7 @@ class Home extends React.Component {
       if(this.props.currentTeam){
         return (
           this.props.currentTeam.messages.map((message, index) =>
-            <SingleMessage  username={message.username} date={message.date} user_id={message.user_id} body={message.text} key={index} {...message} image={ message.image }
+            <SingleMessage  user={this.props.user} lg={this.props.lg} message={message} username={message.username} date={message.date} user_id={message.user_id} body={message.text} key={index} {...message} image={ message.image }
             imagename={message.imagename} colons={this.state.colons_list}/>
           )
         )
@@ -208,7 +208,7 @@ class Home extends React.Component {
             { this.props.showTeamOptions ?
             <div className="teams">
               <div className="memberTeamOptions">
-                <img className="imageTeamSection" src={'//localhost:8888/uploadedImages/'+this.props.user.image} alt="batata" />
+                {this.props.user.image ? <img className="imageTeamSection" src={'//localhost:8888/uploadedImages/'+this.props.user.image} alt="batata" /> : <img className="imageTeamSection" src={'//localhost:8888/uploadedImages/avatar.jpg'} alt="batata" />}
                 <label className="usernameTeamSection">{this.props.user.username}({this.props.user.language})</label>
                 <TeamOptions 
                 teamOptionsTitle={this.props.translated_page.team_options}
