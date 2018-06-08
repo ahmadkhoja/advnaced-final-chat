@@ -10,7 +10,8 @@
     "back": "cd back && npm install",
     "front": "cd front && npm install",
     "start": "concurrently --kill-others-on-fail --names \" server client \" \"npm run server\" \"npm run client\" ",
-    "install": "concurrently --kill-others-on-fail --names \" front back \" \"npm run front\" \"npm run back\" "
+    "main": "npm install concurrently --save",
+    "install": "concurrently --kill-others-on-fail --names \" front back main \" \"npm run front\" \"npm run back\" \"npm run main\" "
   },
   "author": "",
   "license": "ISC",

@@ -19,9 +19,8 @@ const SingleMessage = ({ image, username, body, date, imagename, colons, message
           <div className="message-text">
             <p className="bodyText">{ 
               user.language === lg ? message[lg] : body.split(" ").map(
-              (word) => {
+              (word) => {  
                 const colon = colons.find((colon)=>colon.colons === word)
-                console.log('colon',colon)
                 if(colon){
                   return <Emoji emoji={colon.colons} size={16} />
                 }else{

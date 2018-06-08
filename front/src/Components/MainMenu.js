@@ -1,6 +1,6 @@
-import React, { Children } from "react";
-import { Navbar, FormGroup, Button, ButtonGroup } from 'react-bootstrap';
-import LeftNav from './SearchBar/LeftNav'
+import React from 'react';
+import { Navbar, Button } from 'react-bootstrap';
+// import LeftNav from './SearchBar/LeftNav'
 import TeamUsersDialog from './TeamUsersDialog'
 import UsersTeamDialog from './UsersTeamDialog'
 import TeamOptionsDialog from './TeamOptionsDialog'

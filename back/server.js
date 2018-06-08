@@ -127,9 +127,8 @@ setInterval(save,1000)
             if(user_name && teamid){
                 message.me = true
                 teams[team_id].messages.push(message)
-            
                 const promises = languages.map( lg => {
-                    if( lg !== user.language ){
+                    if( lg !== user.language && text.charAt(0) != ':' ){
                         return translate(text, { from:user.language, to:lg })
                             .then( ({text}) => {
                                 message[lg] = text
@@ -137,7 +136,6 @@ setInterval(save,1000)
                             })
                             .catch( err => { throw err })
                     }else{
-                        message[lg] = text
                         return Promise.resolve()
                     }
                 })

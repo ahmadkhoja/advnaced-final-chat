@@ -335,7 +335,7 @@ class App extends React.Component {
               translated_page={this.state.translated_page}
               typing={this.state.typing}
               typingText={this.state.typingText}
-              teamID={teamID}showUsers
+              teamID={teamID}
               showTeams={this.state.showTeams}
               showTeamOptions={this.state.showTeamOptions}
               showUsersTeam={this.state.showUsersTeam}

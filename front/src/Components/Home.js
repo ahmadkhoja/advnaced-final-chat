@@ -7,7 +7,7 @@ import TeamOptions from './Teams/TeamOptions'
 import TeamMember from './Teams/TeamMember'
 import { Picker } from 'emoji-mart'
 import 'emoji-mart/css/emoji-mart.css'
-import { Button, Divider, Image, Transition } from 'semantic-ui-react'
+import { Button, Transition } from 'semantic-ui-react'
 import FaGroup from 'react-icons/lib/fa/group'
 import FaUserPlus from 'react-icons/lib/fa/user-plus'
 class Home extends React.Component {
@@ -190,7 +190,7 @@ class Home extends React.Component {
                     key={this.state.theInputKey || '' } />
                     </label>
                   <Button content={this.state.visible ? 'Hide' : 'Show'} onClick={this.toggleVisibility}>
-                    <img src="https://cdn.shopify.com/s/files/1/1061/1924/products/Hugging_Face_Emoji_2028ce8b-c213-4d45-94aa-21e1a0842b4d_large.png?v=1480481059" style={{height:"87%",width: '86%'}} />
+                    <img src="https://cdn.shopify.com/s/files/1/1061/1924/products/Hugging_Face_Emoji_2028ce8b-c213-4d45-94aa-21e1a0842b4d_large.png?v=1480481059" style={{height:"87%",width: '86%'}} alt="batata" />
                   </Button>
                   </div>
                   {/* <Divider hidden /> */}

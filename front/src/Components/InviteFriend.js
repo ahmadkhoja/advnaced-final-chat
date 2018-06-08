@@ -2,7 +2,7 @@ import React from 'react'
 // import MainMenu from '../MainMenu'
 import { Button,Grid,Row,Col,Thumbnail,FormGroup,FormControl  } from 'react-bootstrap'
 // import './InviteFriend.css'
-import CopyToClipboardComponent from './CopyToClipboard'
+// import CopyToClipboardComponent from './CopyToClipboard'
 
 const UserThumbnail = ({username,image,inviteFriend,button_value,userClass,text,index,isAdded,add,remove}) => {
     return(
