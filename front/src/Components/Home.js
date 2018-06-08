@@ -21,8 +21,15 @@ class Home extends React.Component {
       theInputKey:'',
       wrapperclass: 'wrapper',
       colons_list:[],
+      isHovering: false,
     }
   }
+
+  handleMouseHover = () => {
+    let isHovering = !this.state.isHovering
+    this.setState({isHovering})
+  }
+
   toggleVisibility = () => this.setState({ visible: !this.state.visible })
 
   handleClick() {
@@ -87,7 +94,7 @@ class Home extends React.Component {
       return(
           this.props.user_teams.map((props,index) =>
             // console.log(props.id)
-            <Team teamname={props.teamname} changeIndex={ () => this.props.changeIndex(props.team_id)} removeRoom={() => this.props.removeRoom(props)} key={index} {...props} />)
+            <Team teamname={props.teamname} changeIndex={ () => this.props.changeIndex(props.team_id)} removeRoom={() => this.props.removeRoom(props)} key={index} {...props} onMouseEnter={this.handleMouseHover} onMouseLeave={this.handleMouseHover} isHovering={this.state.isHovering}/>)
         )
     }
   }
