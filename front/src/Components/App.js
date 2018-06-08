@@ -232,6 +232,7 @@ class App extends React.Component {
   }
   removeTeam = (team) => {
     // console.log('team will be removed:',this.state.team_id_index)
+    // console.log('team will be removed:',team)
     this.state.socket.emit('remove:team',team)
     // const index = this.state.teams.indexOf(team)
     // if (index < 0) {

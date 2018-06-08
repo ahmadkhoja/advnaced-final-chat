@@ -264,8 +264,9 @@ setInterval(save,1000)
             if(index<0){
                 return;
             }
-            teams.splice(index,1)
-            console.log("teams after one is removed",teams)
+            teams.splice(index.team_id,1)
+            socket.emit('teams',teams)
+            // console.log("teams after one is removed",removedTeam)
         })        
         socket.on('user:logout',(user) => {
             const index = connected.indexOf(user)
