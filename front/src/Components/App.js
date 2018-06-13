@@ -129,7 +129,7 @@ class App extends React.Component {
       const user_teams = this.getUserTeam(user.username, this.state.teams)
       if(user_teams){
         const team_id_index = user_teams[0].team_id
-        this.setState({user, team_id_index})
+        this.setState({user, team_id_index}) 
       }
     })
 
@@ -143,8 +143,8 @@ class App extends React.Component {
     socket.on('user:list', users => {
       this.setState({users})
     })
-    socket.on('teams',(teams) => {
-      this.setState({teams})
+    socket.on('teams',(teams) => { 
+        this.setState({teams})
     })
     socket.on('user:invited:successfully',(teams,team_id) => {
         this.setState({teams, team_id_index:team_id})
@@ -235,19 +235,7 @@ class App extends React.Component {
       this.setState({ servers:selected });
   }
   removeTeam = (team) => {
-    // console.log('team will be removed:',this.state.team_id_index)
-    // console.log('team will be removed:',team)
     this.state.socket.emit('remove:team',team)
-    // const index = this.state.teams.indexOf(team)
-    // if (index < 0) {
-    //   return;
-    // }
-      // const selected = this.state.teams.slice();
-      // selected.splice(index, 1);
-      // console.log('selected',selected)
-      // let copyState2 = Object.assign({},this.state)
-      // copyState2.teams = selected 
-      // this.setState(copyState2);
   }  
   changeIndex = (team_id_index) => {
 //    console.log(team_id_index)
