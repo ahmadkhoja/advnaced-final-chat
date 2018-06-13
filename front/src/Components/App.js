@@ -91,7 +91,7 @@ class App extends React.Component {
       }
     })
 
-    const socket = io('http://localhost:8888');//if it wasn't razzle you should do io('http://localhost:3000(or other port)')
+    const socket = io('http://localhost:3023');//if it wasn't razzle you should do io('http://localhost:3000(or other port)')
     const uploader = new SocketIOFileClient(socket);
     uploader.on('start', (fileInfo) => {
       console.log('Start uploading', fileInfo);

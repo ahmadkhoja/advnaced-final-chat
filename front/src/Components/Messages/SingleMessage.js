@@ -18,7 +18,7 @@ const SingleMessage = ({ image, username, body, date, imagename, colons, message
       <div className="singleMessage">
         {
           image ? 
-          <img className="profileImage" src={'//localhost:8888/uploadedImages/'+image} alt="batata"/> :
+          <img className="profileImage" src={'//localhost:3023/uploadedImages/'+image} alt="batata"/> :
           <img className="profileImage" src={'//localhost:3000/images/avatar.jpg'} alt="batata"/>
         }
         <div className="messageContainer">
@@ -33,7 +33,7 @@ const SingleMessage = ({ image, username, body, date, imagename, colons, message
         }
         {
           imagename ? 
-          <img className="bodyImage" src={'//localhost:8888/uploadedImages/'+imagename} alt="batata"/> : null
+          <img className="bodyImage" src={'//localhost:3023/uploadedImages/'+imagename} alt="batata"/> : null
         }
         
          

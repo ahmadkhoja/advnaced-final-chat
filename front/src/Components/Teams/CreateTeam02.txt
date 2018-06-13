@@ -9,7 +9,7 @@ const UserThumbnail = ({username,image,addUserToTeam,button_value,userClass,text
         <div className={userClass}>       
             <Col xs={6} md={4}>
             <Thumbnail>
-            <p className="image-container"><img className="user-image" src={'//localhost:8888/uploadedImages/'+image} alt="batata" /></p>
+            <p className="image-container"><img className="user-image" src={'//localhost:3023/uploadedImages/'+image} alt="batata" /></p>
                 <h3 className="user-name" style={{color:'black'}} >{username}</h3>
                 <p>
                 <Button bsStyle="primary" onClick={addUserToTeam}>{text}</Button>

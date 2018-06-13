@@ -223,7 +223,7 @@ class Home extends React.Component {
             { this.props.showTeamOptions ?
             <div className="teams">
               <div className="memberTeamOptions">
-                {this.props.user.image ? <img className="imageTeamSection" src={'//localhost:8888/uploadedImages/'+this.props.user.image} alt="batata" /> : <img className="imageTeamSection" src={'//localhost:8888/uploadedImages/avatar.jpg'} alt="batata" />}
+                {this.props.user.image ? <img className="imageTeamSection" src={'//localhost:3023/uploadedImages/'+this.props.user.image} alt="batata" /> : <img className="imageTeamSection" src={'//localhost:3023/uploadedImages/avatar.jpg'} alt="batata" />}
                 <label className="usernameTeamSection">{this.props.user.username}({this.props.user.language})</label>
                 <TeamOptions 
                 teamOptionsTitle={this.props.translated_page.team_options}

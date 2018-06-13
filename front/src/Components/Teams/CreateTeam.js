@@ -8,7 +8,7 @@ const UserThumbnail = ({username,image,addUserToTeam,button_value,userClass,text
         <div className={userClass}>
             <Col xs={6} md={4}>
             <Thumbnail>
-                <p className="image-container">{image ? <img className="user-image" src={'//localhost:8888/uploadedImages/'+image} alt="batata" />
+                <p className="image-container">{image ? <img className="user-image" src={'//localhost:3023/uploadedImages/'+image} alt="batata" />
                 :<img className="user-image" src={'/images/'+'avatar.jpg'} alt="batata" /> 
                 }
                 </p>

@@ -1,5 +1,5 @@
 // The port where the server is running on
-const port = 8888;
+const port = 3023;
 // Importing HTTP package to create a server for socket  
 const http = require('http')
 // Importing Express package to create a server the application  
@@ -18,7 +18,7 @@ const SocketIOFile = require('socket.io-file')
 const io = SocketIo(server);
 // Importing fs which is for saving to data.json and loading
 const fs = require('fs')
-// Assigning a static server that serves images from folder "uploadedImages" in http://localhost:8888/uploadedImages
+// Assigning a static server that serves images from folder "uploadedImages" in http://localhost:3023/uploadedImages
 app.use('/uploadedImages',express.static('./uploadedImages'))
 // Giving access to any other server to send and recive from this server
 app.use(function(req, res, next) {
@@ -26,7 +26,7 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
-// At url="localhost:8888/" ==> output: "Welcome to this new project"
+// At url="localhost:3023/" ==> output: "Welcome to this new project"
 app.get('/',(req,res) => {
     res.send("Welcome to this new project")
 })
@@ -240,9 +240,9 @@ setInterval(save,1000)
         socket.on('message', (data)=>{
             sendMessage(data)
         } )
-        if(user){
-            socket.emit('teams',teams)
-        }
+
+        socket.emit('teams',teams)
+        
 
         socket.on('invite:user:to:team',(friends,selectedTeam) => {
             selectedTeam = parseInt(selectedTeam)
