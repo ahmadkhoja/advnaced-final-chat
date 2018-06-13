@@ -80,12 +80,18 @@ class Home extends React.Component {
     let message = []
     let value = messages.pop()
     message.push(value)
-      if(this.props.currentTeam){
+      if(this.props.currentTeam && this.props.user){
         return (
           this.props.currentTeam.messages.map((message, index) =>
             <SingleMessage  user={this.props.user} lg={this.props.lg} message={message} username={message.username} date={message.date} user_id={message.user_id} body={message.text} key={index} {...message} image={ message.image }
             imagename={message.imagename} colons={this.state.colons_list}/>
           )
+        )
+      }else{
+        return (
+          <div className="singleMessage">
+            <h1>No User Found Click Here To Login <a href="/">Login</a></h1>
+          </div>
         )
       }
     }
@@ -96,6 +102,8 @@ class Home extends React.Component {
             // console.log(props.id)
             <Team teamname={props.teamname} changeIndex={ () => this.props.changeIndex(props.team_id)} removeRoom={() => this.props.removeRoom(props)} key={index} {...props} onMouseEnter={this.handleMouseHover} onMouseLeave={this.handleMouseHover} isHovering={this.state.isHovering}/>)
         )
+    }else{
+      return null
     }
   }
   

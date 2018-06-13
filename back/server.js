@@ -240,8 +240,10 @@ setInterval(save,1000)
         socket.on('message', (data)=>{
             sendMessage(data)
         } )
-        
-        socket.emit('teams',teams)
+        if(user){
+            socket.emit('teams',teams)
+        }
+
         socket.on('invite:user:to:team',(friends,selectedTeam) => {
             selectedTeam = parseInt(selectedTeam)
             const index = teams.findIndex(({team_id})=>team_id === selectedTeam)

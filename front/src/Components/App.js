@@ -68,7 +68,8 @@ class App extends React.Component {
       showUsers:false,
       showTeamOptions:true,
       showUsersTeam:true,
-      lg:''
+      lg:'',
+      colons_list:[]
     }
   }
 
@@ -109,8 +110,11 @@ class App extends React.Component {
     })
 
     this.setState({uploader})
-    this.setState({socket})
-
+    this.setState({socket}) 
+    
+    socket.on('colons:array', (colons_list) => {
+      this.setState({colons_list})
+    })
     socket.on('message:broadcast',(teams) => {
       this.setState({ teams, status:'success'})
     })
@@ -342,6 +346,7 @@ class App extends React.Component {
               showUsersTeam={this.state.showUsersTeam}
               showUsers={this.state.showUsers}
               lg={this.state.lg}
+              colons_list={this.state.colons_list}
             />}
             />
             <Route path="/" render={(match) => <Login 
