@@ -5,7 +5,7 @@ import './CreateTeam.css'
 
 const UserThumbnail = ({username,image,addUserToTeam,button_value,userClass,text,index,isAdded,add,remove}) => {
     return(
-        <div className={userClass}>       
+        <div className={userClass}>
             <Col xs={6} md={4}>
             <Thumbnail>
                 <p className="image-container">{image ? <img className="user-image" src={'//localhost:8888/uploadedImages/'+image} alt="batata" />
@@ -15,10 +15,6 @@ const UserThumbnail = ({username,image,addUserToTeam,button_value,userClass,text
                 <h3 className="user-name" style={{color:'black'}} >{username}</h3>
                 <p>
                 {!isAdded[index] ? <Button bsStyle="primary" onClick={addUserToTeam}>{add}</Button> : <Button bsStyle="primary" onClick={addUserToTeam}>{remove}</Button>}
-                
-                {/* {isAdded ? <Button bsStyle="primary" onClick={removeUserfromTeam}>Added</Button> :<Button bsStyle="primary" onClick={addUserToTeam}>Add</Button>} */}
-                {/* <Button bsStyle="primary">Add Friend</Button> */}
-                {/* <Button bsStyle="default">Button</Button> */}
                 </p>
             </Thumbnail>
             </Col>

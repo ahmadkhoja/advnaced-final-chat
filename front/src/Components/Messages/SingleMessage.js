@@ -2,7 +2,18 @@ import React from 'react'
 import { Emoji } from 'emoji-mart'
 
 const SingleMessage = ({ image, username, body, date, imagename, colons, message, lg, user }) => {
-
+  const text = ( (user.language === lg && message[lg]) ? message[lg] : body )
+  const renderedText = text && text.split(" ").map(
+    (word) => {  
+      const colon = colons.find((colon)=>colon.colons === word)
+      if(colon){
+        return <Emoji emoji={colon.colons} size={16} />
+      }else{
+        return <span style={{marginRight:'0'}} > { word } </span>
+      }
+    }
+  )
+  console.log('SINGLEMESSAGE -- ',{renderedText,text,body,lg,message:message[lg],colons})
   return (
       <div className="singleMessage">
         {
@@ -15,19 +26,9 @@ const SingleMessage = ({ image, username, body, date, imagename, colons, message
           <p className="messageDate">{date}</p>
         </div>
         {
-          body ? 
+          renderedText ? 
           <div className="message-text">
-            <p className="bodyText">{ 
-              user.language === lg ? message[lg] : body.split(" ").map(
-              (word) => {  
-                const colon = colons.find((colon)=>colon.colons === word)
-                if(colon){
-                  return <Emoji emoji={colon.colons} size={16} />
-                }else{
-                  return <span style={{marginRight:'0'}} > { word } </span>
-                }
-              }
-            ) }</p>
+            <p className="bodyText">{ renderedText }</p>
           </div> : null
         }
         {
